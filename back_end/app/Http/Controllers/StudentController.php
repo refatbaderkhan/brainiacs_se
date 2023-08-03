@@ -47,17 +47,15 @@ class StudentController extends Controller
             return response()->json(['message' => 'You are not enrolled in this course.']);
         }
 
-
-        $materials = Course::findOrFail($course->id)->courseMaterials;
+        // access the course materials directly from the $course object
+        $materials = $course->materials;
 
         if ($materials->isEmpty()) {
             return response()->json(['message' => 'No course materials found for this course.']);
         }
 
-        // Send a JSON response containing the course materials data
         return response()->json(['course_materials' => $materials]);
     }
-
 
 
 }
