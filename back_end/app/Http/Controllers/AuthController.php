@@ -1,39 +1,45 @@
-<?php 
+<?php
 
 namespace App\Http\Controllers;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 
-class AuthController extends Controller{
+class AuthController extends Controller
+{
 
     /*public function __construct(){
         $this->middleware('auth:api', ['except' => ['login','register']]);
     }*/
 
-    public function unauthorized(Request $request){
+    public function unauthorized(Request $request)
+    {
         return response()->json([
             'status' => 'Error',
             'message' => 'Unauthorized',
         ], 200);
     }
 
-    public function issues(Request $request){
+    public function issues(Request $request)
+    {
         return response()->json([
             'status' => 'Success',
             'message' => 'AKAL',
         ], 200);
     }
 
-    public function profile(Request $request){
+    public function profile(Request $request)
+    {
         return response()->json([
             'status' => 'Success',
             'data' => Auth::user(),
         ], 200);
     }
 
-    public function login(Request $request){
+    public function login(Request $request)
+    {
         $request->validate([
             'email' => 'required|string|email',
             'password' => 'required|string',
@@ -42,7 +48,7 @@ class AuthController extends Controller{
         $credentials = $request->only('email', 'password');
 
         $token = Auth::attempt($credentials);
- 
+
         if (!$token) {
             return response()->json([
                 'status' => 'Error',
@@ -52,16 +58,17 @@ class AuthController extends Controller{
 
         $user = Auth::user();
         $user->token = $token;
-        $user->role = $user->user_type_id == 1 ? "admin" : "user";
-        
+        // $user->role = $user->user_type_id;
+
         return response()->json([
-                'status' => 'Success',
-                'data' => $user
-            ]);
+            'status' => 'Success',
+            'data' => $user
+        ]);
 
     }
 
-    public function register(Request $request){
+    public function register(Request $request)
+    {
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
@@ -75,11 +82,11 @@ class AuthController extends Controller{
             4 => 'parent',
         ];
 
-        $user = new User; 
-        $user->role =  $request->role; 
-       
+        $user = new User;
+        $user->role = $request->role;
+
         $user->name = $request->name;
-     
+
         $user->email = $request->email;
         $user->password = Hash::make($request->password);
 
@@ -95,7 +102,8 @@ class AuthController extends Controller{
         ]);
     }
 
-    public function logout(){
+    public function logout()
+    {
         Auth::logout();
         return response()->json([
             'status' => 'success',
@@ -103,7 +111,8 @@ class AuthController extends Controller{
         ]);
     }
 
-    public function refresh() {
+    public function refresh()
+    {
         $user = Auth::user();
         $user->token = Auth::refresh();
 
