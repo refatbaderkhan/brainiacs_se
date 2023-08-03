@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ChatController;
 use Illuminate\Support\Facades\Auth;
 
 //Authenticated APIS
@@ -16,8 +17,11 @@ Route::group(["middleware" => "auth:api"], function(){
     Route::group(["prefix" => "user"], function(){
         Route::get("profile", [AuthController::class, "profile"]);
         Route::post("logout", [AuthController::class, "logout"]);
+        Route::post("messages" , [ChatController::class , "message"]);
         Route::post("refresh", [AuthController::class, "refresh"]);
     });
+
+
 
 });
 
