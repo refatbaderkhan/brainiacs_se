@@ -13,11 +13,35 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
+            $table->integer('user_type_id');
+            $table->integer('package_id');
             $table->string('name');
+            $table->integer('gender');
             $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
+            $table->text('password');
+            $table->text('pic_url');
             $table->rememberToken();
+            $table->timestamps();
+        });
+
+        Schema::create('user_types', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->timestamps();
+        });
+
+        Schema::create('user_profiles', function (Blueprint $table) {
+            $table->id();
+            $table->integer('user_id');
+            $table->text('description');
+            $table->string('hobbies');
+            $table->timestamps();
+        });
+
+        Schema::create('packages', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->integer('price');
             $table->timestamps();
         });
     }
