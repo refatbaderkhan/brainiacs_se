@@ -6,9 +6,15 @@ use App\Models\Course;
 use App\Models\StudentEnrollment;
 use App\Models\CourseMaterial;
 use Illuminate\Http\Request;
+use App\Models\Assignment;
+use App\Models\Grade;
 
 class StudentController extends Controller
 {
+
+
+    //part a
+
     public function browseCourses()
     {
         $courses = Course::all();
@@ -56,6 +62,76 @@ class StudentController extends Controller
 
         return response()->json(['course_materials' => $materials]);
     }
+
+
+
+    //part b student work 
+
+
+    public function getCompletedAssignments()
+    {
+        $studentId = auth()->user()->id;
+        $completedAssignments = Grade::where('user_id', $studentId)->pluck('assignment_id')->toArray();
+
+        // Fetch the completed assignments based on the IDs
+        $assignments = Assignment::whereIn('id', $completedAssignments)->get();
+
+        return response()->json(['completed_assignments' => $assignments]);
+    }
+
+    public function getUpcomingAssignments()
+    {
+        $studentId = auth()->user()->id;
+
+        // Eager load the enrolled courses and their assignments
+        $enrolledCourses = Course::whereHas('students', function ($query) use ($studentId) {
+            $query->where('user_id', $studentId);
+        })->with('assignments.grades')->get();
+
+        // Filter out assignments that are already graded
+        $upcomingAssignments = $enrolledCourses->flatMap(function ($course) use ($studentId) {
+            return $course->assignments->filter(function ($assignment) use ($studentId) {
+                return $assignment->grades->where('user_id', $studentId)->isEmpty();
+            });
+        });
+
+        return response()->json(['upcoming_assignments' => $upcomingAssignments]);
+    }
+
+
+    public function getGrades()
+    {
+        $studentId = auth()->user()->id;
+        $grades = Grade::where('user_id', $studentId)->get();
+
+        return response()->json(['grades' => $grades]);
+    }
+
+    public function getOverallProgress()
+    {
+        $studentId = auth()->user()->id;
+        $totalAssignments = Assignment::whereIn('course_id', function ($query) use ($studentId) {
+            $query->select('course_id')
+                ->from('student_enrollments')
+                ->where('user_id', $studentId);
+        })->count();
+
+        if ($totalAssignments === 0) {
+            // Handle the case when there are no assignments
+            return response()->json(['overall_progress' => '0%']);
+        }
+
+        $completedAssignments = Grade::where('user_id', $studentId)->count();
+
+        $progressPercentage = ($completedAssignments / $totalAssignments) * 100;
+
+        return response()->json(['overall_progress' => $progressPercentage . '%']);
+    }
+
+
+
+
+
 
 
 }

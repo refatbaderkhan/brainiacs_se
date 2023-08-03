@@ -28,6 +28,17 @@ Route::group(["middleware" => "auth:api"], function () {
 
     // view course materials
     Route::get('course-materials/{courseId}', [StudentController::class, 'viewCourseMaterials']);
+
+
+    //student progress
+    Route::group(["middleware" => "auth:api"], function () {
+
+
+        Route::get("completed-assignments", [StudentController::class, "getCompletedAssignments"]);
+        Route::get("upcoming-assignments", [StudentController::class, "getUpcomingAssignments"]);
+        Route::get("grades", [StudentController::class, "getGrades"]);
+        Route::get("overall-progress", [StudentController::class, "getOverallProgress"]);
+    });
 });
 
 //Unauthenticated APIS
