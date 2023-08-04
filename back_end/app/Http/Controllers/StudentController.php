@@ -8,6 +8,8 @@ use App\Models\CourseMaterial;
 use Illuminate\Http\Request;
 use App\Models\Assignment;
 use App\Models\Grade;
+use App\Models\Quiz;
+use App\Models\Question;
 
 class StudentController extends Controller
 {
@@ -128,8 +130,53 @@ class StudentController extends Controller
         return response()->json(['overall_progress' => $progressPercentage . '%']);
     }
 
+    //Ppart c
+
+    //need to pass course id
+    public function getQuizzesForCourse($courseId)
+    {
+        $quizzes = Quiz::where('course_id', $courseId)->get();
+
+        return response()->json(['quizzes' => $quizzes]);
+    }
 
 
+    //need to pass quiz id
+    public function getQuizDetails($quizId)
+    {
+        $quiz = Quiz::with('questions')->findOrFail($quizId);
+
+        return response()->json(['quiz' => $quiz]);
+    }
+
+
+
+    public function submitQuizAnswers(Request $request, $quizId)
+    {
+        $quiz = Quiz::findOrFail($quizId);
+
+        $user = auth()->user();
+        $studentId = $user->id;
+
+        $answers = $request->input('answers');
+
+        // Validate if all questions are attempted
+        if (count($answers) !== $quiz->questions->count()) {
+            return response()->json(['message' => 'Please attempt all questions.'], 400);
+        }
+
+        // Calculate quiz score
+        $score = 0;
+        foreach ($quiz->questions as $question) {
+            $userAnswer = $answers[$question->id];
+            if ($userAnswer === $question->correct_option) {
+                $score++;
+            }
+        }
+
+
+        return response()->json(['score' => $score]);
+    }
 
 
 
