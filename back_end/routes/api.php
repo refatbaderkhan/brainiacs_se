@@ -4,6 +4,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\ParentController;
+
 
 //Authenticated APIS
 Route::group(["middleware" => "auth:api"], function(){
@@ -30,4 +32,8 @@ Route::group(["prefix" => "guest"], function(){
     Route::post("register", [AuthController::class, "register"]);
 });
 
-
+Route::group(["middleware"=>"auth:api"],function(){
+    Route::group(["prefix"=> "parent"],function(){
+        Route::get('/students-performance', [ParentController::class, 'getStudentsPerformanceByParentId']);
+});
+});
