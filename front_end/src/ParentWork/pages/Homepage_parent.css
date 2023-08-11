@@ -89,4 +89,52 @@
   width: 80%;
   padding-left: 2rem;
   font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.selectChildModal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.selectChildModal h3 {
+  margin-bottom: 20px;
+}
+
+.selectChildModal ul {
+  list-style: none;
+  padding: 0;
+}
+
+.selectChildModal li {
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.cancel-button {
+  margin-top: 10px;
+  padding: 5px 10px;
+  background-color: #db7734;
+  border: none;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.cancel-button:hover {
+  background-color: #cf850f;
+}
+
+.selectChildModal li:hover {
+  color: #cf850f;
 }
