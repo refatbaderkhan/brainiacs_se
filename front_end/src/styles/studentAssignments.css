@@ -1,0 +1,12 @@
+/* StudentAssignments.css */
+.student-assignments {
+  margin-top: 10px;
+}
+
+.student-assignments h4 {
+  font-size: 16px;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+/* Style for assignment details if needed */

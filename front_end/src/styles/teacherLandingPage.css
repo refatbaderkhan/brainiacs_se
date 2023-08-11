@@ -1,0 +1,117 @@
+/* Add your existing styles here */
+
+.expandable-tree {
+  border: 1px solid #ccc;
+  margin: 10px;
+}
+
+.expandable-header {
+  cursor: pointer;
+
+  padding: 8px;
+}
+.expandable-header:hover {
+  background: #e8762a;
+}
+
+.expandable-content {
+
+  padding: 10px;
+  border-radius: 0px 0px 12px 12px;
+}
+
+.student-assignments,
+.student-reports {
+  border-top: 1px solid #ddd;
+  padding: 10px;
+}
+
+.course-card {
+  margin: 10px;
+  border: 1px solid #ccc;
+  padding: 10px;
+  width: 45%;
+  border-radius: 10px;
+  margin: auto;
+  margin-bottom: 16px;
+
+}
+.course-card-title{
+  margin-left: 13px;
+}
+.courses-header{
+ display: flex;
+ justify-content: center;
+}
+.courses-header button{
+ 
+  width: 120px;
+  height: 40px;
+  margin-top: 22px;
+  margin-left: 10px;
+}
+.teacher-image{
+  width: 80px;
+  height: 80px;
+  background-color: #3498db;
+  border-radius: 50%;
+  margin-right: -10px;
+
+  border: 2px solid  ghostwhite; 
+
+}
+
+.greeting{
+  margin-top: 20px;
+  display: flex;
+  gap: 30px;
+}
+
+/* teacherLandingPage.css */
+/* ... your existing styles ... */
+
+/* Modal Styles */
+.modal {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: ghostwhite;
+  padding: 20px;
+  border-radius: 8px;
+  width: 650px;
+}
+.modal button{
+  background: #e8762a;
+  width: 120px;
+  height: 40px;
+  border-radius: 10px 0px 12px 0px;
+  color: ghostwhite;
+  border: transparent;
+  margin: auto;
+
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.modal-inputs{
+  margin: 10px;
+  width: 90%;
+  padding: 15px;
+  border-radius: 8px;
+  border: solid 1px rgb(212, 207, 207) ;
+}
+.modal-inputs:focus{
+  border: solid 1px red;
+}

@@ -1,0 +1,116 @@
+body{
+  margin: 8px;
+  margin-top: 0px;
+  background: linear-gradient(to bottom, #87ceeb, #6495ed);
+  color: ghostwhite
+}
+.announcements-section {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+
+  padding: 20px;
+  top: 0;
+  color: ghostwhite;
+  text-align: center;
+  align-items: center;
+
+}
+
+.announcements-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+
+}
+
+.search-bar {
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+  
+}
+
+.search-bar input {
+  padding: 10px;
+  border: none;
+  border-radius: 4px;
+  width: 300px; 
+
+}
+
+.search-bar button.search-button {
+  background: #DB7734;
+  color: ghostwhite;
+  border: none;
+  padding: 10px;
+  border-radius: 10px 0px 10px 0px;
+  cursor: pointer;
+  margin-left: 10px;
+}
+.search-bar button.search-button:hover {
+  background: #e8762a;
+  border-radius: 0px 10px 0px 10px;
+}
+
+
+.announcement-form {
+  background:ghostwhite;
+  padding: 20px;
+  border-radius: 8px;
+  width: 80%;
+}
+
+.announcement-form input,
+.announcement-form textarea {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.announcement-form button.post-button {
+  background: #3498db;
+  color: ghostwhite;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.students {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+ 
+}
+
+.student-image {
+  width: 60px;
+  height: 60px;
+  background-color: #3498db;
+  border-radius: 50%;
+  margin-right: -10px;
+  z-index: 0;
+  border: 2px solid  ghostwhite; 
+}
+
+.student-image:last-child {
+  margin-right: 0;
+}
+
+.btn-primary{
+  background: #DB7734;
+  color: ghostwhite;
+  border: none;
+  padding: 10px;
+  border-radius: 10px 0px 10px 0px;
+  cursor: pointer;
+  margin-right: 10px;
+}
+.btn-primary:hover{
+  background: #e8762a;
+  border-radius: 0px 10px 0px 10px;
+}
