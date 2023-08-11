@@ -1,0 +1,44 @@
+.child-details-container {
+  width: 80%;
+  margin: auto;
+  padding: 20px;
+}
+
+.child-name {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.child-progress {
+  margin-bottom: 20px;
+}
+
+.child-grades,
+.child-assignments {
+  margin-bottom: 20px;
+}
+
+.child-grades ul,
+.child-assignments ul {
+  list-style: none;
+  padding: 0;
+}
+
+.child-grades li,
+.child-assignments li {
+  margin-bottom: 5px;
+  padding-left: 20px;
+  position: relative;
+}
+
+.child-grades li::before,
+.child-assignments li::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+}
+
+.child-section-heading {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
