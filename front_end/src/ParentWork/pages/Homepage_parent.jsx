@@ -1,5 +1,6 @@
 import React from "react";
 import "./Homepage_parent.css";
+import image from "../../components/assets/family.jpg";
 
 function Homepage_parent() {
   return (
@@ -27,6 +28,19 @@ function Homepage_parent() {
           </div>
           <div className="card-select">
             <p>Notifications and Reminders</p>
+          </div>
+        </div>
+        <div className="imagePlusParagraph">
+          <div className="image-container">
+            <img src={image} alt="Family img" />
+          </div>
+
+          <div className="quote">
+            <p>
+              "Little learners grow up and become just what the world needs.{" "}
+              <br /> A world full of little learners today means a universe
+              packed with brilliant minds tomorrow."
+            </p>
           </div>
         </div>
       </div>
