@@ -11,6 +11,13 @@ function ChildPage() {
   const child = location.state || {};
   const [selectedTeacher, setSelectedTeacher] = useState(null);
   const parentId = localStorage.getItem("parent_id") || "dummy_parent_id";
+
+  //dummy for teachers:
+  const teachers = [
+    { id: 1, name: "Teacher 1" },
+    { id: 2, name: "Teacher 2" },
+    { id: 3, name: "Teacher 3" },
+  ];
   return (
     <div className="child-details-container">
       <h2 className="child-name">{child.name || "Child Name"}</h2>
@@ -43,14 +50,15 @@ function ChildPage() {
       </div>
 
       {/* Display the teacher list */}
-      <TeacherList
-        teachers={child.teachers}
-        onSelectTeacher={setSelectedTeacher}
-      />
+      <TeacherList teachers={teachers} onSelectTeacher={setSelectedTeacher} />
 
       {/* Display the message form */}
       {selectedTeacher && (
-        <MessageForm parentSenderId={parentId} teacherId={selectedTeacher.id} />
+        <MessageForm
+          parentSenderId={parentId}
+          teacherId={selectedTeacher.id}
+          onCancel={() => setSelectedTeacher(null)}
+        />
       )}
 
       {/* Display the message threads */}

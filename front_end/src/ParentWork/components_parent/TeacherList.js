@@ -1,11 +1,22 @@
-import React from 'react'
+import React from "react";
 
-function TeacherList() {
+function TeacherList({ teachers, onSelectTeacher }) {
   return (
-    <div>
-      hello teacher list
+    <div className="teacher-list">
+      <h3>Teachers</h3>
+      <ul>
+        {teachers.map((teacher) => (
+          <li
+            key={teacher.id}
+            onClick={() => onSelectTeacher(teacher)}
+            className="teacher-item"
+          >
+            {teacher.name}
+          </li>
+        ))}
+      </ul>
     </div>
-  )
+  );
 }
 
-export default TeacherList
+export default TeacherList;

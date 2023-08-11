@@ -2,6 +2,10 @@
   width: 80%;
   margin: auto;
   padding: 20px;
+  background-color: rgba(255, 255, 255, 0.8);
+  border-radius: 10px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  color: #333;
 }
 
 .child-name {
@@ -41,4 +45,70 @@
 .child-section-heading {
   font-size: 18px;
   margin-bottom: 10px;
+}
+
+/* for added components */
+
+.teacher-list {
+  margin-bottom: 20px;
+}
+
+.teacher-list ul {
+  list-style: none;
+  padding: 0;
+}
+
+.teacher-list li {
+  margin-bottom: 5px;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.teacher-list li:hover {
+  color: #6495ed; /* Change color on hover */
+}
+
+.message-form {
+  margin-bottom: 20px;
+}
+
+.message-form textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.message-form button {
+  background-color: #6495ed;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 8px 12px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.message-form button:hover {
+  background-color: #4169e1; /* Darker shade on hover */
+}
+
+.message-threads {
+  margin-bottom: 20px;
+}
+
+.message-threads .message {
+  background-color: #f0f0f0;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+}
+
+.message-threads .message.sender {
+  background-color: #6495ed;
+  color: #fff;
+}
+
+.message-threads .message.receiver {
+  background-color: #87ceeb;
 }
