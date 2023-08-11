@@ -1,11 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
 import { useLocation } from "react-router-dom";
 import "./Child_details.css";
+
+import TeacherList from "../components_parent/TeacherList";
+import MessageForm from "../components_parent/MessageForm";
+import MessageThreads from "../components_parent/MessageThreads";
 
 function ChildPage() {
   const location = useLocation();
   const child = location.state || {};
-
+  const [selectedTeacher, setSelectedTeacher] = useState(null);
+  const parentId = localStorage.getItem("parent_id") || "dummy_parent_id";
   return (
     <div className="child-details-container">
       <h2 className="child-name">{child.name || "Child Name"}</h2>
@@ -36,6 +41,25 @@ function ChildPage() {
             ))}
         </ul>
       </div>
+
+      {/* Display the teacher list */}
+      <TeacherList
+        teachers={child.teachers}
+        onSelectTeacher={setSelectedTeacher}
+      />
+
+      {/* Display the message form */}
+      {selectedTeacher && (
+        <MessageForm parentSenderId={parentId} teacherId={selectedTeacher.id} />
+      )}
+
+      {/* Display the message threads */}
+      {selectedTeacher && (
+        <MessageThreads
+          parentSenderId={parentId}
+          teacherId={selectedTeacher.id}
+        />
+      )}
     </div>
   );
 }
