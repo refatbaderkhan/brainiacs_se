@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\StudentPerformance;
 use App\Models\StudentCourseGrade;
 use App\Models\Attendance;
+use App\Models\Message;
 use App\Models\Course;
 use App\Models\StudentEnrollment;
 use App\Models\Grade;
@@ -66,7 +67,7 @@ class ParentController extends Controller
             $parent = $request->user();
 
             if ($parent->role !== "4") {
-                return response()->json(['error' => 'Parent not found'], 404);
+                return response()->json(['error' => 'Parent not found']);
             }
             $studentIds=$parent->children->pluck('id');
             foreach($studentIds as $studentId){
@@ -79,6 +80,28 @@ class ParentController extends Controller
                 ];
             }
             return response()->json(['data'=>$studentAttendanceInfo]);
+        }
+
+        public function sendTeacherMessage(Request $request)
+        {
+            $parent=$request->user();
+            if ($parent->role !== "4") {
+                return response()->json(['error' => 'Parent not found']);
+            }
+
+            $request->validate([
+                'receiver_id'=>'required|exists:users,id',
+                'message_content'=>'required|string',
+            ]);
+            $teacherId=$request->input('receiver_id');
+            $messageContent=$request->input('message_content');
+
+            $message = new Message();
+            $message->sender_id = $parent->id;
+            $message->receiver_id = $teacherId;
+            $message->message_content = $messageContent;
+            $message->save();
+            return response()->json(['message'=>'message sent successfully']);
         }
 
     }
