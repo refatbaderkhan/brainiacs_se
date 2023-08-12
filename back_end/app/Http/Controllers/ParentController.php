@@ -61,7 +61,7 @@ class ParentController extends Controller
     }
     
 
-        public function getStudentAttendence(Request $request)
+        public function getStudentAttendance(Request $request)
         {
             $parent = $request->user();
 
@@ -69,8 +69,16 @@ class ParentController extends Controller
                 return response()->json(['error' => 'Parent not found'], 404);
             }
             $studentIds=$parent->children->pluck('id');
-            die($studentsAttendance = Attendance::find($studentIds));
-        
+            foreach($studentIds as $studentId){
+                $student=User::where('id',$studentId)->pluck('name');
+                $studentAttendance = Attendance::find($studentId);
+
+                $studentAttendanceInfo[$studentId]=[
+                    'name'=>$student,
+                    'attendance'=>$studentAttendance,
+                ];
+            }
+            return response()->json(['data'=>$studentAttendanceInfo]);
         }
 
     }
