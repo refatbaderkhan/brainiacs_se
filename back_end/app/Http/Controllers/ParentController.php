@@ -71,8 +71,8 @@ class ParentController extends Controller
             $studentIds=$parent->children->pluck('id');
             foreach($studentIds as $studentId){
                 $student=User::where('id',$studentId)->pluck('name');
-                $studentAttendance = Attendance::find($studentId);
-
+                $studentAttendance = Attendance::where('user_id', $studentId)->get();
+                
                 $studentAttendanceInfo[$studentId]=[
                     'name'=>$student,
                     'attendance'=>$studentAttendance,
