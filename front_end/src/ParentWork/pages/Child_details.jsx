@@ -6,6 +6,7 @@ import axios from "axios";
 import TeacherList from "../components_parent/TeacherList";
 import MessageForm from "../components_parent/MessageForm";
 import MessageThreads from "../components_parent/MessageThreads";
+import Attendence from "../components_parent/Attendence";
 
 function ChildPage() {
   const location = useLocation();
@@ -22,11 +23,11 @@ function ChildPage() {
     },
   });
   const [teachers, setTeachers] = useState([]);
-  // Fetch child details when component mounts
+
   useEffect(() => {
-    // Replace 'YOUR_ACCESS_TOKEN_HERE' with the actual access token
     const accessToken =
-      "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2d1ZXN0L2xvZ2luIiwiaWF0IjoxNjkxODcxMDM5LCJleHAiOjE2OTE4NzQ2MzksIm5iZiI6MTY5MTg3MTAzOSwianRpIjoiY0dBUzdWdE5qYTRzV09BRSIsInN1YiI6IjciLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.vlY066PsbxWJnAY0g2MeqARWnVHYTJtm7ZN-NniBqO4";
+      "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2d1ZXN0L2xvZ2luIiwiaWF0IjoxNjkxODc5NjcyLCJleHAiOjE2OTE4ODMyNzIsIm5iZiI6MTY5MTg3OTY3MiwianRpIjoiRFFYdzM1Q3dZdkpSeXJYcyIsInN1YiI6IjciLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.Cja0IAfKandr4V-duovvlMYYUEkEKwsXIJ0m9qra-3M";
+    const updatedTeachers = [];
 
     axios
       .get(`http://127.0.0.1:8000/api/parent/child/${child.id}`, {
@@ -35,24 +36,33 @@ function ChildPage() {
         },
       })
       .then((response) => {
-        setChildDetails(response.data.data); // Update child details state
-        const updatedTeachers = [];
+        setChildDetails(response.data.data);
+
         response.data.data.courses_progress.forEach((courseProgress) => {
           const teacherId = courseProgress.course.teacher_id;
-          axios
-            .get(`http://127.0.0.1:8000/api/parent/teachers/${teacherId}`, {
-              headers: {
-                Authorization: `Bearer ${accessToken}`,
-              },
-            })
-            .then((response) => {
-              const teacher = response.data.data;
-              updatedTeachers.push({ id: teacher.id, name: teacher.name });
-              setTeachers(updatedTeachers);
-            })
-            .catch((error) => {
-              console.error("Error fetching trqfgeacher:", error);
-            });
+          const teacherExists = updatedTeachers.find(
+            (teacher) => teacher.id === teacherId
+          );
+
+          //   if (
+          //     updatedTeachers.filter((teacher) => teacher.id === teacherId) != []
+          //   ) {
+          if (!teacherExists) {
+            axios
+              .get(`http://127.0.0.1:8000/api/parent/teachers/${teacherId}`, {
+                headers: {
+                  Authorization: `Bearer ${accessToken}`,
+                },
+              })
+              .then((response) => {
+                const teacher = response.data.data;
+                updatedTeachers.push({ id: teacher.id, name: teacher.name });
+                setTeachers(updatedTeachers);
+              })
+              .catch((error) => {
+                console.error("Error fetching teacher:", error);
+              });
+          }
         });
       })
       .catch((error) => {
@@ -86,13 +96,16 @@ function ChildPage() {
           {childDetails.courses_progress.map((courseProgress) =>
             courseProgress.course.assignments.map((assignment) => (
               <li key={assignment.id}>
-                {assignment.title} - Due: {assignment.due_date} - Status:{" "}
-                {assignment.status}
+                {assignment.title} - Due: {assignment.due_date} -
+                {/* Status:{" "}
+                {assignment.status} */}
               </li>
             ))
           )}
         </ul>
       </div>
+
+      <Attendence childId={child.id} />
 
       {/* Display the teacher list */}
       <TeacherList teachers={teachers} onSelectTeacher={setSelectedTeacher} />
