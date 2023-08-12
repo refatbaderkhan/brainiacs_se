@@ -30,5 +30,10 @@ class Course extends Model
         return $this->hasMany(Quiz::class);
     }
 
+    public function studentGrades()
+    {
+        return $this->hasMany(StudentCourseGrade::class, 'course_id');
+    }
+
     
 }
