@@ -34,7 +34,9 @@ Route::group(["prefix" => "guest"], function(){
 
 Route::group(["middleware"=>"auth:api"],function(){
     Route::group(["prefix"=> "parent"],function(){
-        Route::get('/student-performance', [ParentController::class, 'getStudentPerformance']);
+        // Route::get('/student-performance', [ParentController::class, 'getStudentPerformance']);
+        Route::get('/students-list', [ParentController::class, 'getStudentsList']);
+        Route::get('/student-performance/{studentId}', [ParentController::class, 'getStudentPerformance']);
         Route::get('/student-attendance', [ParentController::class, 'getStudentAttendance']);
         Route::post('/teacher-message', [ParentController::class, 'sendTeacherMessage']);
 });

@@ -12,53 +12,53 @@ use App\Models\StudentEnrollment;
 use App\Models\Grade;
 class ParentController extends Controller
 {
-    public function getStudentPerformance(Request $request)
+    
+    public function getStudentsList(Request $request)
     {
         $parent = $request->user();
-    
+        
         if ($parent->role !== "4") {
             return response()->json(['error' => 'Parent not found'], 404);
         }
     
-        $studentIds = $parent->children->pluck('id');
-        $enrollments = StudentEnrollment::whereIn('user_id', $studentIds)->get();
-        $courseIds = $enrollments->pluck('course_id');
+        $studentList = $parent->children->pluck('name', 'id')->toArray();
+        
+        return response()->json(['data' => $studentList]);
+    }
+
+    public function getStudentPerformance(Request $request, $studentId)
+    {
+        $parent = $request->user();
+        
+        if ($parent->role !== "4") {
+            return response()->json(['error' => 'Parent not found'], 404);
+        }
     
+        $enrollments = StudentEnrollment::where('user_id', $studentId)->get();
+        $courseIds = $enrollments->pluck('course_id');
         $coursesProgress = [];
         foreach ($courseIds as $courseId) {
             $course = Course::with(['assignments', 'quizzes'])->find($courseId);
-    
-            $grades = Grade::whereIn('assignment_id', $course->assignments->pluck('id'))
-                ->whereIn('user_id', $studentIds)
-                ->get();
-    
-            $studentsWithGradesAndCourses = $grades->pluck('user_id');
-            $studentsInformations = User::whereIn('id', $studentsWithGradesAndCourses)
-                ->pluck('name','id')
-                ->toArray();
-    
+           
+            $grades = Grade::whereIn('assignment_id', $course->assignments->pluck('id'))->where('user_id', $studentId)->get();
             $coursesProgress[] = [
-                'student' => $studentsInformations,
                 'course' => $course,
                 'grades' => $grades,
             ];
         }
-        $studentPerformance = [];
-        foreach ($parent->children as $child) {
-            $enrolledCourseCount = $enrollments->where('user_id', $child->id)->count();
-            $completedCourseCount = StudentCourseGrade::where('student_id', $child->id)->count();
-            
-            $courseGrades = StudentCourseGrade::where('student_id', $child->id)->pluck('final_grade');
-            $averageGrade = $courseGrades->avg();
-            
-            $studentPerformance[$child->id] = [
-                'enrolled_courses' => $enrolledCourseCount,
-                'completed_courses' => $completedCourseCount,
-                'average_grade' => $averageGrade,
-            ];
-        }    
+        
+        $courseGrades = StudentCourseGrade::where('student_id', $studentId)->pluck('final_grade');
+        $enrolledCourseCount = $enrollments->count();
+        $completedCourseCount = StudentCourseGrade::where('student_id', $studentId)->count();
+        $averageGrade = $courseGrades->avg();
     
-        return response()->json(['data' => $coursesProgress,$studentPerformance]);
+        $studentPerformance = [
+            'enrolled_courses' => $enrolledCourseCount,
+            'completed_courses' => $completedCourseCount,
+            'average_grade' => $averageGrade,
+        ];
+        
+        return response()->json(['data' => $coursesProgress, 'performance' => $studentPerformance]);
     }
     
 
