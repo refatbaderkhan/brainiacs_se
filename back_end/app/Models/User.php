@@ -57,6 +57,11 @@ class User extends Authenticatable implements JWTSubject{
         return $this->hasMany(Message::class, 'receiver_id');
     }
 
+    public function courseGrades()
+    {
+        return $this->hasMany(StudentCourseGrade::class, 'student_id');
+    }
+
 
     public function getJWTIdentifier(){
         return $this->getKey();
