@@ -109,4 +109,25 @@ class ParentController extends Controller
         return response()->json(['data' => $studentAttendanceInfo]);
     }
 
+    public function getTeacherInformation(Request $request, $teacherId)
+    {
+
+        $parent = $request->user();
+        if ($parent->role !== "4") {
+            return response()->json(['error' => 'Parent not found'], 404);
+        }
+
+
+        $teacher = User::find($teacherId);
+
+        if (!$teacher || $teacher->role !== "2") {
+            return response()->json(['error' => 'Teacher not found'], 404);
+        }
+
+        return response()->json([
+            'success' => true,
+            'data' => $teacher,
+        ]);
+    }
+
 }

@@ -1,62 +1,51 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./Homepage_parent.css";
 import image from "../../components/assets/family.jpg";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 function Homepage_parent() {
   const [showModal, setShowModal] = useState(false);
   const [selectedChild, setSelectedChild] = useState(null);
   const navigate = useNavigate();
+  const [children, setChildren] = useState([]);
 
-  // Placeholder child data
-  const placeholderChild1 = {
-    id: 1,
-    name: "Child 1",
-    progress: 80,
-    grades: [
-      { course: "Math", grade: 95 },
-      { course: "English", grade: 85 },
-      // ... Other grades
-    ],
-    assignments: [
-      { title: "Assignment 1", dueDate: "2023-08-15", status: "Completed" },
-      { title: "Assignment 2", dueDate: "2023-08-30", status: "Pending" },
-      // ... Other assignments
-    ],
-    // ... Other child information
-  };
+  useEffect(() => {
+    // API endpoint for fetching children data
+    const apiEndpoint = "http://127.0.0.1:8000/api/parent/children";
 
-  const placeholderChild2 = {
-    id: 2,
-    name: "Child 2",
-    progress: 75,
-    grades: [
-      { course: "Science", grade: 90 },
-      { course: "History", grade: 80 },
-      // ... Other grades
-    ],
-    assignments: [
-      { title: "Assignment 1", dueDate: "2023-08-20", status: "Completed" },
-      { title: "Assignment 2", dueDate: "2023-09-05", status: "Pending" },
-      // ... Other assignments
-    ],
-    // ... Other child information
-  };
+    // Replace 'YOUR_ACCESS_TOKEN_HERE' with the actual access token
+    const accessToken =
+      "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2d1ZXN0L2xvZ2luIiwiaWF0IjoxNjkxODY3MTM3LCJleHAiOjE2OTE4NzA3MzcsIm5iZiI6MTY5MTg2NzEzNywianRpIjoiZDdudU1NZXJHZjNVVVhleCIsInN1YiI6IjciLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.6ZfpfZ-QSi4nvgUIhW84ALRitnrIBC60ljsZ8GLc3Mc";
+
+    axios
+      .get(apiEndpoint, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      })
+      .then((response) => {
+        const childrenData = response.data.data;
+        const childrenArray = Object.keys(childrenData).map((id) => ({
+          id,
+          name: childrenData[id],
+        }));
+
+        setChildren(childrenArray);
+      })
+      .catch((error) => {
+        console.error("Error fetching children:", error);
+      });
+  }, []);
 
   const handleCardClick = () => {
     setShowModal(true);
   };
 
-  //   const handleChildSelect = (child) => {
-  //     setSelectedChild(child);
-  //     setShowModal(false);
-  //     navigate(`/child/${child.id}`, { state: child });
-  //   };
-
   const handleCancel = () => {
     setShowModal(false);
   };
-  const children = [placeholderChild1, placeholderChild2];
+
   return (
     <div className="parent-container">
       <div className="greeting_parent">
@@ -107,7 +96,7 @@ function Homepage_parent() {
                 onClick={() => {
                   setSelectedChild(child);
                   setShowModal(false);
-                  navigate("/child", { state: child });
+                  navigate(`/child/${child.id}`, { state: child }); // Passing child info to the route
                 }}
               >
                 {child.name}

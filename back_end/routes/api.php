@@ -37,5 +37,6 @@ Route::group(["middleware" => "auth:api"], function () {
         Route::get('children', [ParentController::class, 'getParentChildren']);
         Route::get('child/{childId}', [ParentController::class, 'getChildInformation']);
         Route::get('/student-attendance', [ParentController::class, 'getStudentAttendance']);
+        Route::get('teachers/{teacherId}', [ParentController::class, 'getTeacherInformation']);
     });
 });

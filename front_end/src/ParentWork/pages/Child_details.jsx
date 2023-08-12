@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import "./Child_details.css";
+import axios from "axios";
 
 import TeacherList from "../components_parent/TeacherList";
 import MessageForm from "../components_parent/MessageForm";
@@ -11,41 +12,85 @@ function ChildPage() {
   const child = location.state || {};
   const [selectedTeacher, setSelectedTeacher] = useState(null);
   const parentId = localStorage.getItem("parent_id") || "dummy_parent_id";
+  const [childDetails, setChildDetails] = useState({
+    student: {},
+    courses_progress: [],
+    student_performance: {
+      enrolled_courses: 0,
+      completed_courses: 0,
+      average_grade: null,
+    },
+  });
+  const [teachers, setTeachers] = useState([]);
+  // Fetch child details when component mounts
+  useEffect(() => {
+    // Replace 'YOUR_ACCESS_TOKEN_HERE' with the actual access token
+    const accessToken =
+      "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2d1ZXN0L2xvZ2luIiwiaWF0IjoxNjkxODcxMDM5LCJleHAiOjE2OTE4NzQ2MzksIm5iZiI6MTY5MTg3MTAzOSwianRpIjoiY0dBUzdWdE5qYTRzV09BRSIsInN1YiI6IjciLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.vlY066PsbxWJnAY0g2MeqARWnVHYTJtm7ZN-NniBqO4";
 
-  //dummy for teachers:
-  const teachers = [
-    { id: 1, name: "Teacher 1" },
-    { id: 2, name: "Teacher 2" },
-    { id: 3, name: "Teacher 3" },
-  ];
+    axios
+      .get(`http://127.0.0.1:8000/api/parent/child/${child.id}`, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      })
+      .then((response) => {
+        setChildDetails(response.data.data); // Update child details state
+        const updatedTeachers = [];
+        response.data.data.courses_progress.forEach((courseProgress) => {
+          const teacherId = courseProgress.course.teacher_id;
+          axios
+            .get(`http://127.0.0.1:8000/api/parent/teachers/${teacherId}`, {
+              headers: {
+                Authorization: `Bearer ${accessToken}`,
+              },
+            })
+            .then((response) => {
+              const teacher = response.data.data;
+              updatedTeachers.push({ id: teacher.id, name: teacher.name });
+              setTeachers(updatedTeachers);
+            })
+            .catch((error) => {
+              console.error("Error fetching trqfgeacher:", error);
+            });
+        });
+      })
+      .catch((error) => {
+        console.error("Error fetching child details:", error);
+      });
+  }, []);
   return (
     <div className="child-details-container">
-      <h2 className="child-name">{child.name || "Child Name"}</h2>
+      <h2 className="child-name">
+        {childDetails.student.name || "Child Name"}
+      </h2>
       <div className="child-progress">
         <h3>Progress</h3>
-        <p>{child.progress || 0}%</p>
+        <p>{childDetails.student_performance.enrolled_courses || 0}%</p>
       </div>
       <div className="child-grades">
         <h3>Grades</h3>
         <ul>
-          {child.grades &&
-            child.grades.map((grade, index) => (
-              <li key={index}>
-                {grade.course}: {grade.grade}
+          {childDetails.courses_progress.map((courseProgress) =>
+            courseProgress.grades.map((grade) => (
+              <li key={grade.id}>
+                {courseProgress.course.title}: {grade.grade}
               </li>
-            ))}
+            ))
+          )}
         </ul>
       </div>
       <div className="child-assignments">
         <h3>Assignments</h3>
         <ul>
-          {child.assignments &&
-            child.assignments.map((assignment, index) => (
-              <li key={index}>
-                {assignment.title} - Due: {assignment.dueDate} - Status:{" "}
+          {childDetails.courses_progress.map((courseProgress) =>
+            courseProgress.course.assignments.map((assignment) => (
+              <li key={assignment.id}>
+                {assignment.title} - Due: {assignment.due_date} - Status:{" "}
                 {assignment.status}
               </li>
-            ))}
+            ))
+          )}
         </ul>
       </div>
 

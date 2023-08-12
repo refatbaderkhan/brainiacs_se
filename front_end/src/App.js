@@ -22,7 +22,7 @@ function App(){
         {/* Routes for Parent  */}
        <Routes>
                <Route path="/parent" element={<Homepage_parent />}/>
-               <Route path="/child" element={<Child_details />}/>
+               <Route path="/child/:id" element={<Child_details />}/>
                
        </Routes>
 
