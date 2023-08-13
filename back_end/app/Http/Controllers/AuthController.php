@@ -8,14 +8,18 @@ use App\Models\User;
 
 class AuthController extends Controller{
 
-    /*public function __construct(){
-        $this->middleware('auth:api', ['except' => ['login','register']]);
-    }*/
-
     public function unauthorized(Request $request){
         return response()->json([
             'status' => 'Error',
             'message' => 'Unauthorized',
+        ], 200);
+    }
+    public function getAllUsers(Request $request){
+        $users = User::all();
+
+        return response()->json([
+            'status' => 'Success',
+            'users' => $users,
         ], 200);
     }
 
@@ -52,7 +56,7 @@ class AuthController extends Controller{
 
         $user = Auth::user();
         $user->token = $token;
-        $user->role = $user->user_type_id == 1 ? "admin" : "user";
+        $user->role = $user->role == 1 ? "admin" : "user";
         
         return response()->json([
                 'status' => 'Success',

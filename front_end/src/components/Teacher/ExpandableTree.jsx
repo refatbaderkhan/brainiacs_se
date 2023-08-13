@@ -1,6 +1,6 @@
 import React from "react";
 import '../../styles/expandableTree.css'
-const ExpandableTree = ({ title, expanded, onClick, children ,hw,openGradingModal}) => {
+const ExpandableTree = ({ title, expanded, onClick, children ,hw,openGradingModal ,openFeedbackModal }) => {
   return (
     <div className="expandable-tree">
       <div
@@ -9,9 +9,11 @@ const ExpandableTree = ({ title, expanded, onClick, children ,hw,openGradingModa
       >
         <div>{expanded ? "▼" : "►"} {title}</div>
         
-        {hw&&<button onClick={openGradingModal} style={{marginLeft:"50px"}} className="btn-primary grade-assignment">
+        {hw&&<><button onClick={openGradingModal} style={{marginLeft:"50px"}} className="btn-primary grade-assignment">
           Grade assignments
-        </button>}
+        </button><button onClick={openFeedbackModal} style={{marginLeft:"50px"}} className="btn-primary grade-assignment">
+          Add Feedback
+        </button></>}
         
       </div>
       

@@ -8,6 +8,118 @@ export const TeacherProvider = ({ children }) => {
     isSuccess:false,
     isPending:false,
     name:"Toni",
+    id:11,
+    messages:[
+      {
+        sender_id:11,
+        receiver_id:2,
+        created_at:10/11/2023,
+        message_content:"Hello"
+      },
+      {
+        sender_id:2,
+        receiver_id:11,
+        created_at:10/11/2023,
+        message_content:"Hi"
+      },
+      {
+        sender_id:11,
+        receiver_id:2,
+        created_at:10/11/2023,
+        message_content:"kifak"
+      },
+      {
+        sender_id:2,
+        receiver_id:11,
+        created_at:10/11/2023,
+        message_content:"hamdellaa enta kif"
+      },
+      {
+        sender_id:11,
+        receiver_id:2,
+        created_at:10/11/2023,
+        message_content:"hamdella"
+      },
+      {
+        sender_id:2,
+        receiver_id:11,
+        created_at:10/11/2023,
+        message_content:"elle"
+      },
+      {
+        sender_id:11,
+        receiver_id:2,
+        created_at:10/11/2023,
+        message_content:"wen sar l homework"
+      },
+      {
+        sender_id:11,
+        receiver_id:2,
+        created_at:10/11/2023,
+        message_content:"Hello"
+      },
+      
+        {
+          sender_id: 11,
+          receiver_id: 3,
+          created_at: "10/11/2023",
+          message_content: "Hello"
+        },
+        {
+          sender_id: 3,
+          receiver_id: 11,
+          created_at: "10/11/2023",
+          message_content: "Hey there!"
+        },
+        {
+          sender_id: 11,
+          receiver_id: 3,
+          created_at: "10/11/2023",
+          message_content: "How are you?"
+        },
+        {
+          sender_id: 3,
+          receiver_id: 11,
+          created_at: "10/11/2023",
+          message_content: "I'm doing well, thanks!"
+        },
+        {
+          sender_id: 11,
+          receiver_id: 3,
+          created_at: "10/11/2023",
+          message_content: "That's great to hear!"
+        },
+        {
+            sender_id: 11,
+            receiver_id: 4,
+            created_at: "10/11/2023",
+            message_content: "Hey!"
+          },
+          {
+            sender_id: 4,
+            receiver_id: 11,
+            created_at: "10/11/2023",
+            message_content: "Hello there!"
+          },
+          {
+            sender_id: 11,
+            receiver_id: 4,
+            created_at: "10/11/2023",
+            message_content: "How's your day going?"
+          },
+          {
+            sender_id: 4,
+            receiver_id: 11,
+            created_at: "10/11/2023",
+            message_content: "It's been good, thanks!"
+          },
+          {
+            sender_id: 11,
+            receiver_id: 4,
+            created_at: "10/11/2023",
+            message_content: "Glad to hear that!"
+          } 
+    ],
     announcements:[
       {
         course_id:1,
@@ -22,6 +134,29 @@ export const TeacherProvider = ({ children }) => {
         description:"Learn React JS ",
         enrollement_limit:35,
         attendance_sheet:"",
+        course_quizzes:[
+          {
+            quizz_id:1,
+            quizz_doc:"Apples/test.xlsx",
+            quizz_grade:100,
+            quizz_title:"Desktop Quizzes",
+            quizz_description:"This is a quiz"
+          },
+          {
+            quizz_id:2,
+            quizz_doc:"Desktop/test.xlsx",
+            quizz_grade:100,
+            quizz_title:"Apples Quizzes",
+            quizz_description:"This is not a quiz"
+          },
+          {
+            quizz_id:3,
+            quizz_doc:"Marso/last.xlsx",
+            quizz_grade:50,
+            quizz_title:"Narso Quizzes",
+            quizz_description:"Maybe not a quiz"
+          },
+        ],
         course_assignments:[
           {
             assignment_id: 1,
@@ -80,31 +215,34 @@ export const TeacherProvider = ({ children }) => {
             assignments:[
               {
                 assignment_id: 1,
-                assignment_doc:"../toni/assignment/1",//from backend
+                assignment_doc:"../toni/assignment/1",
                 submitted_at:"11/10/1969",
                 assignment_name:"Training for useDebounce",
-
+                feedback:"",
                 grade:0
               },
               {
                 assignment_id: 2,
-                assignment_doc:"../toni/assignment/2",//from backend
+                assignment_doc:"../toni/assignment/2",
                 submitted_at:"11/11/1969",
                 assignment_name:"Training for useMemo",
+                feedback:"",
                 grade:0
               },
               {
                 assignment_id: 3,
-                assignment_doc:"../toni/assignment/3",//from backend
+                assignment_doc:"../toni/assignment/3",
                 submitted_at:"11/12/1969",
                 assignment_name:"Training for useEffect",
+                feedback:"",
                 grade:0,
               },
               {
                 assignment_id: 4,
-                assignment_doc:"../toni/assignment/4",//from backend
+                assignment_doc:"../toni/assignment/4",
                 assignment_name:"Training for useCallback",
                 submitted_at:"1/1/1970",
+                feedback:"",
                 grade:0
               },
             ]
@@ -115,24 +253,26 @@ export const TeacherProvider = ({ children }) => {
             assignments:[
               {
                 assignment_id: 1,
-                assignment_doc:"../Samir/assignment/1",//from backend
+                assignment_doc:"../Samir/assignment/1",
                 assignment_name:"Training for useMemo",
                 submitted_at:"11/10/1969",
+                feedback:"",
                 grade:0
               },
               {
                 assignment_id: 2,
-                assignment_doc:"../Samir/assignment/2",//from backend
+                assignment_doc:"../Samir/assignment/2",
                 submitted_at:"11/11/1969",
                 assignment_name:"Training for useEffect",
-
+                feedback:"",
                 grade:0
               },
               {
                 assignment_id: 3,
-                assignment_doc:"../Samir/assignment/3",//from backend
+                assignment_doc:"../Samir/assignment/3",
                 assignment_name:"Training for useCallback",
                 submitted_at:"11/12/1969",
+                feedback:"",
                 grade:0
               }
             ]
@@ -144,14 +284,14 @@ export const TeacherProvider = ({ children }) => {
               {
                 assignment_id: 1,
                 assignment_name:"Training for useEffect",
-                assignment_doc:"../Tanjara/assignment/1",//from backend
+                assignment_doc:"../Tanjara/assignment/1",
                 submitted_at:"11/12/1969",
                 grade:0
               },
               {
                 assignment_id: 3,
                 assignment_name:"Training for useCallback",
-                assignment_doc:"../Tanjara/assignment/3",//from backend
+                assignment_doc:"../Tanjara/assignment/3",
                 submitted_at:"11/10/1969",
                 grade:0
               }
@@ -164,6 +304,29 @@ export const TeacherProvider = ({ children }) => {
         title:"NodeJS Basics",
         description:"Learn Node JS ",
         enrollement_limit:25,
+        course_quizzes:[
+          {
+            quizz_id:4,
+            quizz_doc:"NodeJS/NodeJS.xlsx",
+            quizz_grade:100,
+            quizz_title:"NodeJS Quizzes",
+            quizz_description:"This is a quiz"
+          },
+          {
+            quizz_id:5,
+            quizz_doc:"NodeJS1/test.xlsx",
+            quizz_grade:100,
+            quizz_title:"NodeJS1 Quizzes",
+            quizz_description:"This is not a quiz"
+          },
+          {
+            quizz_id:6,
+            quizz_doc:"NodeJS2/NodeJS2.xlsx",
+            quizz_grade:110,
+            quizz_title:"NodeJS2 Quizzes",
+            quizz_description:"Maybe not a quiz"
+          },
+        ],
         attendance_sheet:[
           {
             student_name:"toni",
@@ -234,24 +397,26 @@ export const TeacherProvider = ({ children }) => {
             assignments:[
               {
                 assignment_id: 67,
-                assignment_doc:"../toni/assignment/67",//from backend
+                assignment_doc:"../toni/assignment/67",
                 submitted_at:"11/9/1969",
                 assignment_name:"Training for Emitting events",
-
+                feedback:"",
                 grade:0
               },
               {
                 assignment_id: 68,
-                assignment_doc:"../toni/assignment/2",//from backend
+                assignment_doc:"../toni/assignment/2",
                 submitted_at:"11/11/1969",
                 assignment_name:"Training for Restful Apps",
+                feedback:"",
                 grade:0
               },
               {
                 assignment_id: 69,
-                assignment_doc:"../toni/assignment/3",//from backend
+                assignment_doc:"../toni/assignment/3",
                 submitted_at:"11/12/1969",
                 assignment_name:"Training for Middlewares",
+                feedback:"",
                 grade:0,
               },
               {
@@ -259,6 +424,7 @@ export const TeacherProvider = ({ children }) => {
                 assignment_doc:"../toni/assignment/4",
                 assignment_name:"Training for authoristaion",
                 submitted_at:"1/1/1970",
+                feedback:"",
                 grade:0
               },
             ]
@@ -269,24 +435,26 @@ export const TeacherProvider = ({ children }) => {
             assignments:[
               {
                 assignment_id: 67,
-                assignment_doc:"../Samira/assignment/67",//from backend
+                assignment_doc:"../Samira/assignment/67",
                 submitted_at:"11/9/1969",
                 assignment_name:"Training for Emitting events",
-
+                feedback:"",
                 grade:0
               },
               {
                 assignment_id: 68,
-                assignment_doc:"../Samira/assignment/2",//from backend
+                assignment_doc:"../Samira/assignment/2",
                 submitted_at:"11/11/1969",
                 assignment_name:"Training for Restful Apps",
+                feedback:"",
                 grade:0
               },
               {
                 assignment_id: 69,
-                assignment_doc:"../Samira/assignment/3",//from backend
+                assignment_doc:"../Samira/assignment/3",
                 submitted_at:"11/12/1969",
                 assignment_name:"Training for Middlewares",
+                feedback:"",
                 grade:0,
               },
               {
@@ -294,6 +462,7 @@ export const TeacherProvider = ({ children }) => {
                 assignment_doc:"../Samira/assignment/4",
                 assignment_name:"Training for authoristaion",
                 submitted_at:"1/1/1970",
+                feedback:"",
                 grade:0
               },
             ]
@@ -304,7 +473,7 @@ export const TeacherProvider = ({ children }) => {
             assignments:[
               {
                 assignment_id: 67,
-                assignment_doc:"../Tansa Hamza/assignment/67",//from backend
+                assignment_doc:"../Tansa Hamza/assignment/67",
                 submitted_at:"11/9/1969",
                 assignment_name:"Training for Emitting events",
 
@@ -326,6 +495,8 @@ export const TeacherProvider = ({ children }) => {
   }
   ;
   const reducer = (state, action) => {
+    let updatedCourses
+    let { courseId , assignmentId, grade, feedback} = action.payload;
     switch (action.type) {
       case 'CREATE_COURSE':
         const newCourse = {
@@ -335,15 +506,16 @@ export const TeacherProvider = ({ children }) => {
           enrollement_limit: action.payload.enrollement_limit,
           reportCards: [],
           students: [],
-          assignments: [],
+          course_assignments: [],
+          course_quizzes: [],
         };
         return {
           ...state,
           courses: [...state.courses, newCourse],
         };
         case 'ADD_ASSIGNMENT':
-            const { courseId, assignment } = action.payload;
-            const updatedCourses = state.courses.map(course => {
+            const {assignment} = action.payload
+            updatedCourses = state.courses.map(course => {
 
               if (course.id === courseId) {
                 return {
@@ -358,6 +530,101 @@ export const TeacherProvider = ({ children }) => {
               ...state,
               courses: updatedCourses,
             };
+        case 'ADD_QUIZZ':
+          const {quizz} = action.payload
+             
+            updatedCourses = state.courses.map(course => {
+              
+              if (course.id === courseId) {
+                console.log(course)
+                return {
+                  ...course,
+                  course_quizzes: [...course.course_quizzes
+                    , quizz],
+                };
+              }
+              return course;
+            });
+            return {
+              ...state,
+              courses: updatedCourses,
+            };
+            case 'GRADE_ASSIGNMENT':
+              updatedCourses = state.courses.map(course => {
+                if (course.id === courseId) {
+                  console.log(assignmentId)
+                  const updatedStudents = course.students.map(student => {
+                    if (student.name === grade.studentName) {
+                      const updatedAssignments = student.assignments.map(assignment => {
+                        
+                        if (assignment.assignment_id === +assignmentId) {
+                          
+                          return {
+                            ...assignment,
+                            grade: grade.grade,
+                          };
+                        }
+                        return assignment;
+                      });
+            
+                      return {
+                        ...student,
+                        assignments: updatedAssignments,
+                      };
+                    }
+                    return student;
+                  });
+            
+                  return {
+                    ...course,
+                    students: updatedStudents,
+                  };
+                }
+                return course;
+              });
+            
+              return {
+                ...state,
+                courses: updatedCourses,
+              };
+            case 'ADD_FEEDBACK':
+              updatedCourses = state.courses.map(course => {
+                if (course.id === courseId) {
+                  const updatedStudents = course.students.map(student => {
+                    if (student.name === feedback.studentName) {
+                      const updatedAssignments = student.assignments.map(assignment => {
+                        
+                        if (assignment.assignment_id === +assignmentId) {
+                          
+                          return {
+                            ...assignment,
+                            feedback: feedback.feedback,
+                          };
+                        }
+                        return assignment;
+                      });
+            
+                      return {
+                        ...student,
+                        assignments: updatedAssignments,
+                      };
+                    }
+                    return student;
+                  });
+            
+                  return {
+                    ...course,
+                    students: updatedStudents,
+                  };
+                }
+                return course;
+              });
+            
+              return {
+                ...state,
+                courses: updatedCourses,
+              };
+            
       default:
         return state;
     }

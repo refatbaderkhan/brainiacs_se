@@ -4,10 +4,8 @@ import ExpandableTree from "./ExpandableTree";
 
 
 const SingleAssignment = ({ assignment }) => {
-  const [expanded, setExpanded] = useState(false);
   const [expandedAssignments, setExpandedAssignments] = useState(false);
-
-
+console.log(assignment)
   const toggleAssignment = (assignmentId) => {
     setExpandedAssignments(prevState => ({
       ...prevState,
