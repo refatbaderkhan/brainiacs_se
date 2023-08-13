@@ -31,6 +31,7 @@ Route::group(["middleware" => "auth:api"], function(){
           Route::get("trust_issues", [AuthController::class, "issues"]);
           Route::post("create_material", [TeacherController::class, "createMaterial"]);
           Route::post("create_assignment", [TeacherController::class, "createAssignment"]);
+          Route::post("create_quiz", [TeacherController::class, "createQuiz"]);
         });
     });
 

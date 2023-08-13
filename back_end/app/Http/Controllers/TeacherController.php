@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\CourseMaterial;
 use App\Models\Assignment;
+use App\Models\Quiz;
+
 
 
 class TeacherController extends Controller
@@ -58,6 +60,31 @@ class TeacherController extends Controller
           'status' => 'Success',
           'message' => 'Assignment created successfully',
           'data' => $Assignment,
+      ]);
+  }
+
+  public function createQuiz(Request $request)
+  {
+      $request->validate([
+          'course_id' => 'required|exists:courses,id',
+          'title' => 'required|string|max:255',
+          'description' => 'required|string',
+          'content_url' => 'required|string',
+      ]);
+
+      $Quiz = new Quiz([
+          'course_id' => $request->course_id,
+          'title' => $request->title,
+          'description' => $request->description,
+          'content_url' => $request->content_url,
+      ]);
+
+      $Quiz->save();
+
+      return response()->json([
+          'status' => 'Success',
+          'message' => 'Quiz created successfully',
+          'data' => $Quiz,
       ]);
   }
 }
