@@ -23,10 +23,9 @@ class UserMessaging implements ShouldBroadcast
         public string $username,
         public string $receiverId,
         public string $senderId,
-        
-        )
-    {
-        
+
+    ) {
+
     }
 
     /**
@@ -37,13 +36,13 @@ class UserMessaging implements ShouldBroadcast
     public function broadcastOn(): array
     {
         return [
-             'messaging-channel'
+            'messaging-channel'
         ];
     }
 
-    
+
     public function broadcastAs()
     {
-        return 'user-message' ;
+        return 'user-message';
     }
 }

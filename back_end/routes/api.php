@@ -1,20 +1,15 @@
 <?php
 
-use App\Http\Controllers\AdminAssessmentController;
-use App\Http\Controllers\AdminController;
-use App\Http\Controllers\AdminCourseController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ChatController;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Controllers\ParentController;
-
+use App\Http\Controllers\TeacherController;
 
 //Authenticated APIS
 Route::group(["middleware" => "auth:api"], function () {
     $user = Auth::user();
-    Route::get("/getAllUsers", [AuthController::class, "getAllUsers"]);
 
     Route::group(["middleware" => "auth.admin"], function () {
         Route::get("trust_issues", [AuthController::class, "issues"]);
@@ -30,19 +25,32 @@ Route::group(["middleware" => "auth:api"], function () {
         Route::get('/reports/teacher-performance/{id}', [AdminAssessmentController::class, 'getTeacherPerformance']);
     });
 
-    Route::group(["prefix" => "user"], function () {
-        Route::get("profile", [AuthController::class, "profile"]);
-        Route::post("logout", [AuthController::class, "logout"]);
-        Route::post("messages", [ChatController::class, "message"]);
-        Route::post("roomMessage", [ChatController::class, "roomMessage"]);
-        Route::post("refresh", [AuthController::class, "refresh"]);
+
+    Route::group(["middleware" => "auth.teacher"], function () {
+        Route::group(["prefix" => "teacher"], function () {
+            Route::get("trust_issues", [AuthController::class, "issues"]);
+            Route::post("create_material", [TeacherController::class, "createMaterial"]);
+            Route::post("create_assignment", [TeacherController::class, "createAssignment"]);
+            Route::post("create_quiz", [TeacherController::class, "createQuiz"]);
+            Route::post("create_grade", [TeacherController::class, "createGrade"]);
+            Route::get("get_courses/{id}", [TeacherController::class, "getCourses"]);
+            Route::get("get_assignmentsbyStudent/{courseid}/{student}", [TeacherController::class, "getAssignmentsbyStudnet"]);
+            Route::get("get_students/{id}", [TeacherController::class, "getStudents"]);
+            Route::get("get_assignments/{id}", [TeacherController::class, "getAssignments"]);
+            Route::get("get_student_performance/{id}", [TeacherController::class, "getStudentPerformance"]);
+        });
     });
 
 
-
-
+    Route::group(["prefix" => "user"], function () {
+        Route::get("profile", [AuthController::class, "profile"]);
+        Route::post("logout", [AuthController::class, "logout"]);
+        Route::post("refresh", [AuthController::class, "refresh"]);
+    });
 
 });
+
+
 
 //Unauthenticated APIS
 Route::group(["prefix" => "guest"], function () {
