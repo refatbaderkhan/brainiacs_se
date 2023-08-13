@@ -6,12 +6,40 @@ use Illuminate\Http\Request;
 use App\Models\StudentPerformance;
 use App\Models\StudentCourseGrade;
 use App\Models\Attendance;
+use App\Models\ParentTeacherConference;
 use App\Models\Message;
 use App\Models\Course;
 use App\Models\StudentEnrollment;
 use App\Models\Grade;
+use App\Notifications\ConferenceScheduled;
 class ParentController extends Controller
 {
+
+        public function createConference(Request $request)
+        {
+            $parent = $request->user();
+    
+            if ($parent->role !== "4") {
+                return response()->json(['error' => 'Parent not found'], 404);
+            }
+    
+            $studentId = $request->input('student_id');
+            $conferenceDate = $request->input('conference_datetime');
+            $conferenceType=$request->input('conference_type');
+    
+            $conference = new ParentTeacherConference();
+            $conference->student_id = $studentId;
+            $conference->conference_datetime = $conferenceDate;
+            $conference->parent_id = $parent->id;
+            $conference->conference_type=$conferenceType;
+            $conference->save();
+    
+            $student = User::find($studentId);
+            $teacher = $student->courses->first()->teacher;
+    
+            return response()->json(['message' => 'Conference created successfully']);
+        }
+    
     
     public function getStudentsList(Request $request)
     {
