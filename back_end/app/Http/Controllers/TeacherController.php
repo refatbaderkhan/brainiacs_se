@@ -8,7 +8,8 @@ use App\Models\Assignment;
 use App\Models\Quiz;
 use App\Models\Grade;
 use App\Models\User;
-
+use App\Models\StudentEnrollment;
+use App\Models\Course;
 
 
 class TeacherController extends Controller
@@ -131,6 +132,43 @@ class TeacherController extends Controller
           'status' => 'Success',
           'message' => 'Courses retrieved successfully',
           'data' => $courses,
+      ]);
+  }
+
+  public function getAssignments($courseId, $studentId)
+  {
+      $enrollment = StudentEnrollment::where([
+          'user_id' => $studentId,
+          'course_id' => $courseId,
+      ])->first();
+
+      if (!$enrollment) {
+          return response()->json(['error' => 'Student is not enrolled']);
+      }
+
+      $assignments = Assignment::where('course_id', $courseId)->get();
+
+      return response()->json([
+          'status' => 'Success',
+          'message' => 'Assignments retrieved successfully',
+          'data' => $assignments,
+      ]);
+  }
+
+  public function getStudents($id)
+  {
+      $course = Course::find($id);
+
+      if (!$course) {
+          return response()->json(['error' => 'Course not found']);
+      }
+
+      $students = $course->students;
+
+      return response()->json([
+          'status' => 'Success',
+          'message' => 'Students retrieved successfully',
+          'data' => $students,
       ]);
   }
 

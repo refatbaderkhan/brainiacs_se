@@ -19,4 +19,5 @@ class StudentEnrollment extends Model
     {
         return $this->belongsTo(Course::class);
     }
+    
 }
