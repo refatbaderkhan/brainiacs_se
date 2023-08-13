@@ -89,25 +89,42 @@ class ParentController extends Controller
     }
 
 
-    public function getStudentAttendance(Request $request)
+    public function getStudentAttendance(Request $request, $childId)
     {
         $parent = $request->user();
 
         if ($parent->role !== "4") {
             return response()->json(['error' => 'Parent not found'], 404);
         }
-        $studentIds = $parent->children->pluck('id');
-        foreach ($studentIds as $studentId) {
-            $student = User::where('id', $studentId)->pluck('name');
-            $studentAttendance = Attendance::find($studentId);
 
-            $studentAttendanceInfo[$studentId] = [
-                'name' => $student,
-                'attendance' => $studentAttendance,
+        $studentAttendanceInfo = [];
+
+        $student = User::find($childId);
+
+        if (!$student || $student->role !== "3") {
+            return response()->json(['error' => 'Child not found'], 404);
+        }
+
+        $enrollments = StudentEnrollment::where('user_id', $childId)->get();
+        $courseIds = $enrollments->pluck('course_id');
+
+        foreach ($courseIds as $courseId) {
+            $course = Course::find($courseId);
+            $courseName = $course->title;
+
+            $attendanceStatus = Attendance::where('user_id', $childId)
+                ->where('course_id', $courseId)
+                ->value('status');
+
+            $studentAttendanceInfo[] = [
+                'course' => $courseName,
+                'attendance' => $attendanceStatus,
             ];
         }
+
         return response()->json(['data' => $studentAttendanceInfo]);
     }
+
 
     public function getTeacherInformation(Request $request, $teacherId)
     {

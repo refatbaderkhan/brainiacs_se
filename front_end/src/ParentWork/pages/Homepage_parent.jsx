@@ -16,7 +16,7 @@ function Homepage_parent() {
 
     // Replace 'YOUR_ACCESS_TOKEN_HERE' with the actual access token
     const accessToken =
-      "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2d1ZXN0L2xvZ2luIiwiaWF0IjoxNjkxODc5NjcyLCJleHAiOjE2OTE4ODMyNzIsIm5iZiI6MTY5MTg3OTY3MiwianRpIjoiRFFYdzM1Q3dZdkpSeXJYcyIsInN1YiI6IjciLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.Cja0IAfKandr4V-duovvlMYYUEkEKwsXIJ0m9qra-3M";
+      "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2d1ZXN0L2xvZ2luIiwiaWF0IjoxNjkxODgzMzE4LCJleHAiOjE2OTE4ODY5MTgsIm5iZiI6MTY5MTg4MzMxOCwianRpIjoibTJHRk9hcHR4MEZWMncwdyIsInN1YiI6IjciLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.ThN0tUqtvtgI1Nk0nQO0hNxcR487mUZp7sRvG9ZzvMU";
 
     axios
       .get(apiEndpoint, {
