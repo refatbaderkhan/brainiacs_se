@@ -4,10 +4,12 @@ import AnnouncementsSection from './AnnouncementsSection';
 import CourseCard from './CourseCard';
 import Modal from 'react-modal';
 import "../../styles/teacherLandingPage.css";
-
+import ChatoModal from "./ChatoModal";
 const TeacherLandingPage = () => {
   const { state, dispatch } = useContext(TeacherContext);
+  console.log(state)
   const [isModalOpen, setIsModalOpen] = useState(false); 
+  const [isDMsModalOpen, setIsDMsModalOpen] = useState(false); 
   const [newCourseData, setNewCourseData] = useState({
     name: '',
     title: '',
@@ -17,9 +19,15 @@ const TeacherLandingPage = () => {
   const openModal = () => {
     setIsModalOpen(true);
   };
+  const openDMsModal = () => {
+    setIsDMsModalOpen(true);
+  };
 
   const closeModal = () => {
     setIsModalOpen(false);
+  };
+  const closeDMsModal = () => {
+    setIsDMsModalOpen(false);
   };
 
   const handleInputChange = (event) => {
@@ -37,7 +45,6 @@ const TeacherLandingPage = () => {
       enrollement_limit:  newCourseData.enrollementLimit, 
     };
     
-    // Dispatch the action to create a new course directly
     dispatch({
       type: 'CREATE_COURSE',
       payload: newCourse,
@@ -54,7 +61,9 @@ const TeacherLandingPage = () => {
       </div>
       <AnnouncementsSection state={state} />
       <div className="courses-header">
-        <h1>Courses</h1>
+        <button className="btn-primary DMs" onClick={openDMsModal}>
+          DMs
+        </button>
         <button className="btn-primary create-class" onClick={openModal}>
           + Create Course
         </button>
@@ -110,6 +119,7 @@ const TeacherLandingPage = () => {
       </label>
       <button onClick={createNewCourse}>Create Course</button>
     </Modal>
+    <ChatoModal isDMsModalOpen={isDMsModalOpen} closeDMsModal={closeDMsModal} />
         
      
     </div>

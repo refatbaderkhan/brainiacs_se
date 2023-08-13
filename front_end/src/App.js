@@ -3,6 +3,7 @@ import { TeacherProvider } from './context/TeacherContext'
 import TeacherLandingPage from './components/Teacher/TeacherLandingPage'
 import Homepage_parent from './ParentWork/pages/Homepage_parent'
 import Child_details from './ParentWork/pages/Child_details'
+import ChatRoom from './components/Teacher/ChatRoom'
 function App(){
   
   
@@ -15,6 +16,7 @@ function App(){
         <Routes>
           
             <Route path="/" element={<TeacherLandingPage/>}/>
+            <Route path="/ChatRoom/:userId" element={<ChatRoom/>}/>
           
           </Routes>
         </TeacherProvider>

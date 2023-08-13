@@ -21,6 +21,15 @@ class AuthController extends Controller
             'message' => 'Unauthorized',
         ], 200);
     }
+    public function getAllUsers(Request $request)
+    {
+        $users = User::all();
+
+        return response()->json([
+            'status' => 'Success',
+            'users' => $users,
+        ], 200);
+    }
 
     public function issues(Request $request)
     {
