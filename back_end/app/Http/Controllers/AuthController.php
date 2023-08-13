@@ -52,7 +52,8 @@ class AuthController extends Controller{
 
         $user = Auth::user();
         $user->token = $token;
-        $user->role = $user->user_type_id == 1 ? "admin" : "user";
+        
+        //$user->role = $user->user_type_id == 1 ? "admin" : "user";
         
         return response()->json([
                 'status' => 'Success',

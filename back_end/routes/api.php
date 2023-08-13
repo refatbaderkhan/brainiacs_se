@@ -13,9 +13,7 @@ use Illuminate\Support\Facades\Auth;
 Route::group(["middleware" => "auth:api"], function(){
     $user = Auth::user(); 
     
-    Route::group(["middleware" => "auth.admin"], function(){
-        Route::get("trust_issues", [AuthController::class, "issues"]);
-   
+    Route::group(["middleware" => "auth.admin"], function(){   
         Route::post('/users/manage', [AdminController::class, 'manageUser']);
         Route::delete('/users/{id}', [AdminController::class, 'destroyUser']);
 
@@ -25,6 +23,10 @@ Route::group(["middleware" => "auth:api"], function(){
 
         Route::get('/reports/student-progress/{id}', [AdminAssessmentController::class, 'getStudentPerformance']);
         Route::get('/reports/teacher-performance/{id}', [AdminAssessmentController::class, 'getTeacherPerformance']);
+    });
+
+        Route::group(["middleware" => "auth.teacher"], function(){
+          Route::get("trust_issues", [AuthController::class, "issues"]);
     });
 
     Route::group(["prefix" => "user"], function(){
