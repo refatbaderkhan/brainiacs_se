@@ -105,7 +105,7 @@ function ChildPage() {
         </ul>
       </div>
 
-      <Attendence childId={child.id} />
+      <Attendence childId={childDetails.student.id} />
 
       {/* Display the teacher list */}
       <TeacherList teachers={teachers} onSelectTeacher={setSelectedTeacher} />
