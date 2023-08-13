@@ -7,6 +7,7 @@ import TeacherList from "../components_parent/TeacherList";
 import MessageForm from "../components_parent/MessageForm";
 import MessageThreads from "../components_parent/MessageThreads";
 import Attendence from "../components_parent/Attendence";
+import NotificationsPopOut from "../components_parent/NotificationsPopOut ";
 
 function ChildPage() {
   const location = useLocation();
@@ -23,10 +24,14 @@ function ChildPage() {
     },
   });
   const [teachers, setTeachers] = useState([]);
+  const [showNotifications, setShowNotifications] = useState(false);
+  const toggleNotifications = () => {
+    setShowNotifications(!showNotifications);
+  };
 
   useEffect(() => {
     const accessToken =
-      "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2d1ZXN0L2xvZ2luIiwiaWF0IjoxNjkxODgzMzE4LCJleHAiOjE2OTE4ODY5MTgsIm5iZiI6MTY5MTg4MzMxOCwianRpIjoibTJHRk9hcHR4MEZWMncwdyIsInN1YiI6IjciLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.ThN0tUqtvtgI1Nk0nQO0hNxcR487mUZp7sRvG9ZzvMU";
+      "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2d1ZXN0L2xvZ2luIiwiaWF0IjoxNjkxODg3NjczLCJleHAiOjE2OTE4OTEyNzMsIm5iZiI6MTY5MTg4NzY3MywianRpIjoicFNsR1JGRU5ZRjF3cVlvZSIsInN1YiI6IjciLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.8KVEUpnSkp6hyIkAqQbThIZfuE_MDVUwuwO2sHNWQkU";
     const updatedTeachers = [];
 
     axios
@@ -71,6 +76,9 @@ function ChildPage() {
   }, []);
   return (
     <div className="child-details-container">
+      {/* Button to open notifications */}
+      <button onClick={toggleNotifications}>Show Notifications</button>
+
       <h2 className="child-name">
         {childDetails.student.name || "Child Name"}
       </h2>
@@ -125,6 +133,10 @@ function ChildPage() {
           parentSenderId={parentId}
           teacherId={selectedTeacher.id}
         />
+      )}
+      {/* Show notifications pop-out if state is true */}
+      {showNotifications && (
+        <NotificationsPopOut onClose={toggleNotifications} />
       )}
     </div>
   );

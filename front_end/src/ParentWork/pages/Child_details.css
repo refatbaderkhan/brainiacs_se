@@ -65,7 +65,7 @@
 }
 
 .teacher-list li:hover {
-  color: #6495ed; /* Change color on hover */
+  color: #6495ed;
 }
 
 .message-form {
@@ -95,7 +95,7 @@
 }
 
 .message-form button:hover {
-  background-color: #4169e1; /* Darker shade on hover */
+  background-color: #4169e1;
 }
 
 .message-threads {
@@ -116,4 +116,47 @@
 
 .message-threads .message.receiver {
   background-color: #87ceeb;
+}
+
+/* NotificationsPopOut.css */
+.notifications-pop-out {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 300px;
+  background-color: #fff;
+  box-shadow: -3px 0px 10px rgba(0, 0, 0, 0.2);
+  overflow-y: auto;
+  padding: 20px;
+}
+
+.close-button {
+  float: right;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 18px;
+  color: #888;
+}
+
+.close-button:hover {
+  color: #333;
+}
+
+.notifications-list {
+  list-style: none;
+  padding: 0;
+}
+
+.notification-item {
+  margin-bottom: 10px;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 10px;
+  font-size: 14px;
+}
+
+.notification-type {
+  font-weight: bold;
+  color: #333;
 }
