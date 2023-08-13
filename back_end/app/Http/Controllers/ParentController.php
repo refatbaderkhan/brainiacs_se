@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Controllers;
 
+use App\Events\Message_parent;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Models\StudentPerformance;
@@ -9,6 +10,7 @@ use App\Models\Attendance;
 use App\Models\Course;
 use App\Models\StudentEnrollment;
 use App\Models\Grade;
+use Illuminate\Support\Facades\Auth;
 
 class ParentController extends Controller
 {
@@ -151,6 +153,18 @@ class ParentController extends Controller
             'success' => true,
             'data' => $teacher,
         ]);
+    }
+
+
+
+
+
+    public function message_teacher(Request $request, $teacherId)
+    {
+        $parent = Auth::user();
+
+        event(new Message_parent($teacherId, $request->input('message')));
+        return response()->json(['message' => 'Message sent successfully']);
     }
 
 }
