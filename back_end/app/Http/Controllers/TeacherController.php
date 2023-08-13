@@ -7,6 +7,7 @@ use App\Models\CourseMaterial;
 use App\Models\Assignment;
 use App\Models\Quiz;
 use App\Models\Grade;
+use App\Models\User;
 
 
 
@@ -115,4 +116,22 @@ class TeacherController extends Controller
           'data' => $Grade,
       ]);
   }
+
+  public function getCourses($Id)
+  {
+      $user = User::find($Id);
+
+      if (!$user || $user->role != 2) {
+        return response()->json(['error' => 'Teacher not found']);
+      }
+
+      $courses = $user->courses;
+
+      return response()->json([
+          'status' => 'Success',
+          'message' => 'Courses retrieved successfully',
+          'data' => $courses,
+      ]);
+  }
+
 }
