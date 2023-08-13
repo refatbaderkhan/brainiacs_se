@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\CourseMaterial;
 use App\Models\Assignment;
 use App\Models\Quiz;
+use App\Models\Grade;
 
 
 
@@ -85,6 +86,33 @@ class TeacherController extends Controller
           'status' => 'Success',
           'message' => 'Quiz created successfully',
           'data' => $Quiz,
+      ]);
+  }
+
+  public function createGrade(Request $request)
+  {
+      $request->validate([
+          'course_id' => 'required|exists:courses,id',
+          'user_id' => 'required|exists:users,id',
+          'assignment_id' => 'required|exists:assignments,id',
+          'grade' => 'required|numeric|min:0|max:100',
+          'feedback' => 'nullable|string',
+      ]);
+
+      $Grade = new Grade([
+          'user_id' => $request->user_id,
+          'course_id' => $request->course_id,
+          'assignment_id' => $request->assignment_id,
+          'grade' => $request->grade,
+          'feedback' => $request->feedback,
+      ]);
+
+      $Grade->save();
+
+      return response()->json([
+          'status' => 'Success',
+          'message' => 'Grade created successfully',
+          'data' => $Grade,
       ]);
   }
 }
