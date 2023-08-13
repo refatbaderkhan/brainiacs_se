@@ -10,6 +10,7 @@ use App\Models\Grade;
 use App\Models\User;
 use App\Models\StudentEnrollment;
 use App\Models\Course;
+use App\Models\StudentPerformance;
 
 
 class TeacherController extends Controller
@@ -186,6 +187,27 @@ class TeacherController extends Controller
           'status' => 'Success',
           'message' => 'Assignments retrieved successfully',
           'data' => $assignments,
+      ]);
+  }
+
+  public function getStudentPerformance($id)
+  {
+      $student = User::find($id);
+
+      if (!$student) {
+          return response()->json(['error' => 'Student not found']);
+      }
+
+      $performance = StudentPerformance::where('user_id', $id)->first();
+
+      if (!$performance) {
+          return response()->json(['error' => 'Performance data not found for the student']);
+      }
+
+      return response()->json([
+          'status' => 'Success',
+          'message' => 'Student performance retrieved successfully',
+          'data' => $performance,
       ]);
   }
 

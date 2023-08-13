@@ -38,6 +38,7 @@ Route::group(["middleware" => "auth:api"], function(){
           Route::get("get_assignmentsbyStudent/{courseid}/{student}", [TeacherController::class, "getAssignmentsbyStudnet"]);
           Route::get("get_students/{id}", [TeacherController::class, "getStudents"]);
           Route::get("get_assignments/{id}", [TeacherController::class, "getAssignments"]);
+          Route::get("get_student_performance/{id}", [TeacherController::class, "getStudentPerformance"]);
         });
     });
 
