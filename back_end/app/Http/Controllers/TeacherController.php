@@ -135,7 +135,7 @@ class TeacherController extends Controller
       ]);
   }
 
-  public function getAssignments($courseId, $studentId)
+  public function getAssignmentsbyStudent($courseId, $studentId)
   {
       $enrollment = StudentEnrollment::where([
           'user_id' => $studentId,
@@ -169,6 +169,23 @@ class TeacherController extends Controller
           'status' => 'Success',
           'message' => 'Students retrieved successfully',
           'data' => $students,
+      ]);
+  }
+
+  public function getAssignments($id)
+  {
+      $course = Course::find($id);
+
+      if (!$course) {
+          return response()->json(['error' => 'Course not found']);
+      }
+
+      $assignments = $course->assignments;
+
+      return response()->json([
+          'status' => 'Success',
+          'message' => 'Assignments retrieved successfully',
+          'data' => $assignments,
       ]);
   }
 

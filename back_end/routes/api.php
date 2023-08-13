@@ -35,8 +35,9 @@ Route::group(["middleware" => "auth:api"], function(){
           Route::post("create_quiz", [TeacherController::class, "createQuiz"]);
           Route::post("create_grade", [TeacherController::class, "createGrade"]);
           Route::get("get_courses/{id}", [TeacherController::class, "getCourses"]);
-          Route::get("get_assignments/{courseid}/{student}", [TeacherController::class, "getAssignments"]);
+          Route::get("get_assignmentsbyStudent/{courseid}/{student}", [TeacherController::class, "getAssignmentsbyStudnet"]);
           Route::get("get_students/{id}", [TeacherController::class, "getStudents"]);
+          Route::get("get_assignments/{id}", [TeacherController::class, "getAssignments"]);
         });
     });
 

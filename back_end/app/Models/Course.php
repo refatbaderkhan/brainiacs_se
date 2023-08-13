@@ -32,7 +32,7 @@ class Course extends Model
 
     public function students()
     {
-        return $this->hasMany(StudentEnrollment::class, 'course_id');
+        return $this->hasMany(StudentEnrollment::class);
     }
     
 }
