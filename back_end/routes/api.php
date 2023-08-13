@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ChatController;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\TeacherController;
 
 //Authenticated APIS
 Route::group(["middleware" => "auth:api"], function(){
@@ -25,8 +26,11 @@ Route::group(["middleware" => "auth:api"], function(){
         Route::get('/reports/teacher-performance/{id}', [AdminAssessmentController::class, 'getTeacherPerformance']);
     });
 
-        Route::group(["middleware" => "auth.teacher"], function(){
+    Route::group(["middleware" => "auth.teacher"], function(){
+        Route::group(["prefix" => "teacher"], function(){
           Route::get("trust_issues", [AuthController::class, "issues"]);
+          Route::post("create_material", [TeacherController::class, "createMaterial"]);
+        });
     });
 
     Route::group(["prefix" => "user"], function(){
