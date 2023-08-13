@@ -159,11 +159,17 @@ class ParentController extends Controller
 
 
 
-    public function message_teacher(Request $request, $teacherId)
+    public function message_parent(Request $request, $teacherId)
     {
-        $parent = Auth::user();
+        // Get the authenticated parent user
+        $parent = $request->user();
 
-        event(new Message_parent($teacherId, $request->input('message')));
+        // Get the message content from the request
+        $message = $request->input('message');
+
+        // Create and broadcast the message event
+        event(new Message_parent($parent->name, $teacherId, $message));
+
         return response()->json(['message' => 'Message sent successfully']);
     }
 

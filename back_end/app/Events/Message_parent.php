@@ -17,9 +17,9 @@ class Message_parent implements ShouldBroadcast
 
     public function __construct(
         public string $username,
+        public int $teacherId,
         public string $message
     ) {
-
     }
 
     /**
