@@ -4,6 +4,7 @@ import TeacherLandingPage from './components/Teacher/TeacherLandingPage'
 import Homepage_parent from './ParentWork/pages/Homepage_parent'
 import Child_details from './ParentWork/pages/Child_details'
 import ChatRoom from './components/Teacher/ChatRoom'
+import Login from './components/Auth/Login'
 function App(){
   
   
@@ -15,7 +16,8 @@ function App(){
       <TeacherProvider>
         <Routes>
           
-            <Route path="/" element={<TeacherLandingPage/>}/>
+            <Route path="/" element={<Login/>}/>
+            <Route path="/teacher" element={<TeacherLandingPage/>}/>
             <Route path="/ChatRoom/:userId" element={<ChatRoom/>}/>
           
           </Routes>
