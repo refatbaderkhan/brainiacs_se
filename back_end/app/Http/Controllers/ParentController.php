@@ -11,6 +11,8 @@ use App\Models\Message;
 use App\Models\Course;
 use App\Models\StudentEnrollment;
 use App\Models\Grade;
+use App\Models\Quiz;
+use App\Models\Assignment;
 use App\Notifications\ConferenceScheduled;
 class ParentController extends Controller
 {
@@ -89,6 +91,32 @@ class ParentController extends Controller
         return response()->json(['data' => $coursesProgress, 'performance' => $studentPerformance]);
     }
     
+    public function getStudentQuizzesAssignments(Request $request, $studentId)
+    {
+        $parent=$request->user();
+        if ($parent->role!=="4") {
+            return response()->json(['error'=>'parent not found']);
+        }
+        $student= User::find($studentId);
+        if(!$student){
+            return response()->json(['error'=>'student not found']);
+        }
+        $studentCourses = $student->enrollments;
+        $quizzesAssignments = [];
+        foreach ($studentCourses as $course) {
+            $courseQuizzes = Quiz::where('course_id', $course->course_id)->get();
+            $courseAssignments = Assignment::where('course_id', $course->id)->get();
+            $quizzesAssignments[] = [
+                'course' => $course,
+                'quizzes' => $courseQuizzes,
+                'assignments' => $courseAssignments,
+            ];
+         return response()->json([
+        'student' => $student,
+        'quizzes_assignments' => $quizzesAssignments,
+    ]);
+    }
+}
 
         public function getStudentAttendance(Request $request)
         {

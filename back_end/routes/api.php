@@ -34,11 +34,12 @@ Route::group(["prefix" => "guest"], function(){
 
 Route::group(["middleware"=>"auth:api"],function(){
     Route::group(["prefix"=> "parent"],function(){
-        // Route::get('/student-performance', [ParentController::class, 'getStudentPerformance']);
+        Route::get('/notify_parent/{studentId}', [ParentController::class, 'getStudentQuizzesAssignments']);
         Route::get('/students-list', [ParentController::class, 'getStudentsList']);
         Route::get('/student-performance/{studentId}', [ParentController::class, 'getStudentPerformance']);
         Route::get('/student-attendance', [ParentController::class, 'getStudentAttendance']);
+        Route::get('/student-quizzes-assignments/{studentId}', [ParentController::class, 'getStudentQuizzesAssignments']);
         Route::post('/teacher-message', [ParentController::class, 'sendTeacherMessage']);
         Route::post('/create-conference', [ParentController::class, 'createConference']);
-});
+    });
 });
