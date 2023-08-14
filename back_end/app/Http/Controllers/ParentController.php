@@ -12,6 +12,7 @@ use App\Models\StudentEnrollment;
 use App\Models\Grade;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Message;
+use App\Models\ScheduledMeeting;
 
 class ParentController extends Controller
 {
@@ -208,6 +209,38 @@ class ParentController extends Controller
 
         return response()->json(['data' => $formattedMessages]);
     }
+
+
+    public function scheduleMeeting(Request $request, $teacherId)
+    {
+
+        $request->validate([
+            'date' => 'required|date',
+            'time' => 'required|date_format:H:i',
+        ]);
+
+        $existingMeeting = ScheduledMeeting::where('teacher_id', $teacherId)
+            ->where('selected_date', $request->date)
+            ->where('selected_time', $request->time)
+            ->first();
+
+        if ($existingMeeting) {
+            return response()->json(['message' => 'Meeting slot is already booked'], 400);
+        }
+
+        $meeting = new ScheduledMeeting();
+        $meeting->parent_id = Auth::id();
+        $meeting->teacher_id = $teacherId;
+        $meeting->selected_date = $request->date;
+        $meeting->selected_time = $request->time;
+        $meeting->save();
+
+        return response()->json([
+            'message' => 'Meeting scheduled successfully',
+            'meeting' => $meeting
+        ], 201);
+    }
+
 
 
 }
