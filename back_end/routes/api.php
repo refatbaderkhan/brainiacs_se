@@ -6,6 +6,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ChatController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\TeacherController;
+use App\Http\Controllers\ParentController;
 
 //Authenticated APIS
 Route::group(["middleware" => "auth:api"], function () {
@@ -68,5 +69,6 @@ Route::group(["middleware" => "auth:api"], function () {
         Route::get('student-attendance/{childId}', [ParentController::class, 'getStudentAttendance']);
         Route::get('teachers/{teacherId}', [ParentController::class, 'getTeacherInformation']);
         Route::post('message/{teacherId}', [ParentController::class, 'message_parent']);
+        Route::get('messages/{teacherId}', [ParentController::class, 'get_messages']);
     });
 });

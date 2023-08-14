@@ -11,6 +11,7 @@ use App\Models\Course;
 use App\Models\StudentEnrollment;
 use App\Models\Grade;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Message;
 
 class ParentController extends Controller
 {
@@ -161,16 +162,52 @@ class ParentController extends Controller
 
     public function message_parent(Request $request, $teacherId)
     {
-        // Get the authenticated parent user
+
         $parent = $request->user();
 
-        // Get the message content from the request
-        $message = $request->input('message');
+
+        $messageContent = $request->input('message');
 
         // Create and broadcast the message event
-        event(new Message_parent($parent->name, $teacherId, $message));
+        event(new Message_parent($parent->name, $teacherId, $messageContent));
 
-        return response()->json(['message' => 'Message sent successfully']);
+
+        $message = new Message();
+        $message->sender_id = $parent->id;
+        $message->receiver_id = $teacherId;
+        $message->message_content = $messageContent;
+        $message->save();
+
+        return response()->json(['message' => 'Message sent and saved successfully']);
     }
+
+
+
+    public function get_messages(Request $request, $teacherId)
+    {
+        $parent = $request->user();
+
+        $sentMessages = $parent->messagesSent()->where('receiver_id', $teacherId)->get();
+        $receivedMessages = $parent->messagesReceived()->where('sender_id', $teacherId)->get();
+
+        $messages = $sentMessages->concat($receivedMessages)->sortBy('created_at');
+
+        $formattedMessages = $messages->map(function ($message) use ($parent) {
+            $senderName = $message->sender_id === $parent->id ? $parent->name : User::find($message->sender_id)->name;
+            $receiverName = $message->receiver_id === $parent->id ? $parent->name : User::find($message->receiver_id)->name;
+
+            return [
+                'id' => $message->id,
+                'sender_name' => $senderName,
+                'receiver_name' => $receiverName,
+                'message_content' => $message->message_content,
+                'created_at' => $message->created_at,
+                'updated_at' => $message->updated_at,
+            ];
+        });
+
+        return response()->json(['data' => $formattedMessages]);
+    }
+
 
 }
