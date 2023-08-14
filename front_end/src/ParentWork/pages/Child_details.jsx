@@ -8,6 +8,7 @@ import MessageForm from "../components_parent/MessageForm";
 import MessageThreads from "../components_parent/MessageThreads";
 import Attendence from "../components_parent/Attendence";
 import NotificationsPopOut from "../components_parent/NotificationsPopOut ";
+import ScheduleMeetingForm from "../components_parent/ScheduleMeetingForm";
 
 function ChildPage() {
   const location = useLocation();
@@ -124,6 +125,14 @@ function ChildPage() {
           parentSenderId={parentId}
           teacherId={selectedTeacher.id}
           onCancel={() => setSelectedTeacher(null)}
+        />
+      )}
+
+      {/* Display the scheduling form */}
+      {selectedTeacher && (
+        <ScheduleMeetingForm
+          parentSenderId={parentId}
+          teacherId={selectedTeacher.id}
         />
       )}
 
