@@ -7,6 +7,7 @@ use App\Http\Controllers\ChatController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\ParentController;
+use App\Http\Controllers\StudentController;
 
 //Authenticated APIS
 Route::group(["middleware" => "auth:api"], function () {
@@ -70,13 +71,13 @@ Route::group(["middleware" => "auth:api"], function () {
 
 
         // get all quizzes for a specific course
-        Route::get("courses/{courseId}/quizzes", [QuizController::class, "getQuizzesForCourse"]);
+        Route::get("courses/{courseId}/quizzes", [StudentController::class, "getQuizzesForCourse"]);
 
         // get details of a specific quiz, including its questions
-        Route::get("quizzes/{quizId}", [QuizController::class, "getQuizDetails"]);
+        Route::get("quizzes/{quizId}", [StudentController::class, "getQuizDetails"]);
 
         // submit answers for a quiz and get the quiz results
-        Route::post("quizzes/{quizId}/submit", [QuizController::class, "submitQuizAnswers"]);
+        Route::post("quizzes/{quizId}/submit", [StudentController::class, "submitQuizAnswers"]);
     });
 
 });
