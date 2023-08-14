@@ -5,7 +5,8 @@ function MessageThreads({ parentSenderId, teacherId }) {
   const [messages, setMessages] = useState([]);
 
   useEffect(() => {
-    const accessToken = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2d1ZXN0L2xvZ2luIiwiaWF0IjoxNjkxOTcyMzY1LCJleHAiOjE2OTE5NzU5NjUsIm5iZiI6MTY5MTk3MjM2NSwianRpIjoiVkp0UEQxcEt0VUsySFJubiIsInN1YiI6IjciLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.AAYDt52QO8gDijEq08NOvvms6JPxAxN1W3xsCrCBvyI"; 
+      // Retrieve the token from local storage
+    const accessToken = localStorage.getItem("token"); 
     const fetchMessages = async () => {
       try {
         const response = await axios.get(
