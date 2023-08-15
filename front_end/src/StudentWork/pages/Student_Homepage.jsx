@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./Student_Homepage.css";
+import CourseDetailsPage from "./CourseDetailsPage";
 
 function StudentHomePage() {
   const [courses, setCourses] = useState([]);
@@ -103,9 +104,7 @@ function StudentHomePage() {
 
       {selectedCourse && (
         <div className="selected-course">
-          <h3>{selectedCourse.title}</h3>
-          <p>{selectedCourse.description}</p>
-          {/* Implement interactive learning components here */}
+          <CourseDetailsPage selectedCourse={selectedCourse.course} />
         </div>
       )}
     </div>

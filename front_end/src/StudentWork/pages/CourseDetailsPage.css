@@ -1,0 +1,33 @@
+/* CourseDetailsPage.css */
+
+.course-details-page {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #e8762a; /* Change to your desired background color */
+}
+
+.course-details-page h2 {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.course-details-page p {
+  font-size: 16px;
+  margin-bottom: 20px;
+}
+
+.course-details-page h3 {
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+.course-details-page ul {
+  list-style: disc;
+  margin-left: 20px;
+  font-size: 16px;
+}
+
+.course-details-page li {
+  margin-bottom: 5px;
+}
