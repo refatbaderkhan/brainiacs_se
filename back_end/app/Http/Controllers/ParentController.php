@@ -13,6 +13,10 @@ use App\Models\Grade;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Message;
 use App\Models\ScheduledMeeting;
+use App\Models\Assignment;
+use App\Models\Quiz;
+use App\Mail\MeetingScheduled;
+use Illuminate\Support\Facades\Mail;
 
 class ParentController extends Controller
 {
@@ -235,10 +239,38 @@ class ParentController extends Controller
         $meeting->selected_time = $request->time;
         $meeting->save();
 
+        $parentEmail = Auth::user()->email;
+        $teacher = User::findOrFail($teacherId);
+        $teacherEmail = $teacher->email;
+
+        $user = Auth::user(); // Fetch the authenticated user
+        Mail::to($parentEmail)->send(new MeetingScheduled($meeting, 'parent', $teacher, $user));
+        Mail::to($teacherEmail)->send(new MeetingScheduled($meeting, 'teacher', $teacher, $user));
+
+
         return response()->json([
             'message' => 'Meeting scheduled successfully',
             'meeting' => $meeting
         ], 201);
+    }
+
+
+
+    public function getUpcomingItems()
+    {
+        // Get assignments, quizzes, and events due within the next 24 hours
+        $now = now();
+        $upcomingItems = [];
+
+        $assignments = Assignment::where('due_date', '<=', $now->addDay())
+            ->get();
+
+        $quizzes = Quiz::where('due_date', '<=', $now->addDay())
+            ->get();
+
+        $upcomingItems = array_merge($assignments, $quizzes);
+
+        return response()->json(['upcoming_items' => $upcomingItems], 200);
     }
 
 
