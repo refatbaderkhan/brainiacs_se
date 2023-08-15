@@ -145,7 +145,7 @@ function ChildPage() {
       )}
       {/* Show notifications pop-out if state is true */}
       {showNotifications && (
-        <NotificationsPopOut onClose={toggleNotifications} />
+        <NotificationsPopOut onClose={toggleNotifications} childId={child.id} />
       )}
     </div>
   );

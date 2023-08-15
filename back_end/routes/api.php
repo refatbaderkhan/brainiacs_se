@@ -102,6 +102,7 @@ Route::group(["middleware" => "auth:api"], function () {
         Route::post('message/{teacherId}', [ParentController::class, 'message_parent']);
         Route::get('messages/{teacherId}', [ParentController::class, 'get_messages']);
         Route::post('schedule-meeting/{teacherId}', [ParentController::class, 'scheduleMeeting']);
+        Route::get('upcoming-items/{childId}', [ParentController::class, 'getUpcomingItems']);
 
     });
 });

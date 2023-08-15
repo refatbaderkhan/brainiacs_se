@@ -258,22 +258,20 @@ class ParentController extends Controller
 
 
 
-    public function getUpcomingItems()
+    public function getUpcomingItems($childId)
     {
-        // Get assignments, quizzes, and events due within the next 24 hours
-        $now = now();
-        $upcomingItems = [];
+        $notGradedAssignmentIds = Grade::where('user_id', $childId)
+            ->pluck('assignment_id')
+            ->toArray();
 
-        $assignments = Assignment::where('due_date', '<=', $now->addDay())
+        $upcomingItems = Assignment::whereNotIn('id', $notGradedAssignmentIds)
+            ->where('due_date', '>=', now())
             ->get();
-
-        $quizzes = Quiz::where('due_date', '<=', $now->addDay())
-            ->get();
-
-        $upcomingItems = array_merge($assignments, $quizzes);
 
         return response()->json(['upcoming_items' => $upcomingItems], 200);
     }
+
+
 
 
 

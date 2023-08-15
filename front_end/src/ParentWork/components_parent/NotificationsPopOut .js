@@ -1,28 +1,44 @@
-// NotificationsPopOut.js
-import React from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios"; 
 
-function NotificationsPopOut({ onClose }) {
-  // Dummy data for notifications
-  const notifications = [
-    { type: "Assignment", title: "Math Homework", dueDate: "2023-08-10" },
-    { type: "Test", title: "Science Test", dueDate: "2023-08-15" },
-    { type: "Event", title: "Parent-Teacher Meeting", date: "2023-08-20" },
-  ];
+function NotificationsPopOut({ onClose, childId }) {
+  const [upcomingItems, setUpcomingItems] = useState([]);
+
+  useEffect(() => {
+    
+    const accessToken = localStorage.getItem("token");
+
+    axios
+      .get(`http://127.0.0.1:8000/api/parent/upcoming-items/${childId}`, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      })
+      .then((response) => {
+        setUpcomingItems(response.data.upcoming_items);
+      })
+      .catch((error) => {
+        console.error("Error fetching upcoming items:", error);
+      });
+  }, [childId]); 
 
   return (
     <div className="notifications-pop-out">
-     
       <h3>Upcoming Assignments, Tests, and Events</h3>
       <ul>
-        {notifications.map((notification, index) => (
-          <li key={index}>
-            {notification.type}: {notification.title} -{" "}
-            {notification.dueDate || notification.date}
+        {upcomingItems.map((notification) => (
+          <li key={notification.id}>
+            <strong>Title:</strong> {notification.title}<br />
+            <strong>Description:</strong> {notification.description}<br />
+            <strong>Due Date:</strong> {notification.due_date}<br />
+            <br />
           </li>
         ))}
       </ul>
 
-       <button className="close-button" onClick={onClose}>Close</button>
+      <button className="close-button" onClick={onClose}>
+        Close
+      </button>
     </div>
   );
 }
