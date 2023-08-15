@@ -29,6 +29,13 @@ class Course extends Model
     {
         return $this->hasMany(Quiz::class);
     }
-
+    public function enrollments()
+{
+    return $this->hasMany(StudentEnrollment::class, 'course_id', 'id');
+}
+public function announcements()
+{
+    return $this->hasMany(Announcement::class);
+}
     
 }

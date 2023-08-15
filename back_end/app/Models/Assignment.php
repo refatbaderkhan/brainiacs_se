@@ -9,7 +9,7 @@ class Assignment extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['course_id', 'title', 'description', 'due_date'];
+    protected $fillable = ['course_id', 'title', 'description', 'due_date','content_url'];
 
     public function course()
     {
