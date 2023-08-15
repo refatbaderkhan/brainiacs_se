@@ -5,6 +5,7 @@ import Homepage_parent from './ParentWork/pages/Homepage_parent'
 import Child_details from './ParentWork/pages/Child_details'
 import ChatRoom from './components/Teacher/ChatRoom'
 import Login from './components/Auth/Login'
+
 function App(){
   
   
@@ -25,6 +26,7 @@ function App(){
 
         {/* Routes for Parent  */}
        <Routes>
+
                <Route path="/parent" element={<Homepage_parent />}/>
                <Route path="/child/:id" element={<Child_details />}/>
                
