@@ -15,6 +15,7 @@ use App\Models\Message;
 use App\Models\ScheduledMeeting;
 use App\Models\Assignment;
 use App\Models\Quiz;
+use App\Models\Announcement;
 use App\Mail\MeetingScheduled;
 use Illuminate\Support\Facades\Mail;
 
@@ -261,15 +262,36 @@ class ParentController extends Controller
 
     public function getUpcomingItems($childId)
     {
+        // Get the course IDs that the child is enrolled in
+        $enrolledCourseIds = StudentEnrollment::where('user_id', $childId)
+            ->pluck('course_id')
+            ->toArray();
+
+        // Get upcoming assignments for enrolled courses
         $notGradedAssignmentIds = Grade::where('user_id', $childId)
             ->pluck('assignment_id')
             ->toArray();
 
-        $upcomingItems = Assignment::whereNotIn('id', $notGradedAssignmentIds)
+        $upcomingAssignments = Assignment::whereIn('course_id', $enrolledCourseIds)
+            ->whereNotIn('id', $notGradedAssignmentIds)
             ->where('due_date', '>=', now())
             ->get();
 
-        return response()->json(['upcoming_items' => $upcomingItems], 200);
+        // Get upcoming quizzes for enrolled courses
+        $upcomingQuizzes = Quiz::whereIn('course_id', $enrolledCourseIds)->get();
+
+        // Get announcements for enrolled courses
+        $upcomingAnnouncements = [];
+        foreach ($enrolledCourseIds as $courseId) {
+            $announcements = Announcement::getAnnouncementsForCourse($courseId);
+            $upcomingAnnouncements = array_merge($upcomingAnnouncements, $announcements->toArray());
+        }
+
+        return response()->json([
+            'upcoming_assignments' => $upcomingAssignments,
+            'upcoming_quizzes' => $upcomingQuizzes,
+            'upcoming_announcements' => $upcomingAnnouncements
+        ], 200);
     }
 
 
