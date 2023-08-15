@@ -18,21 +18,24 @@ const ChatoModal = ({ isDMsModalOpen, closeDMsModal }) => {
       const response = await fetch("http://127.0.0.1:8000/api/getAllUsers", {
         method: "GET",
         headers: {
-          "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2d1ZXN0L2xvZ2luIiwiaWF0IjoxNjkxOTIyMTgyLCJleHAiOjE2OTE5MjU3ODIsIm5iZiI6MTY5MTkyMjE4MiwianRpIjoiNXgzcW14TWZYTjlIdlBDSyIsInN1YiI6IjEiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.FKWZcGHwgHBqiRWZ-Dg1p-ekoTUgvoFDlDMflMRe_ss"
+          "Authorization":`Bearer ${localStorage.getItem('token')}`,
+
         }
       });
 
       const data = await response.json();
-      console.log(data.users);
+      console.log(data);
       setUsers(data.users);
     };
 
     fetchUsers();
   }, []);
-  const handleChatStart = (userId)=>{
+  const handleChatStart = (userId , user_name)=>{
     console.log(userId)
     navigate(`/ChatRoom/${userId}`, { userId:  userId  })
-     localStorage.setItem("roomId" , JSON.stringify([+userId,+id]))
+     localStorage.setItem("roomId" , JSON.stringify([+userId,+localStorage.getItem('teacher_id')]))
+     localStorage.setItem("receiver_name" ,user_name)
+     localStorage.setItem("receiver_id" ,userId)
   }
 
   return (
@@ -47,9 +50,18 @@ const ChatoModal = ({ isDMsModalOpen, closeDMsModal }) => {
         {console.log(users)}
         {users !== null && users?.map(user => {
           return <div receiverId={user.id} style={{color:"black"}}>
-            {user.email}
+            <div className='chatUser'>
+              <div>
+              {user.name}
             {console.log(user)}
-            <button onClick={()=>handleChatStart(user.id)} style={{width:"100px" ,height:"20px"  }}>chat</button>
+              </div>
+              <div>
+                <button onClick={()=>handleChatStart(user.id , user.name)} style={{width:"100px" ,height:"20px"  }}>chat</button>
+              </div>
+           
+            </div>
+            
+           
             </div>;
         })}
       </Modal>

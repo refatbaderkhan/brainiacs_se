@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import ExpandableTree from './ExpandableTree';
 import '../../styles/studentReports.css'
 const StudentReports = ({ student ,reportCard}) => {
+  console.log(reportCard)
+  console.log(11111111111111111111555555555555)
   const [expanded, setExpanded] = useState(false);
   return (
     <div className="student-reports">

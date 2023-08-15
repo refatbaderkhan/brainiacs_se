@@ -16,7 +16,7 @@ const ChatRoom = ({ channel }) => {
 
     const channel = pusher.subscribe('room-messaging-channel');
     channel.bind('room-user-message', function (data) {
-      console.log(data)
+     
       setMessages((prevMessages) => [...prevMessages, data]);
     });
 
@@ -51,7 +51,7 @@ const ChatRoom = ({ channel }) => {
           }),
         });
         const data = await response.json()
-        console.log(data)
+       
       } catch (error) {
         console.error('Error sending message:', error);
       }

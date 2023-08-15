@@ -30,7 +30,6 @@ const StudentAssignments = ({ student , course }) => {
 
   const openGradingModal = (e) => {
     setIsGradingModalOpen(true);
-    console.log(e.target.parentElement.parentElement.parentElement.getAttribute("assignmentid"))
     setCurrentAssignment(e.target.parentElement.parentElement.parentElement.getAttribute("assignmentid"))
   };
   const openFeedbackModal = (e) => {
@@ -60,9 +59,26 @@ const StudentAssignments = ({ student , course }) => {
       studentName
     }));
   };
-  const gradeAssignment = (e) => {
-    console.log(e.target)
-    console.log(currentAssignment)
+  const gradeAssignment = async(e) => {
+
+    const body = JSON.stringify({
+      course_id: course.id,
+      user_id:student.id ,
+      assignment_id:currentAssignment,
+      grade:gradingModalStates.grade, 
+  })
+
+   const response = await fetch("http://127.0.0.1:8000/api/teacher/create_grade" , {
+     method:"POST",
+     headers:{
+       "Authorization":`Bearer ${localStorage.getItem('token')}`,
+       'Accept':"application/json",
+       'Content-Type':"application/json"
+     },
+     body
+   })
+   const data = await response.json()
+   console.log(data)
     dispatch({
       type: 'GRADE_ASSIGNMENT',
       payload: {
@@ -73,9 +89,24 @@ const StudentAssignments = ({ student , course }) => {
     });
     closeGradingModal()
   };
-  const addFeedback = (e) => {
-    console.log(e.target)
-    console.log(currentAssignment)
+  const addFeedback = async(e) => {
+    const body = JSON.stringify({
+      course_id: course.id,
+      user_id:student.id ,
+      assignment_id:currentAssignment,
+      feedback:feedbackModalStates.feedback, 
+  })
+
+   const response = await fetch("http://127.0.0.1:8000/api/teacher/create_grade" , {
+     method:"POST",
+     headers:{
+       "Authorization":`Bearer ${localStorage.getItem('token')}`,
+       'Accept':"application/json",
+       'Content-Type':"application/json"
+     },
+     body
+   })
+   const data = await response.json()
     dispatch({
       type: 'ADD_FEEDBACK',
       payload: {

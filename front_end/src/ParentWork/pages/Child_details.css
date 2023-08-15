@@ -1,0 +1,162 @@
+.child-details-container {
+  width: 80%;
+  margin: auto;
+  padding: 20px;
+  background-color: rgba(255, 255, 255, 0.8);
+  border-radius: 10px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  color: #333;
+}
+
+.child-name {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.child-progress {
+  margin-bottom: 20px;
+}
+
+.child-grades,
+.child-assignments {
+  margin-bottom: 20px;
+}
+
+.child-grades ul,
+.child-assignments ul {
+  list-style: none;
+  padding: 0;
+}
+
+.child-grades li,
+.child-assignments li {
+  margin-bottom: 5px;
+  padding-left: 20px;
+  position: relative;
+}
+
+.child-grades li::before,
+.child-assignments li::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+}
+
+.child-section-heading {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+/* for added components */
+
+.teacher-list {
+  margin-bottom: 20px;
+}
+
+.teacher-list ul {
+  list-style: none;
+  padding: 0;
+}
+
+.teacher-list li {
+  margin-bottom: 5px;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.teacher-list li:hover {
+  color: #6495ed;
+}
+
+.message-form {
+  margin-bottom: 20px;
+}
+
+.message-form textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.button-container {
+  display: flex;
+  gap: 2rem;
+}
+
+.message-form button {
+  background-color: #6495ed;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 8px 12px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.message-form button:hover {
+  background-color: #4169e1;
+}
+
+.message-threads {
+  margin-bottom: 20px;
+}
+
+.message-threads .message {
+  background-color: #f0f0f0;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+}
+
+.message-threads .message.sender {
+  background-color: #6495ed;
+  color: #fff;
+}
+
+.message-threads .message.receiver {
+  background-color: #87ceeb;
+}
+
+/* NotificationsPopOut.css */
+.notifications-pop-out {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 300px;
+  background-color: #fff;
+  box-shadow: -3px 0px 10px rgba(0, 0, 0, 0.2);
+  overflow-y: auto;
+  padding: 20px;
+}
+
+.close-button {
+  float: right;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 18px;
+  color: #888;
+}
+
+.close-button:hover {
+  color: #333;
+}
+
+.notifications-list {
+  list-style: none;
+  padding: 0;
+}
+
+.notification-item {
+  margin-bottom: 10px;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 10px;
+  font-size: 14px;
+}
+
+.notification-type {
+  font-weight: bold;
+  color: #333;
+}

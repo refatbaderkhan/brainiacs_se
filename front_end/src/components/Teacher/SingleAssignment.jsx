@@ -5,7 +5,6 @@ import ExpandableTree from "./ExpandableTree";
 
 const SingleAssignment = ({ assignment }) => {
   const [expandedAssignments, setExpandedAssignments] = useState(false);
-console.log(assignment)
   const toggleAssignment = (assignmentId) => {
     setExpandedAssignments(prevState => ({
       ...prevState,
@@ -16,9 +15,9 @@ console.log(assignment)
     
     <div className="assignment-expandable">
       <ExpandableTree
-        title={assignment.assignment_title}
-        expanded={expandedAssignments[assignment.assignment_id] || false}
-        onClick={() => toggleAssignment(assignment.assignment_id)}
+        title={assignment?.assignment_title}
+        expanded={expandedAssignments[assignment?.assignment_id] || false}
+        onClick={() => toggleAssignment(assignment?.assignment_id)}
       >
       {expandedAssignments && (
         <div className="assignment-details">
