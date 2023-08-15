@@ -6,6 +6,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ChatController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\TeacherController;
+use App\Http\Controllers\AdminController;
 
 //Authenticated APIS
 Route::group(["middleware" => "auth:api"], function () {
@@ -14,6 +15,9 @@ Route::group(["middleware" => "auth:api"], function () {
     Route::group(["middleware" => "auth.admin"], function () {
         Route::get("trust_issues", [AuthController::class, "issues"]);
 
+        Route::post('/create', [AdminController::class, 'createUser']);
+        Route::get('/users/get', [AdminController::class, 'getUsers']);
+        Route::post('/users/{id}', [AdminController::class, 'updateUser']);
         Route::post('/users/manage', [AdminController::class, 'manageUser']);
         Route::delete('/users/{id}', [AdminController::class, 'destroyUser']);
 
@@ -28,7 +32,6 @@ Route::group(["middleware" => "auth:api"], function () {
 
     Route::group(["middleware" => "auth.teacher"], function () {
         Route::group(["prefix" => "teacher"], function () {
-            Route::get("trust_issues", [AuthController::class, "issues"]);
             Route::post("create_material", [TeacherController::class, "createMaterial"]);
             Route::post("create_assignment", [TeacherController::class, "createAssignment"]);
             Route::post("create_quiz", [TeacherController::class, "createQuiz"]);
@@ -46,6 +49,7 @@ Route::group(["middleware" => "auth:api"], function () {
         Route::get("profile", [AuthController::class, "profile"]);
         Route::post("logout", [AuthController::class, "logout"]);
         Route::post("refresh", [AuthController::class, "refresh"]);
+
     });
 
 });
@@ -58,6 +62,7 @@ Route::group(["prefix" => "guest"], function () {
     Route::get("unauthorized", [AuthController::class, "unauthorized"])->name("unauthorized");
     Route::post("login", [AuthController::class, "login"]);
     Route::post("register", [AuthController::class, "register"]);
+
 
 });
 
