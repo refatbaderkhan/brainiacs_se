@@ -16,14 +16,14 @@ class MeetingScheduled extends Mailable
 
     public $meeting;
     public $recipientType;
-    public $user; // Add this line
+    public $user;
 
-    public function __construct($meeting, $recipientType, $teacher, $user) // Add $user parameter here
+    public function __construct($meeting, $recipientType, $teacher, $user)
     {
         $this->meeting = $meeting;
         $this->recipientType = $recipientType;
         $this->teacher = $teacher;
-        $this->user = $user; // Assign the $user parameter to the property
+        $this->user = $user;
     }
 
     public function build()
@@ -32,7 +32,7 @@ class MeetingScheduled extends Mailable
             ->with([
                 'meeting' => $this->meeting,
                 'teacher' => $this->teacher,
-                'user' => $this->user, // Pass the user variable to the view
+                'user' => $this->user,
             ]);
     }
 }

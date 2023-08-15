@@ -242,8 +242,10 @@ class ParentController extends Controller
         $parentEmail = Auth::user()->email;
         $teacher = User::findOrFail($teacherId);
         $teacherEmail = $teacher->email;
+        $user = Auth::user();
 
-        $user = Auth::user(); // Fetch the authenticated user
+
+        $user = Auth::user();
         Mail::to($parentEmail)->send(new MeetingScheduled($meeting, 'parent', $teacher, $user));
         Mail::to($teacherEmail)->send(new MeetingScheduled($meeting, 'teacher', $teacher, $user));
 
