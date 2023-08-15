@@ -17,29 +17,68 @@
   margin-bottom: 20px;
 }
 
-.child-grades,
-.child-assignments {
+.child-progress p {
+  font-size: 18px;
+  margin: 5px 0;
+}
+
+.child-courses {
   margin-bottom: 20px;
 }
 
-.child-grades ul,
+.course-details {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 20px;
+}
+
+.course-details h4 {
+  font-size: 20px;
+  margin-bottom: 5px;
+}
+
+.course-details p {
+  margin: 0;
+  font-size: 16px;
+}
+
+.course-details h5 {
+  font-size: 18px;
+  margin-top: 10px;
+}
+
 .child-assignments ul {
   list-style: none;
   padding: 0;
 }
 
-.child-grades li,
 .child-assignments li {
-  margin-bottom: 5px;
+  margin-bottom: 10px;
   padding-left: 20px;
   position: relative;
+  font-size: 16px;
 }
 
-.child-grades li::before,
 .child-assignments li::before {
   content: "•";
   position: absolute;
   left: 0;
+  color: #2ecc71;
+}
+
+.child-grades li {
+  margin-bottom: 10px;
+  padding-left: 20px;
+  position: relative;
+  font-size: 16px;
+}
+
+.child-grades li::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: #3498db;
 }
 
 .child-section-heading {
@@ -170,6 +209,9 @@
   border-radius: 5px;
   background-color: #f5f5f5;
   box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 
 .schedule-meeting-form h3 {
@@ -187,7 +229,7 @@
 
 .schedule-meeting-form button {
   display: block;
-  width: 100%;
+  width: 5%;
   padding: 10px;
   background-color: #6495ed;
   color: #fff;

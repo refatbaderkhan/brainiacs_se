@@ -83,35 +83,46 @@ function ChildPage() {
       <h2 className="child-name">
         {childDetails.student.name || "Child Name"}
       </h2>
+
       <div className="child-progress">
         <h3>Progress</h3>
-        <p>{childDetails.student_performance.enrolled_courses || 0}%</p>
+        <p>
+          Enrolled Courses:{" "}
+          {childDetails.student_performance.enrolled_courses || 0}
+        </p>
+        <p>
+          Completed Courses:{" "}
+          {childDetails.student_performance.completed_courses || 0}
+        </p>
+        <p>
+          Average Grade:{" "}
+          {childDetails.student_performance.average_grade || "N/A"}
+        </p>
       </div>
-      <div className="child-grades">
-        <h3>Grades</h3>
-        <ul>
-          {childDetails.courses_progress.map((courseProgress) =>
-            courseProgress.grades.map((grade) => (
-              <li key={grade.id}>
-                {courseProgress.course.title}: {grade.grade}
-              </li>
-            ))
-          )}
-        </ul>
-      </div>
-      <div className="child-assignments">
-        <h3>Assignments</h3>
-        <ul>
-          {childDetails.courses_progress.map((courseProgress) =>
-            courseProgress.course.assignments.map((assignment) => (
-              <li key={assignment.id}>
-                {assignment.title} - Due: {assignment.due_date} -
-                {/* Status:{" "}
-                {assignment.status} */}
-              </li>
-            ))
-          )}
-        </ul>
+
+      <div className="child-courses">
+        <h3>Courses</h3>
+        {childDetails.courses_progress.map((courseProgress) => (
+          <div key={courseProgress.course.id} className="course-details">
+            <h4>{courseProgress.course.title}</h4>
+            <p>Description: {courseProgress.course.description}</p>
+
+            <h5>Assignments</h5>
+            <ul>
+              {courseProgress.course.assignments.map((assignment) => (
+                <li key={assignment.id}>
+                  {assignment.title} - Due: {assignment.due_date}
+                  {courseProgress.grades.map((grade) => {
+                    if (grade.assignment_id === assignment.id) {
+                      return ` - Grade: ${grade.grade || "N/A"}`;
+                    }
+                    return null;
+                  })}
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
       </div>
 
       <Attendence childId={childDetails.student.id} />
@@ -119,20 +130,20 @@ function ChildPage() {
       {/* Display the teacher list */}
       <TeacherList teachers={teachers} onSelectTeacher={setSelectedTeacher} />
 
+      {/* Display the scheduling form */}
+      {selectedTeacher && (
+        <ScheduleMeetingForm
+          parentSenderId={parentId}
+          teacherId={selectedTeacher.id}
+        />
+      )}
+
       {/* Display the message form */}
       {selectedTeacher && (
         <MessageForm
           parentSenderId={parentId}
           teacherId={selectedTeacher.id}
           onCancel={() => setSelectedTeacher(null)}
-        />
-      )}
-
-      {/* Display the scheduling form */}
-      {selectedTeacher && (
-        <ScheduleMeetingForm
-          parentSenderId={parentId}
-          teacherId={selectedTeacher.id}
         />
       )}
 

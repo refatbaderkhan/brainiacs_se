@@ -58,7 +58,7 @@ function ScheduleMeetingForm({ parentSenderId, teacherId }) {
           </option>
         ))}
       </select>
-      <button onClick={handleSchedule}>Schedule</button>
+      <button className="Parent_ScheduleButton" onClick={handleSchedule} >Schedule</button>
 
      {/* Display meeting message */}
       {meetingMessage && (
