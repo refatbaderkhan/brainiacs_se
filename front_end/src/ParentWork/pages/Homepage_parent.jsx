@@ -9,6 +9,7 @@ function Homepage_parent() {
   const [selectedChild, setSelectedChild] = useState(null);
   const navigate = useNavigate();
   const [children, setChildren] = useState([]);
+  const [parentName, setParentName] = useState("");
 
   useEffect(() => {
     // API endpoint for fetching children data
@@ -16,6 +17,8 @@ function Homepage_parent() {
 
     // Retrieve the token from local storage
     const accessToken = localStorage.getItem("token");
+    const name = localStorage.getItem("name");
+    setParentName(name);
     axios
       .get(apiEndpoint, {
         headers: {
@@ -48,7 +51,7 @@ function Homepage_parent() {
     <div className="parent-container">
       <div className="greeting_parent">
         <div className="parent-image"></div>
-        <h1>{`Hello Parent !`}</h1>
+        <h1>Hi {parentName} !</h1>
       </div>
       <div className="choose-section">
         <h2>What DO You Want To Do ?</h2>

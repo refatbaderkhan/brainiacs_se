@@ -23,6 +23,7 @@ const Login = () => {
     const data = await response.json();
     localStorage.setItem("token", data.data.token);
     localStorage.setItem("id", data.data.id);
+    localStorage.setItem("name", data.data.name);
     if (+data.data.role === 2) {
       navigate("/teacher");
       dispatch({
