@@ -195,7 +195,7 @@ class ParentController extends Controller
         $sentMessages = $parent->messagesSent()->where('receiver_id', $teacherId)->get();
         $receivedMessages = $parent->messagesReceived()->where('sender_id', $teacherId)->get();
 
-        $messages = $sentMessages->concat($receivedMessages)->sortBy('created_at');
+        $messages = $sentMessages->concat($receivedMessages)->sortBy('created_at')->values(); // Add 'values()' to convert to indexed array
 
         $formattedMessages = $messages->map(function ($message) use ($parent) {
             $senderName = $message->sender_id === $parent->id ? $parent->name : User::find($message->sender_id)->name;
@@ -213,6 +213,7 @@ class ParentController extends Controller
 
         return response()->json(['data' => $formattedMessages]);
     }
+
 
 
     public function scheduleMeeting(Request $request, $teacherId)
