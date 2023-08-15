@@ -5,14 +5,14 @@ import { useParams } from 'react-router-dom';
 import '../../styles/ChatRoom.css'
 import Pusher from 'pusher-js'
 const ChatRoom = ({ userId }) => {
-  console.log(userId)
+
   const [username, setUsername] = useState([]);
   const [messages, setMessages] = useState([]);
   const [message, setMessage] = useState([]);
   const { state, dispatch } = useContext(TeacherContext);
 
 
-  const {id} = state
+  const {id , messages:teacherMessages} = state
   const params = useParams()
 
 
@@ -37,6 +37,25 @@ const ChatRoom = ({ userId }) => {
     };
     
   }, []);
+  useEffect(() => {
+    const getMessages = async()=>{
+      const response = await fetch(`http://127.0.0.1:8000/api/teacher/messages/${localStorage.getItem("teacher_id")}`,{
+        method:"GET",
+        headers:{
+          "Authorization":`Bearer ${localStorage.getItem('token')}`,
+        }
+      })
+      const data = await response.json()
+      setMessages(data)
+      dispatch({
+        type: "ADD_TEACHER_MESSAGES",
+        payload: data,
+      });
+      console.log(data)
+      return data
+    }
+    getMessages()
+  }, []);
 
   const handleNameChange = (event) => {
     setUsername(event.target.value);
@@ -47,75 +66,84 @@ const ChatRoom = ({ userId }) => {
   };
 
   const handleSubmit = async () => {
-    if (username.trim() !== '' && message.trim() !== '') {
+    if (localStorage.getItem('teacher_name').trim() !== '' && message.trim() !== '') {
       try {
         await fetch("http://127.0.0.1:8000/api/user/messages", {
           method: 'POST',
           headers: {
             'Content-type': 'application/json',
             'Accept': 'application/json',
-            'Authorization': `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2d1ZXN0L2xvZ2luIiwiaWF0IjoxNjkxOTIyMTgyLCJleHAiOjE2OTE5MjU3ODIsIm5iZiI6MTY5MTkyMjE4MiwianRpIjoiNXgzcW14TWZYTjlIdlBDSyIsInN1YiI6IjEiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.FKWZcGHwgHBqiRWZ-Dg1p-ekoTUgvoFDlDMflMRe_ss`,
+            "Authorization":`Bearer ${localStorage.getItem('token')}`,
+
           },
           body: JSON.stringify({
-            username: username,
+            username: localStorage.getItem('teacher_name'),
             message: message,
             receiverId:params.userId,
-            senderId:id
+            senderId:localStorage.getItem('teacher_id')
           }),
         });
       } catch (error) {
         console.error('Error sending message:', error);
       }
-      // setMessages((prevMessages) => [...prevMessages, { username, message }]);
-
       setMessage('');
     }
   };
 
   return (
     <div className='chat-content'>
+      <h2 className='receiverName'>
+        {localStorage.getItem("receiver_name")}
+      </h2>
+      
+      <div className='messages'>
+        {console.log(messages)}
+        {messages.map((msg, index) => {
+          if(msg.sender_id === +localStorage.getItem('teacher_id') && msg.receiver_id === +localStorage.getItem('receiver_id') ){
+            return (
+              <div className='message-item' key={index}>
+                <strong>{localStorage.getItem("teacher_name")}: </strong>
+                <span className='message-text'>{msg.message_content}</span>
+              </div>
+            );
+          }
+          else if(msg.sender_id === +localStorage.getItem('receiver_id') && msg.receiver_id === +localStorage.getItem('teacher_id') ){
+            return (
+              <div className='message-item' key={index}>
+                <strong>{localStorage.getItem("receiver_name")}: </strong>
+                <span className='message-text'>{msg.message_content}</span>
+              </div>
+            );
+          }
+          const roomIdArray = JSON.parse(localStorage.getItem("roomId"));
+          
+          const senderInRoom = roomIdArray.includes(+msg.senderId);
+          const receiverInRoom = roomIdArray.includes(+msg.receiverId);
+  
+          if (senderInRoom && receiverInRoom) {
+            return (
+              <div className='message-item' key={index}>
+                <strong>{msg.username}: </strong>
+                <span className='message-text'>{msg.message}</span>
+              </div>
+            );
+          } else {
+            return null;
+          }
+        })}
+      </div>
+      <div className='message-input'>
       <input
-        type="text"
-        value={username}
-        onChange={handleNameChange}
-        placeholder="Enter your name..."
-      />
-      <input
+        className='message-input'
         type="text"
         value={message}
         onChange={handleMessageChange}
         placeholder="Enter your message..."
       />
-      <button onClick={handleSubmit}>Submit</button>
-      <div className='messages'>
-       { console.log(JSON.parse(localStorage.getItem("roomId"))[0])}
-  {messages.map((msg, index) => {
-    // Parse the roomId array from Local Storage
-    const roomIdArray = JSON.parse(localStorage.getItem("roomId"));
-    
-    // Check if senderId and receiverId are present in the roomId array
-    const senderInRoom = roomIdArray.includes(+msg.senderId);
-    const receiverInRoom = roomIdArray.includes(+msg.receiverId);
-    console.log(senderInRoom)
-    console.log(receiverInRoom)
-
-    // Display the message if both senderId and receiverId are in the roomId array
-    if (senderInRoom && receiverInRoom) {
-      console.log(msg);
-      return (
-        <div key={index}>
-          <strong>{msg.username}: </strong>
-          {msg.message}
-        </div>
-      );
-    } else {
-      return null; // Do not display the message
-    }
-  })}
-
+      <button className='submit-button' onClick={handleSubmit}>Submit</button>
       </div>
+      
     </div>
-  );
-};
+  );};
 
 export default ChatRoom;

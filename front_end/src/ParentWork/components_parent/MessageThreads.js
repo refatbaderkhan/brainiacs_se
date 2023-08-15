@@ -30,8 +30,9 @@ function MessageThreads({ parentSenderId, teacherId }) {
   return (
     <div className="message-threads">
       <h3>Message Threads</h3>
+      {console.log(messages)}
       <ul>
-        {messages.map((message) => (
+        {messages?.map((message) => (
           <li key={message.id}>
             <strong>From: {message.sender_name}</strong>
             <br />

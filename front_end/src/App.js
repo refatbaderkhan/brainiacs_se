@@ -6,6 +6,7 @@ import Child_details from './ParentWork/pages/Child_details'
 import ChatRoom from './components/Teacher/ChatRoom'
 import AdminLandingPage from './admin/pages/AdminLandingPage'
 import Login from './components/Auth/Login'
+import Student_Homepage from './StudentWork/pages/Student_Homepage'
 
 function App(){
   
@@ -18,6 +19,8 @@ function App(){
       <TeacherProvider>
         <Routes>
           
+            <Route path="/" element={<Login/>}/>
+            <Route path="/teacher" element={<TeacherLandingPage/>}/>
             <Route path="/" element={<Login/>}/>
             <Route path="/teacher" element={<TeacherLandingPage/>}/>
             <Route path="/ChatRoom/:userId" element={<ChatRoom/>}/>
@@ -33,6 +36,14 @@ function App(){
 
                <Route path="/parent" element={<Homepage_parent />}/>
                <Route path="/child/:id" element={<Child_details />}/>
+               
+       </Routes>
+
+
+         {/* Routes for Parent  */}
+       <Routes>
+
+               <Route path="/student" element={<Student_Homepage />}/>
                
        </Routes>
 

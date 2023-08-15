@@ -9,14 +9,15 @@ import Modal from "react-modal";
 import TeacherContext from "../../context/TeacherContext";
 
 const CourseCard = ({ course, reportCards, announcements }) => {
+  console.log(reportCards)
   const { state, dispatch } = useContext(TeacherContext);
   const [allAssignmentsExpanded, setAllassignmentsExpanded] = useState(false);
   const [allQuizzesExpanded, setAllQuizzesExpanded] = useState(false);
   const [assignmentsExpanded, setAssignmentsExpanded] = useState(false);
   const [reportsExpanded, setReportsExpanded] = useState(false);
   const [announcementsExpanded, setAnnouncementsExpanded] = useState(false);
-  const [singleAnnouncementExpanded, setSingleAnnouncementExpanded] =
-    useState(false);
+  const [announcementExpandedStates, setAnnouncementExpandedStates] = useState([]);
+
   const [isAssignmentModalOpen, setIsAssignmentModalOpen] = useState(false);
   const [isAttendanceModalOpen, setIsAttendanceModalOpen] = useState(false);
   const [isQuizzModalOpen, setIsQuizzModalOpen] = useState(false);
@@ -34,7 +35,7 @@ const CourseCard = ({ course, reportCards, announcements }) => {
     quizz_description:""
   });
   // console.log(course.attendance_sheet[0]?.student_name)
-  console.log(course);
+  console.log(course);  
   const openAssignmentModal = () => {
     setIsAssignmentModalOpen(true);
   };
@@ -56,7 +57,7 @@ const CourseCard = ({ course, reportCards, announcements }) => {
       [name]: value,
     });
   };
-  const addAssignment = () => {
+  const addAssignment = async () => {
     const newAssignment = {
       assignment_title: newAssignmentData.title,
       assignment_due: newAssignmentData.due,
@@ -65,14 +66,34 @@ const CourseCard = ({ course, reportCards, announcements }) => {
       assignment_doc: " newAssignmentData.document",
       assignment_id: course.course_assignments.length + 1,
     };
+    const body = JSON.stringify({
+       course_id: course.id,
+       title: newAssignmentData.title ,
+       description: newAssignmentData.description ,
+       content_url:"NewContent.png",
+       due_date:`${newAssignmentData.due} 00:00:00`
+  
+})
 
+    const response = await fetch("http://127.0.0.1:8000/api/teacher/create_assignment" , {
+      method:"POST",
+      headers:{
+        "Authorization":`Bearer ${localStorage.getItem('token')}`,
+        'Accept':"application/json",
+        'Content-Type':"application/json"
+      },
+      body
+    })
+    const data = await response.json()
+    console.log(data)
+    console.log(222222222)
     dispatch({
       type: "ADD_ASSIGNMENT",
       payload: { courseId: course.id, assignment: newAssignment },
     });
     closeAssignmentModal();
   };
-  const addQuizz = () => {
+  const addQuizz =async () => {
     const newQuizz = {
       quizz_title: newQuizzData.quizz_title,
      quizz_grade: newQuizzData.quizz_grade,
@@ -82,7 +103,24 @@ const CourseCard = ({ course, reportCards, announcements }) => {
     };
     console.log(newQuizz)
     console.log(newQuizzData)
+    const body = JSON.stringify({
+      course_id: course.id,
+      title:newQuizzData.quizz_title ,
+      description:newQuizzData.quizz_description ,
+      content_url:"NewContent.png", 
+  })
 
+   const response = await fetch("http://127.0.0.1:8000/api/teacher/create_quiz" , {
+     method:"POST",
+     headers:{
+       "Authorization":`Bearer ${localStorage.getItem('token')}`,
+       'Accept':"application/json",
+       'Content-Type':"application/json"
+     },
+     body
+   })
+   const data = await response.json()
+   console.log(data)
     dispatch({
       type: "ADD_QUIZZ",
       payload: { courseId: course.id, quizz: newQuizz },
@@ -101,6 +139,11 @@ const CourseCard = ({ course, reportCards, announcements }) => {
   };
   const closeQuizzModal = () => {
     setIsQuizzModalOpen(false);
+  };
+  const toggleAnnouncementExpansion = (index) => {
+    const newExpandedStates = [...announcementExpandedStates];
+    newExpandedStates[index] = !newExpandedStates[index];
+    setAnnouncementExpandedStates(newExpandedStates);
   };
   return (
     <div className="course-card">
@@ -127,11 +170,17 @@ const CourseCard = ({ course, reportCards, announcements }) => {
         expanded={allAssignmentsExpanded}
         onClick={() => setAllassignmentsExpanded(!allAssignmentsExpanded)}
       >
-        {course.course_assignments?.map((assignment) => (
+
+        {course.course_assignments && course.course_assignments?.map((assignment,index) => {
+  
+          return(
+          
           <div assignmentId={`${assignment.assignment_id}`} >
+           
           <SingleAssignment key={course.id} assignment={assignment} />
+
           </div>
-        ))}
+        )})}
       </ExpandableTree>
       <ExpandableTree
         title="Quizzes"
@@ -147,7 +196,7 @@ const CourseCard = ({ course, reportCards, announcements }) => {
         expanded={assignmentsExpanded}
         onClick={() => setAssignmentsExpanded(!assignmentsExpanded)}
       >
-        {course.students.map((student) => (
+        {course.students?.map((student) => (
           <StudentAssignments key={student.id} student={student} course={course}/>
         ))}
       </ExpandableTree>
@@ -156,7 +205,8 @@ const CourseCard = ({ course, reportCards, announcements }) => {
         expanded={reportsExpanded}
         onClick={() => setReportsExpanded(!reportsExpanded)}
       >
-        {course.students.map((student, index) => {
+        {reportCards?.map((student, index) => {
+          console.log(reportCards[index])
           return (
             <StudentReports
               key={student.id}
@@ -171,23 +221,19 @@ const CourseCard = ({ course, reportCards, announcements }) => {
         expanded={announcementsExpanded}
         onClick={() => setAnnouncementsExpanded(!announcementsExpanded)}
       >
-        {announcements.length !== 0 &&
-          announcements.map((announcement, index) =>
-            announcement.course_id === course.id ? (
-              <ExpandableTree
-                key={index}
-                title={announcement.title}
-                expanded={singleAnnouncementExpanded}
-                onClick={() =>
-                  setSingleAnnouncementExpanded(!singleAnnouncementExpanded)
-                }
-              >
-                <p>{announcement.announcement}</p>
-              </ExpandableTree>
-            ) : (
-              <p>No Annoucements posted for this class</p>
-            ),
-          )}
+       {announcements?.length !== 0 &&
+  announcements?.map((announcement, index) =>
+    announcement.course_id === course.id && (
+      <ExpandableTree
+        key={index}
+        title={announcement.title}
+        expanded={announcementExpandedStates[index] || false} // Read expansion state from the array
+        onClick={() => toggleAnnouncementExpansion(index)} // Pass the index to the toggle function
+      >
+        <p>{announcement.announcement}</p>
+      </ExpandableTree>
+    )
+  )}
       </ExpandableTree>
       <Modal
         isOpen={isAssignmentModalOpen}
@@ -259,6 +305,7 @@ const CourseCard = ({ course, reportCards, announcements }) => {
         className="modal"
         overlayClassName="overlay"
       >
+        {console.log(course.attendance_sheet)}
         {course.attendance_sheet && course.attendance_sheet.length > 0 && (
           <table>
             <thead>
@@ -268,12 +315,14 @@ const CourseCard = ({ course, reportCards, announcements }) => {
               </tr>
             </thead>
             <tbody style={{ color: "black" }}>
-              {course.attendance_sheet.map((student) => (
+              {course.attendance_sheet.map((student) => {
+                console.log(student)
+                return(
                 <tr style={{ textAlign: "center" }} key={student.student_name}>
                   <td style={{ color: "black" }}>{student.student_name}</td>
-                  <td style={{ color: "black" }}>{student.attendend_times}</td>
+                  <td style={{ color: "black" }}>{student. attendance_times}</td>
                 </tr>
-              ))}
+              )})}
             </tbody>
           </table>
         )}

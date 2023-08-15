@@ -1,14 +1,99 @@
-body{
-  background-color: magenta;
-}
-.chat-content{
-  width: 100vw;
-  height: 100vh;
-  /* background-color: azure; */
+/* 
+.chat-content {
+  width: 96vw;
+  height:99vh;
   margin: 0;
   padding: 0;
 }
-.messages{
-  height: 320px;
-  background-color: magenta;
+
+.messages {
+  height: 90vh;
+  background-color: white;
+}
+
+.textItem {
+  color: black;
+  border: 3px solid  #3498db;
+  width: 95.7vw;
+
+
+}
+
+.text-single {
+  max-width: 300px;
+  word-wrap: break-word; 
+
+} */
+.chat-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  width: 98vw;
+  height: 100vh;
+  margin: 0;
+  padding: 20px;
+  background-color: #f7f7f7;
+  box-sizing: border-box;
+}
+
+.messages {
+  flex: 1;
+  width: 100%;
+  max-height: 80vh;
+   background-color: white;
+  border: 1px solid #ccc;
+  padding: 10px;
+  border-radius: 8px;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
+  color: black;
+}
+
+.message-item {
+  color: black;
+  border: 1px solid #3498db;
+  width: 90%;
+  padding: 10px;
+  margin: 10px 0;
+  border-radius: 8px;
+  background-color: #f0f8ff;
+}
+
+.message-text {
+  max-width: 80%;
+  word-wrap: break-word;
+}
+
+.message-input {
+  width: 97%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  margin-top: 10px;
+  box-sizing: border-box;
+  font-size: 16px;
+}
+
+.submit-button {
+  background-color: #3498db;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 0px 20px;
+  cursor: pointer;
+  font-size: 16px;
+  height: 40px;
+  margin-top: 10px;
+}
+
+.submit-button:hover {
+  background-color: #2980b9;
+}
+
+.receiverName{
+  color: #2980b9;
+}
+.message-input{
+  display: flex;
+  gap: 3px;
 }

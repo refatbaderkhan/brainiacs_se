@@ -38,9 +38,13 @@ class User extends Authenticatable implements JWTSubject{
     
     public function enrollments()
     {
-        return $this->hasMany(StudentEnrollment::class, 'user_id');
+        return $this->hasMany(StudentEnrollment::class, 'user_id', 'id');
     }
-
+    
+    public function performance()
+    {
+        return $this->hasOne(StudentPerformance::class, 'user_id', 'id');
+    }
     
     public function children()
     {
@@ -69,5 +73,14 @@ class User extends Authenticatable implements JWTSubject{
 
     public function getJWTCustomClaims() {
         return [];
+    }
+
+    public function grades()
+    {
+        return $this->hasMany(Grade::class, 'user_id');
+    }
+    public function announcements()
+    {
+        return $this->hasMany(Announcement::class);
     }
 }

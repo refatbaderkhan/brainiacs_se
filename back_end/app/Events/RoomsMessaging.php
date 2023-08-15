@@ -22,9 +22,8 @@ class RoomsMessaging implements ShouldBroadcast
         public string $message,
         public string $username,
         public string $roomId,
-        )
-    {
-        
+    ) {
+
     }
 
     /**
@@ -35,13 +34,13 @@ class RoomsMessaging implements ShouldBroadcast
     public function broadcastOn(): array
     {
         return [
-             'room-messaging-channel'
+            'room-messaging-channel'
         ];
     }
 
-    
+
     public function broadcastAs()
     {
-        return 'room-user-message' ;
+        return 'room-user-message';
     }
 }

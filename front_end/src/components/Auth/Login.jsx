@@ -22,18 +22,24 @@ const Login = () => {
     });
     const data = await response.json();
     localStorage.setItem("token", data.data.token);
-    localStorage.setItem("id", data.data.id);
-    localStorage.setItem("name", data.data.name);
     if (+data.data.role === 2) {
+      localStorage.setItem("teacher_id", data.data.id);
+      localStorage.setItem("teacher_name", data.data.name);
       navigate("/teacher");
       dispatch({
         type: "ADD_TEACHER_INFO",
         payload: { teacherId: data.data.id, teacherName: data.data.name },
       });
     } else if (+data.data.role === 4) {
+      localStorage.setItem("id", data.data.id);
+      localStorage.setItem("name", data.data.name);
       navigate("/parent");
     } else if (+data.data.role === 1) {
       navigate("/admin");
+    } else if (+data.data.role === 3) {
+      localStorage.setItem("id", data.data.id);
+      localStorage.setItem("name", data.data.name);
+      navigate("/student");
     }
     console.log(data);
   };

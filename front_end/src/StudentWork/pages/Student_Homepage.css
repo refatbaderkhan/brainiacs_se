@@ -1,0 +1,42 @@
+.student-homepage {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.course-section {
+  margin-bottom: 20px;
+}
+
+.course-title {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+p {
+  margin: 5px 0;
+}
+
+button {
+  padding: 8px 12px;
+  border: none;
+  background-color: #3498db;
+  color: white;
+  cursor: pointer;
+}
+
+.enroll-button {
+  background-color: #2ecc71;
+}
+
+.access-button {
+  background-color: #f39c12;
+}
+
+.selected-course {
+  margin-top: 20px;
+  border: 1px solid #ccc;
+  padding: 10px;
+  background-color: #f9f9f9;
+}

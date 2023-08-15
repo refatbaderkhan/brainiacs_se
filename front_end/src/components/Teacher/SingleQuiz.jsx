@@ -4,7 +4,6 @@ import ExpandableTree from "./ExpandableTree";
 
 
 const SingleQuizz = ({ quizz }) => {
-  console.log(quizz)
   const [expandedQuiz, setExpandedQuiz] = useState(false);
 
 

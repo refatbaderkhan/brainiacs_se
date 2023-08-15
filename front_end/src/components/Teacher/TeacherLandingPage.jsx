@@ -3,11 +3,12 @@ import TeacherContext from '../../context/TeacherContext';
 import AnnouncementsSection from './AnnouncementsSection';
 import CourseCard from './CourseCard';
 import Modal from 'react-modal';
+import TeacherContextInitializer from "./TeacherContextInitializer";
 import "../../styles/teacherLandingPage.css";
 import ChatoModal from "./ChatoModal";
 const TeacherLandingPage = () => {
   const { state, dispatch } = useContext(TeacherContext);
-  console.log(state)
+ 
   const [isModalOpen, setIsModalOpen] = useState(false); 
   const [isDMsModalOpen, setIsDMsModalOpen] = useState(false); 
   const [newCourseData, setNewCourseData] = useState({
@@ -55,9 +56,10 @@ const TeacherLandingPage = () => {
 
   return (
     <div>
+      <TeacherContextInitializer/>
       <div className="greeting">
         <div className="teacher-image"></div>
-        <h1>{`Hello ${state.name} !`}</h1>
+        <h1>{`Hello ${localStorage.getItem("teacher_name")} !`}</h1>
       </div>
       <AnnouncementsSection state={state} />
       <div className="courses-header">

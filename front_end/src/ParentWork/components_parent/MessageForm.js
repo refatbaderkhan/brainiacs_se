@@ -7,8 +7,8 @@ function MessageForm({ parentSenderId, teacherId, onCancel }) {
 
   useEffect(() => {
     // Initialize Pusher and subscribe to the 'chat' channel
-    const pusher = new Pusher("4094a9b9c2078e80bf69", {
-      cluster: "eu",
+    const pusher = new Pusher("42f92e75cb02e25d4594", {
+      cluster: "ap2",
     });
 
     const channel = pusher.subscribe("chat");
