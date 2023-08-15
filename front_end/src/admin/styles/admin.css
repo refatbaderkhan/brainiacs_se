@@ -1,0 +1,13 @@
+.class {
+  font-size: 60px;
+}
+
+.auto-margin {
+  margin: auto;
+  text-align: center;
+}
+
+.column {
+  flex-direction: column;
+}
+

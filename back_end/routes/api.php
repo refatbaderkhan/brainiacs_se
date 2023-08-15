@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\ParentController;
 use App\Http\Controllers\StudentController;
+use App\Http\Controllers\AdminController;
 
 //Authenticated APIS
 Route::group(["middleware" => "auth:api"], function () {
@@ -16,6 +17,9 @@ Route::group(["middleware" => "auth:api"], function () {
     Route::group(["middleware" => "auth.admin"], function () {
         Route::get("trust_issues", [AuthController::class, "issues"]);
 
+        Route::post('/create', [AdminController::class, 'createUser']);
+        Route::get('/users/get', [AdminController::class, 'getUsers']);
+        Route::post('/users/{id}', [AdminController::class, 'updateUser']);
         Route::post('/users/manage', [AdminController::class, 'manageUser']);
         Route::delete('/users/{id}', [AdminController::class, 'destroyUser']);
 
@@ -30,7 +34,6 @@ Route::group(["middleware" => "auth:api"], function () {
 
     Route::group(["middleware" => "auth.teacher"], function () {
         Route::group(["prefix" => "teacher"], function () {
-            Route::get("trust_issues", [AuthController::class, "issues"]);
             Route::post("create_material", [TeacherController::class, "createMaterial"]);
             Route::post("create_assignment", [TeacherController::class, "createAssignment"]);
             Route::post("create_quiz", [TeacherController::class, "createQuiz"]);
@@ -50,36 +53,6 @@ Route::group(["middleware" => "auth:api"], function () {
         Route::post("refresh", [AuthController::class, "refresh"]);
     });
 
-    //to fetch student courses 
-    Route::get("courses", [StudentController::class, "browseCourses"]);
-
-    // enroll in a course
-    Route::post('enroll/{courseId}', [StudentController::class, 'enrollInCourse']);
-
-    // view course materials
-    Route::get('course-materials/{courseId}', [StudentController::class, 'viewCourseMaterials']);
-
-
-    //student progress
-    Route::group(["middleware" => "auth:api"], function () {
-
-
-        Route::get("completed-assignments", [StudentController::class, "getCompletedAssignments"]);
-        Route::get("upcoming-assignments", [StudentController::class, "getUpcomingAssignments"]);
-        Route::get("grades", [StudentController::class, "getGrades"]);
-        Route::get("overall-progress", [StudentController::class, "getOverallProgress"]);
-
-
-        // get all quizzes for a specific course
-        Route::get("courses/{courseId}/quizzes", [StudentController::class, "getQuizzesForCourse"]);
-
-        // get details of a specific quiz, including its questions
-        Route::get("quizzes/{quizId}", [StudentController::class, "getQuizDetails"]);
-
-        // submit answers for a quiz and get the quiz results
-        Route::post("quizzes/{quizId}/submit", [StudentController::class, "submitQuizAnswers"]);
-    });
-
 });
 
 
@@ -90,6 +63,7 @@ Route::group(["prefix" => "guest"], function () {
     Route::get("unauthorized", [AuthController::class, "unauthorized"])->name("unauthorized");
     Route::post("login", [AuthController::class, "login"]);
     Route::post("register", [AuthController::class, "register"]);
+
 
 });
 

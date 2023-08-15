@@ -32,6 +32,8 @@ const Login = () => {
       });
     } else if (+data.data.role === 4) {
       navigate("/parent");
+    } else if (+data.data.role === 1) {
+      navigate("/admin");
     }
     console.log(data);
   };
