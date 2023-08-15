@@ -95,7 +95,9 @@ Route::group(["middleware" => "auth:api"], function () {
 
 
     //to fetch student courses 
-    Route::get("courses", [StudentController::class, "browseCourses"]);
+    Route::get("available-courses", [StudentController::class, "browseAvailableCourses"]);
+    Route::get("enrolled-courses", [StudentController::class, "browseEnrolledCourses"]);
+
 
     // enroll in a course
     Route::post('enroll/{courseId}', [StudentController::class, 'enrollInCourse']);

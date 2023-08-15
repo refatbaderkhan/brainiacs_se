@@ -12,13 +12,13 @@ function StudentHomePage() {
   useEffect(() => {
     // Fetch available courses
     axios
-      .get("http://127.0.0.1:8000/api/student/courses", {
+      .get("http://127.0.0.1:8000/api/available-courses", {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
       })
       .then((response) => {
-        setCourses(response.data.courses);
+        setCourses(response.data.available_courses);
       })
       .catch((error) => {
         console.error("Error fetching available courses:", error);
@@ -26,7 +26,7 @@ function StudentHomePage() {
 
     // Fetch enrolled courses
     axios
-      .get("http://127.0.0.1:8000/api/student/enrolled-courses", {
+      .get("http://127.0.0.1:8000/api/enrolled-courses", {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
@@ -37,9 +37,27 @@ function StudentHomePage() {
       .catch((error) => {
         console.error("Error fetching enrolled courses:", error);
       });
-  }, []);
+  }, [accessToken]);
 
-  const enrollInCourse = (courseId) => {};
+  const enrollInCourse = (courseId) => {
+    axios
+      .post(
+        `http://127.0.0.1:8000/api/student/enroll-in-course/${courseId}`,
+        null,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      )
+      .then((response) => {
+        // Handle enrollment success
+        // You can fetch enrolled courses again to update the list
+      })
+      .catch((error) => {
+        console.error("Error enrolling in course:", error);
+      });
+  };
 
   const selectCourse = (course) => {
     setSelectedCourse(course);
@@ -47,27 +65,29 @@ function StudentHomePage() {
 
   return (
     <div className="student-homepage">
-      <h1>Welcome to Student Dashboard</h1>
-
-      <h2>Available Courses:</h2>
-      <ul>
-        {courses.map((course) => (
-          <li key={course.id}>
-            {course.title} - {course.description}
-            <button onClick={() => enrollInCourse(course.id)}>Enroll</button>
-          </li>
-        ))}
-      </ul>
+      <h1>Welcome, {localStorage.getItem("name")}!</h1>
 
       <h2>Enrolled Courses:</h2>
-      <ul>
+      <div className="course-cards">
         {enrolledCourses.map((course) => (
-          <li key={course.id}>
-            {course.title} - {course.description}
+          <div className="course-card" key={course.id}>
+            <h3>{course.course.title}</h3>
+
             <button onClick={() => selectCourse(course)}>Access</button>
-          </li>
+          </div>
         ))}
-      </ul>
+      </div>
+
+      <h2>Available Courses:</h2>
+      <div className="course-cards">
+        {courses.map((course) => (
+          <div className="course-card" key={course.id}>
+            <h3>{course.title}</h3>
+
+            <button onClick={() => enrollInCourse(course.id)}>Enroll</button>
+          </div>
+        ))}
+      </div>
 
       {selectedCourse && (
         <div className="selected-course">

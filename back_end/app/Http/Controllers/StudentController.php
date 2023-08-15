@@ -17,10 +17,17 @@ class StudentController extends Controller
 
     //part a
 
-    public function browseCourses()
+    public function browseAvailableCourses()
     {
-        $courses = Course::all();
-        return response()->json(['courses' => $courses]);
+        $studentId = auth()->user()->id;
+
+        $enrolledCourseIds = StudentEnrollment::where('user_id', $studentId)
+            ->pluck('course_id');
+
+        $availableCourses = Course::whereNotIn('id', $enrolledCourseIds)
+            ->get();
+
+        return response()->json(['available_courses' => $availableCourses]);
     }
     public function enrollInCourse($courseId)
     {
@@ -64,7 +71,16 @@ class StudentController extends Controller
 
         return response()->json(['course_materials' => $materials]);
     }
+    public function browseEnrolledCourses()
+    {
+        $studentId = auth()->user()->id;
 
+        $enrolledCourses = StudentEnrollment::where('user_id', $studentId)
+            ->with('course') // Load the associated course details
+            ->get();
+
+        return response()->json(['enrolled_courses' => $enrolledCourses]);
+    }
 
 
     //part b student work 
