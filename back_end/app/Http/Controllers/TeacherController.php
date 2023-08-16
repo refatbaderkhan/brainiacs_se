@@ -14,215 +14,215 @@ use App\Models\Course;
 use App\Models\Announcement;
 use App\Models\Attendance;
 use App\Models\StudentPerformance;
-
+use Illuminate\Support\Facades\Auth;
 
 class TeacherController extends Controller
 {
-    public function createMaterial(Request $request)
-    {
-        $request->validate([
-            'course_id' => 'required|exists:courses,id',
-            'title' => 'required|string|max:255',
-            'description' => 'required|string',
-            'content_url' => 'required|string',
-        ]);
+  public function createMaterial(Request $request)
+  {
+      $request->validate([
+          'course_id' => 'required|exists:courses,id',
+          'title' => 'required|string|max:255',
+          'description' => 'required|string',
+          'content_url' => 'required|string',
+      ]);
 
-        $CourseMaterial = new CourseMaterial([
-            'course_id' => $request->course_id,
-            'title' => $request->title,
-            'description' => $request->description,
-            'content_url' => $request->content_url,
-        ]);
+      $CourseMaterial = new CourseMaterial([
+          'course_id' => $request->course_id,
+          'title' => $request->title,
+          'description' => $request->description,
+          'content_url' => $request->content_url,
+      ]);
 
-        $CourseMaterial->save();
+      $CourseMaterial->save();
 
-        return response()->json([
-            'status' => 'Success',
-            'message' => 'Course Material created successfully',
-            'data' => $CourseMaterial,
-        ]);
-    }
+      return response()->json([
+          'status' => 'Success',
+          'message' => 'Course Material created successfully',
+          'data' => $CourseMaterial,
+      ]);
+  }
 
-    public function createAssignment(Request $request)
-    {
-        error_log($request->course_id);
-        $request->validate([
-            'course_id' => 'required|exists:courses,id',
-            'title' => 'required|string|max:255',
-            'description' => 'required|string',
-            'content_url' => 'required|string',
-            'due_date' => 'nullable|date_format:Y-m-d H:i:s',
-        ]);
+  public function createAssignment(Request $request)
+  {
+    error_log($request->course_id);
+      $request->validate([
+          'course_id' => 'required|exists:courses,id',
+          'title' => 'required|string|max:255',
+          'description' => 'required|string',
+          'content_url' => 'required|string',
+          'due_date' => 'nullable|date_format:Y-m-d H:i:s',
+      ]);
 
-        $Assignment = new Assignment([
-            'course_id' => $request->course_id,
-            'title' => $request->title,
-            'description' => $request->description,
-            'content_url' => $request->content_url,
-            'due_date' => $request->due_date,
-        ]);
+      $Assignment = new Assignment([
+          'course_id' => $request->course_id,
+          'title' => $request->title,
+          'description' => $request->description,
+          'content_url' => $request->content_url,
+          'due_date' => $request->due_date,
+      ]);
 
-        $Assignment->save();
+      $Assignment->save();
+      
+      return response()->json([
+          'status' => 'Success',
+          'message' => 'Assignment created successfully',
+          'data' => $Assignment,
+      ]);
+  }
 
-        return response()->json([
-            'status' => 'Success',
-            'message' => 'Assignment created successfully',
-            'data' => $Assignment,
-        ]);
-    }
+  public function createQuiz(Request $request)
+  {
+      $request->validate([
+          'course_id' => 'required|exists:courses,id',
+          'title' => 'required|string|max:255',
+          'description' => 'required|string',
+          'content_url' => 'required|string',
+      ]);
 
-    public function createQuiz(Request $request)
-    {
-        $request->validate([
-            'course_id' => 'required|exists:courses,id',
-            'title' => 'required|string|max:255',
-            'description' => 'required|string',
-            'content_url' => 'required|string',
-        ]);
+      $Quiz = new Quiz([
+          'course_id' => $request->course_id,
+          'title' => $request->title,
+          'description' => $request->description,
+          'content_url' => $request->content_url,
+      ]);
 
-        $Quiz = new Quiz([
-            'course_id' => $request->course_id,
-            'title' => $request->title,
-            'description' => $request->description,
-            'content_url' => $request->content_url,
-        ]);
+      $Quiz->save();
 
-        $Quiz->save();
+      return response()->json([
+          'status' => 'Success',
+          'message' => 'Quiz created successfully',
+          'data' => $Quiz,
+      ]);
+  }
 
-        return response()->json([
-            'status' => 'Success',
-            'message' => 'Quiz created successfully',
-            'data' => $Quiz,
-        ]);
-    }
+  public function updateGrade(Request $request)
+  {
+      $request->validate([
+          'course_id' => 'required|exists:courses,id',
+          'user_id' => 'required|exists:users,id',
+          'assignment_id' => 'required|exists:assignments,id',
+      ]);
+  
+      $grade = Grade::where([
+          'course_id' => $request->course_id,
+          'user_id' => $request->user_id,
+          'assignment_id' => $request->assignment_id,
+      ])->first();
+      if (!$grade) {
+          return response()->json([
+              'status' => 'Error',
+              'message' => 'Grade not found',
+          ], 404);
+      }
+  
+      if ($request->has('grade')) {
+          $grade->grade = $request->grade;
+      }
+  
+      if ($request->has('feedback')) {
+          $grade->feedback = $request->feedback;
+      }
+  
+      $grade->save();
+  
+      return response()->json([
+          'status' => 'Success',
+          'message' => 'Grade updated successfully',
+          'data' => $grade,
+      ]);
+  }
+  public function getCourses($Id)
+  {
+      $user = User::find($Id);
 
-    public function updateGrade(Request $request)
-    {
-        $request->validate([
-            'course_id' => 'required|exists:courses,id',
-            'user_id' => 'required|exists:users,id',
-            'assignment_id' => 'required|exists:assignments,id',
-        ]);
+      if (!$user || $user->role != 2) {
+        return response()->json(['error' => 'Teacher not found']);
+      }
 
-        $grade = Grade::where([
-            'course_id' => $request->course_id,
-            'user_id' => $request->user_id,
-            'assignment_id' => $request->assignment_id,
-        ])->first();
-        if (!$grade) {
-            return response()->json([
-                'status' => 'Error',
-                'message' => 'Grade not found',
-            ], 404);
-        }
+      $courses = $user->courses;
 
-        if ($request->has('grade')) {
-            $grade->grade = $request->grade;
-        }
+      return response()->json([
+          'status' => 'Success',
+          'message' => 'Courses retrieved successfully',
+          'data' => $courses,
+      ]);
+  }
 
-        if ($request->has('feedback')) {
-            $grade->feedback = $request->feedback;
-        }
+  public function getAssignmentsbyStudent($courseId, $studentId)
+  {
+      $enrollment = StudentEnrollment::where([
+          'user_id' => $studentId,
+          'course_id' => $courseId,
+      ])->first();
 
-        $grade->save();
+      if (!$enrollment) {
+          return response()->json(['error' => 'Student is not enrolled']);
+      }
 
-        return response()->json([
-            'status' => 'Success',
-            'message' => 'Grade updated successfully',
-            'data' => $grade,
-        ]);
-    }
-    public function getCourses($Id)
-    {
-        $user = User::find($Id);
+      $assignments = Assignment::where('course_id', $courseId)->get();
 
-        if (!$user || $user->role != 2) {
-            return response()->json(['error' => 'Teacher not found']);
-        }
+      return response()->json([
+          'status' => 'Success',
+          'message' => 'Assignments retrieved successfully',
+          'data' => $assignments,
+      ]);
+  }
 
-        $courses = $user->courses;
+  public function getStudents($id)
+  {
+      $course = Course::find($id);
 
-        return response()->json([
-            'status' => 'Success',
-            'message' => 'Courses retrieved successfully',
-            'data' => $courses,
-        ]);
-    }
+      if (!$course) {
+          return response()->json(['error' => 'Course not found']);
+      }
 
-    public function getAssignmentsbyStudent($courseId, $studentId)
-    {
-        $enrollment = StudentEnrollment::where([
-            'user_id' => $studentId,
-            'course_id' => $courseId,
-        ])->first();
+      $students = $course->students;
 
-        if (!$enrollment) {
-            return response()->json(['error' => 'Student is not enrolled']);
-        }
+      return response()->json([
+          'status' => 'Success',
+          'message' => 'Students retrieved successfully',
+          'data' => $students,
+      ]);
+  }
 
-        $assignments = Assignment::where('course_id', $courseId)->get();
+  public function getAssignments($id)
+  {
+      $course = Course::find($id);
 
-        return response()->json([
-            'status' => 'Success',
-            'message' => 'Assignments retrieved successfully',
-            'data' => $assignments,
-        ]);
-    }
+      if (!$course) {
+          return response()->json(['error' => 'Course not found']);
+      }
 
-    public function getStudents($id)
-    {
-        $course = Course::find($id);
+      $assignments = $course->assignments;
 
-        if (!$course) {
-            return response()->json(['error' => 'Course not found']);
-        }
+      return response()->json([
+          'status' => 'Success',
+          'message' => 'Assignments retrieved successfully',
+          'data' => $assignments,
+      ]);
+  }
 
-        $students = $course->students;
+  public function getStudentPerformance($id)
+  {
+      $student = User::find($id);
 
-        return response()->json([
-            'status' => 'Success',
-            'message' => 'Students retrieved successfully',
-            'data' => $students,
-        ]);
-    }
+      if (!$student) {
+          return response()->json(['error' => 'Student not found']);
+      }
 
-    public function getAssignments($id)
-    {
-        $course = Course::find($id);
+      $performance = StudentPerformance::where('user_id', $id)->first();
 
-        if (!$course) {
-            return response()->json(['error' => 'Course not found']);
-        }
+      if (!$performance) {
+          return response()->json(['error' => 'Performance data not found for the student']);
+      }
 
-        $assignments = $course->assignments;
-
-        return response()->json([
-            'status' => 'Success',
-            'message' => 'Assignments retrieved successfully',
-            'data' => $assignments,
-        ]);
-    }
-
-    public function getStudentPerformance($id)
-    {
-        $student = User::find($id);
-
-        if (!$student) {
-            return response()->json(['error' => 'Student not found']);
-        }
-
-        $performance = StudentPerformance::where('user_id', $id)->first();
-
-        if (!$performance) {
-            return response()->json(['error' => 'Performance data not found for the student']);
-        }
-
-        return response()->json([
-            'status' => 'Success',
-            'message' => 'Student performance retrieved successfully',
-            'data' => $performance,
-        ]);
-    }
+      return response()->json([
+          'status' => 'Success',
+          'message' => 'Student performance retrieved successfully',
+          'data' => $performance,
+      ]);
+  }
 
     public function getQuizzes($courseId)
     {
@@ -245,20 +245,20 @@ class TeacherController extends Controller
         $studentsWithAssignments = Grade::with(['assignment', 'user'])
             ->whereHas('user', function ($query) use ($courseId) {
                 $query->where('role', 3)
-                    ->whereHas('enrollments', function ($subQuery) use ($courseId) {
-                        $subQuery->where('course_id', $courseId);
-                    });
+                      ->whereHas('enrollments', function ($subQuery) use ($courseId) {
+                          $subQuery->where('course_id', $courseId);
+                      });
             })
             ->whereHas('assignment', function ($query) use ($courseId) {
                 $query->where('course_id', $courseId);
             })
             ->get();
-
+    
         $studentsData = [];
         foreach ($studentsWithAssignments as $grade) {
             $user = $grade->user;
             $assignment = $grade->assignment;
-
+    
             // Check if the student's data is already present in the array
             if (!isset($studentsData[$user->id])) {
                 $studentsData[$user->id] = [
@@ -267,9 +267,9 @@ class TeacherController extends Controller
                     'assignments' => [],
                 ];
             }
-
+    
             $submittedAt = $grade->created_at ? $grade->created_at->format('m/d/Y') : null;
-
+    
             $studentsData[$user->id]['assignments'][] = [
                 'assignment_id' => $assignment->id,
                 'assignment_doc' => "../" . $user->name . "/assignment/" . $assignment->id,
@@ -279,15 +279,15 @@ class TeacherController extends Controller
                 'grade' => $grade->grade,
             ];
         }
-
+    
         return response()->json([
             'status' => 'Success',
             'message' => 'Students and their assignments info retrieved successfully',
             'data' => array_values($studentsData), // Convert associative array to indexed array
         ]);
     }
-
-
+    
+    
     public function getStudentsWithReportCard($id)
     {
         $course = Course::with('enrollments.student')->find($id);
@@ -295,36 +295,36 @@ class TeacherController extends Controller
         if (!$course) {
             return response()->json(['error' => 'Course not found']);
         }
-
+    
         $studentsWithPerformance = [];
         foreach ($course->enrollments as $enrollment) {
             $student = $enrollment->student;
             $performance = StudentPerformance::where('user_id', $student->id)->first();
-
+    
             if (!$performance) {
                 $performance = null;
             }
-
+    
             $studentsWithPerformance[] = [
                 'student' => $student,
                 'performance' => $performance,
             ];
         }
-
+    
         return response()->json([
             'status' => 'Success',
             'message' => 'Students and their performance retrieved successfully',
             'data' => $studentsWithPerformance,
         ]);
-
+        
     }
 
     public function getMessagesBySender($senderId)
     {
         $messages = Message::where('sender_id', $senderId)
-            ->orWhere('receiver_id', $senderId)
-            ->get();
-
+                           ->orWhere('receiver_id', $senderId)
+                           ->get();
+    
         return response()->json($messages);
     }
 
@@ -336,7 +336,7 @@ class TeacherController extends Controller
             ->get();
 
         $result = [];
-
+        
         foreach ($attendanceData as $attendance) {
             if (!isset($result[$attendance->user->name])) {
                 $result[$attendance->user->name] = [
@@ -344,10 +344,10 @@ class TeacherController extends Controller
                     'attendance_times' => 0,
                 ];
             }
-
+            
             $result[$attendance->user->name]['attendance_times']++;
         }
-
+        
         return response()->json(array_values($result));
     }
 
@@ -366,6 +366,25 @@ class TeacherController extends Controller
         return response()->json($formattedAnnouncements);
     }
 
-
-
+    public function AddAnnoucement(Request $request)
+    {
+        $request->validate([
+            'course_id' => 'required|exists:courses,id',
+            'title' => 'required|string',
+            'announcement' => 'required|string',
+        ]);
+    
+        $user_id = Auth::id();
+        $announcement = Announcement::create([
+            'user_id' => $user_id, 
+            'course_id' => $request->course_id,
+            'title' => $request->title,
+            'content' => $request->announcement,
+        ]);
+        return response()->json([
+            'message' => 'Announcement created successfully',
+            'announcement' => $announcement,
+        ], 201);
+    }
+    
 }

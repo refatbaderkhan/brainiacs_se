@@ -6,9 +6,10 @@ import Modal from 'react-modal';
 import TeacherContextInitializer from "./TeacherContextInitializer";
 import "../../styles/teacherLandingPage.css";
 import ChatoModal from "./ChatoModal";
+import { useNavigate } from "react-router-dom";
 const TeacherLandingPage = () => {
   const { state, dispatch } = useContext(TeacherContext);
- 
+  const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false); 
   const [isDMsModalOpen, setIsDMsModalOpen] = useState(false); 
   const [newCourseData, setNewCourseData] = useState({
@@ -53,6 +54,10 @@ const TeacherLandingPage = () => {
     
     closeModal();
   };
+  const handleLogout = () => {
+    localStorage.clear(); 
+    navigate('/'); 
+  };
 
   return (
     <div>
@@ -61,14 +66,15 @@ const TeacherLandingPage = () => {
         <div className="teacher-image"></div>
         <h1>{`Hello ${localStorage.getItem("teacher_name")} !`}</h1>
       </div>
+      <button className="logout-button" onClick={handleLogout}>Logout</button>
       <AnnouncementsSection state={state} />
       <div className="courses-header">
         <button className="btn-primary DMs" onClick={openDMsModal}>
           DMs
         </button>
-        <button className="btn-primary create-class" onClick={openModal}>
+        {/* <button className="btn-primary create-class" onClick={openModal}>
           + Create Course
-        </button>
+        </button> */}
       </div>
       <div className="courses-container">
         {state.courses.map((course, index) => (

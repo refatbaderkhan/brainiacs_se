@@ -38,6 +38,7 @@ Route::group(["middleware" => "auth:api"], function () {
             Route::get("/attendance/course/{courseId}", [TeacherController::class, "getAttendanceByCourse"]);
             Route::get("/courses/{courseId}/announcements", [TeacherController::class, "getAnnouncements"]);
             Route::post("create_material", [TeacherController::class, "createMaterial"]);
+            Route::post("create_annoucement", [TeacherController::class, "AddAnnoucement"]);
             Route::post("create_assignment", [TeacherController::class, "createAssignment"]);
             Route::post("create_quiz", [TeacherController::class, "createQuiz"]);
             Route::post("create_grade", [TeacherController::class, "updateGrade"]);
@@ -56,8 +57,9 @@ Route::group(["middleware" => "auth:api"], function () {
     Route::group(["prefix" => "user"], function () {
         Route::get("profile", [AuthController::class, "profile"]);
         Route::post("logout", [AuthController::class, "logout"]);
-        Route::post("messages", [ChatController::class, "message"]);
-        Route::post("roomMessage", [ChatController::class, "roomMessage"]);
+        Route::post("messages" , [ChatController::class , "message"]);
+        Route::post("roomMessage" , [ChatController::class , "roomMessage"]);
+        Route::post("roomAttendance" , [ChatController::class , "roomAttendance"]);
         Route::post("refresh", [AuthController::class, "refresh"]);
     });
 

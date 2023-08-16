@@ -27,7 +27,7 @@
 }
 
 .login_input {
-  width: 250px;
+  width: 100%px;
   padding: 10px;
   margin-bottom: 10px;
   border: 1px solid #ccc;
@@ -57,4 +57,9 @@
 
 .login_button:hover {
   background-color: #33ccff;
+}
+.error-message{
+  text-align: center;
+  border-radius: 10px;
+  margin-top: 10px;
 }

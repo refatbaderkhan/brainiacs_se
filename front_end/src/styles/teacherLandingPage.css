@@ -11,7 +11,7 @@
   padding: 8px;
 }
 .expandable-header:hover {
-  background: #e8762a;
+  background: #ec9256;
 }
 
 .expandable-content {
@@ -60,7 +60,9 @@
   border: 2px solid  ghostwhite; 
 
 }
-
+.DMs{
+  margin-bottom: 10px;
+}
 .greeting{
   margin-top: 20px;
   display: flex;
@@ -133,4 +135,14 @@
   background-color:  #3498db;
   border-radius: 10px;
   color :white
+}
+
+.singleChatItem{
+  height: 70px;
+  align-items: center;
+  padding-bottom: 20px;
+}
+.logout-button{
+  margin-left: 8px;
+  cursor: pointer;
 }
