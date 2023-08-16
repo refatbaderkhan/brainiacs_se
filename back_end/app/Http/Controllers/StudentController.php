@@ -107,16 +107,30 @@ class StudentController extends Controller
     {
         $studentId = auth()->user()->id;
 
-
         $upcomingAssignments = Assignment::where('course_id', $courseId)
-            ->whereDoesntHave('grades', function ($query) use ($studentId) {
-
-                $query->where('user_id', $studentId);
+            ->where(function ($query) use ($studentId) {
+                $query->whereDoesntHave('grades', function ($subQuery) use ($studentId) {
+                    $subQuery->where('user_id', $studentId);
+                })
+                    ->orWhereHas('grades', function ($subQuery) use ($studentId) {
+                        $subQuery->where('user_id', $studentId)
+                            ->whereNull('grade');
+                    });
             })
             ->get();
 
-        return response()->json(['upcoming_assignments' => $upcomingAssignments]);
+        $upcomingAssignmentsWithInfo = [];
+
+        foreach ($upcomingAssignments as $assignment) {
+            $assignmentInfo = Assignment::find($assignment->id);
+            $upcomingAssignmentsWithInfo[] = [
+                'assignment' => $assignmentInfo,
+            ];
+        }
+
+        return response()->json(['upcoming_assignments' => $upcomingAssignmentsWithInfo]);
     }
+
 
 
 

@@ -5,6 +5,7 @@ import "./CourseDetailsPage.css";
 function CourseDetailsPage({ selectedCourse }) {
   const [courseMaterials, setCourseMaterials] = useState([]);
   const [completedAssignments, setCompletedAssignments] = useState([]);
+  const [upcomingAssignments, setUpcomingAssignments] = useState([]);
   const accessToken = localStorage.getItem("token");
 
   useEffect(() => {
@@ -42,6 +43,23 @@ function CourseDetailsPage({ selectedCourse }) {
         .catch((error) => {
           console.error("Error fetching completed assignments:", error);
         });
+
+      // Fetch upcoming assignments for the specific course
+      axios
+        .get(
+          `http://127.0.0.1:8000/api/upcoming-assignments/${selectedCourse.id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+            },
+          }
+        )
+        .then((response) => {
+          setUpcomingAssignments(response.data.upcoming_assignments);
+        })
+        .catch((error) => {
+          console.error("Error fetching upcoming assignments:", error);
+        });
     }
   }, [accessToken, selectedCourse]);
 
@@ -64,6 +82,19 @@ function CourseDetailsPage({ selectedCourse }) {
             {completedAssignment.assignment.title}, Grade:{" "}
             {completedAssignment.grade}
             <p>Description: {completedAssignment.assignment.description}</p>
+          </li>
+        ))}
+      </ul>
+
+      <h3>Upcoming Assignments:</h3>
+      <ul>
+        {upcomingAssignments.map((assignmentInfo) => (
+          <li key={assignmentInfo.assignment.id}>
+            Assignment Title: {assignmentInfo.assignment.title}
+            <br />
+            Description: {assignmentInfo.assignment.description}
+            <br />
+            Due Date: {assignmentInfo.assignment.due_date}
           </li>
         ))}
       </ul>
