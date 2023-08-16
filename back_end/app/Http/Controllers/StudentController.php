@@ -193,30 +193,29 @@ class StudentController extends Controller
     public function submitQuizAnswers(Request $request, $quizId)
     {
         $quiz = Quiz::findOrFail($quizId);
-
         $user = auth()->user();
         $studentId = $user->id;
 
         $answers = $request->input('answers');
+        $quizResults = [];
 
-        // Validate if all questions are attempted
-        if (count($answers) !== $quiz->questions->count()) {
-            return response()->json(['message' => 'Please attempt all questions.'], 400);
-        }
-
-        // Calculate quiz score
+        // Calculate quiz score and provide feedback for each question
         $score = 0;
         foreach ($quiz->questions as $question) {
-            $userAnswer = $answers[$question->id];
-            if ($userAnswer === $question->correct_option) {
+            $userAnswer = $answers[$question->id] ?? null;
+
+            if ($userAnswer === null) {
+                $quizResults[] = ['question_id' => $question->id, 'feedback' => 'Not attempted'];
+            } elseif ($userAnswer === $question->correct_option) {
                 $score++;
+                $quizResults[] = ['question_id' => $question->id, 'feedback' => 'Correct'];
+            } else {
+                $quizResults[] = ['question_id' => $question->id, 'feedback' => 'Incorrect, please try again'];
             }
         }
 
-
-        return response()->json(['score' => $score]);
+        return response()->json(['score' => $score, 'quiz_results' => $quizResults]);
     }
-
 
 
 
