@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Announcement extends Model
 {
-    protected $fillable = ['user_id', 'course_id', 'content'];
+    protected $fillable = ['user_id', 'course_id', 'title', 'content'];
 
     public function user()
     {

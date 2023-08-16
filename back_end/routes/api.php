@@ -57,9 +57,9 @@ Route::group(["middleware" => "auth:api"], function () {
     Route::group(["prefix" => "user"], function () {
         Route::get("profile", [AuthController::class, "profile"]);
         Route::post("logout", [AuthController::class, "logout"]);
-        Route::post("messages" , [ChatController::class , "message"]);
-        Route::post("roomMessage" , [ChatController::class , "roomMessage"]);
-        Route::post("roomAttendance" , [ChatController::class , "roomAttendance"]);
+        Route::post("messages", [ChatController::class, "message"]);
+        Route::post("roomMessage", [ChatController::class, "roomMessage"]);
+        Route::post("roomAttendance", [ChatController::class, "roomAttendance"]);
         Route::post("refresh", [AuthController::class, "refresh"]);
     });
 

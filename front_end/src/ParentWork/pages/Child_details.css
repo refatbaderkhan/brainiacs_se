@@ -124,7 +124,7 @@
 }
 
 .message-form button {
-  background-color: #6495ed;
+  background-color: #db7734;
   color: #fff;
   border: none;
   border-radius: 5px;
@@ -134,7 +134,7 @@
 }
 
 .message-form button:hover {
-  background-color: #0056b3;
+  background-color: #be5a17;
 }
 
 .message-threads {
@@ -229,9 +229,9 @@
 
 .schedule-meeting-form button {
   display: block;
-  width: 5%;
+  width: 7rem;
   padding: 10px;
-  background-color: #6495ed;
+  background-color: #db7734;
   color: #fff;
   border: none;
   border-radius: 3px;
@@ -240,7 +240,7 @@
 }
 
 .schedule-meeting-form button:hover {
-  background-color: #0056b3;
+  background-color: #9c4d19;
 }
 .meeting-message {
   margin-top: 10px;

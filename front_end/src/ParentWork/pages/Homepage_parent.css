@@ -56,6 +56,10 @@
   transition: transform 0.2s;
   text-align: center;
   font-size: 1.5rem;
+  height: 6rem;
+  padding: 0rem 2rem;
+  display: flex;
+  align-items: center;
 }
 
 .card-select:hover {

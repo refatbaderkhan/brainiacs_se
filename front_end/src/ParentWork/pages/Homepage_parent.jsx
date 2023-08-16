@@ -46,6 +46,10 @@ function Homepage_parent() {
   const handleCancel = () => {
     setShowModal(false);
   };
+  const handleLogout = () => {
+    localStorage.clear();
+    navigate("/");
+  };
 
   return (
     <div className="parent-container">
@@ -53,6 +57,9 @@ function Homepage_parent() {
         <div className="parent-image"></div>
         <h1>Hi {parentName} !</h1>
       </div>
+      <button className="logout-button" onClick={handleLogout}>
+        Logout
+      </button>
       <div className="choose-section">
         <h2>What DO You Want To Do ?</h2>
 
@@ -97,7 +104,7 @@ function Homepage_parent() {
                 onClick={() => {
                   setSelectedChild(child);
                   setShowModal(false);
-                  navigate(`/child/${child.id}`, { state: child }); // Passing child info to the route
+                  navigate(`/child/${child.id}`, { state: child });
                 }}
               >
                 {child.name}
