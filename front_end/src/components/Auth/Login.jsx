@@ -19,46 +19,45 @@ const Login = () => {
   const login = async (email, password) => {
     try {
       const response = await fetch("http://127.0.0.1:8000/api/guest/login", {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        email,
-        password,
-      }),
-    });
-    const data = await response.json();
-    localStorage.setItem("token", data.data.token);
-    if (+data.data.role === 2) {
-      localStorage.setItem("teacher_id", data.data.id);
-      localStorage.setItem("teacher_name", data.data.name);
-      navigate("/teacher");
-      dispatch({
-        type: "ADD_TEACHER_INFO",
-        payload: { teacherId: data.data.id, teacherName: data.data.name },
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email,
+          password,
+        }),
       });
-    } else if (+data.data.role === 4) {
-      localStorage.setItem("id", data.data.id);
-      localStorage.setItem("name", data.data.name);
-      navigate("/parent");
-    } else if (+data.data.role === 1) {
-      navigate("/admin");
-    } else if (+data.data.role === 3) {
-      localStorage.setItem("id", data.data.id);
-      localStorage.setItem("name", data.data.name);
-      navigate("/student");
-    } else {
-      setErrorMessage("Invalid email or password");
-      setDisplayError(true);
-    }
+      const data = await response.json();
+      localStorage.setItem("token", data.data.token);
+      if (+data.data.role === 2) {
+        localStorage.setItem("teacher_id", data.data.id);
+        localStorage.setItem("teacher_name", data.data.name);
+        navigate("/teacher");
+        dispatch({
+          type: "ADD_TEACHER_INFO",
+          payload: { teacherId: data.data.id, teacherName: data.data.name },
+        });
+      } else if (+data.data.role === 4) {
+        localStorage.setItem("id", data.data.id);
+        localStorage.setItem("name", data.data.name);
+        navigate("/parent");
+      } else if (+data.data.role === 1) {
+        navigate("/admin");
+      } else if (+data.data.role === 3) {
+        localStorage.setItem("id", data.data.id);
+        localStorage.setItem("name", data.data.name);
+        navigate("/student");
+      } else {
+        setErrorMessage("Invalid email or password");
+        setDisplayError(true);
+      }
     } catch (error) {
       console.error("Error logging in:", error);
       setErrorMessage("Invalid email or password");
       setDisplayError(true);
     }
-    
   };
 
   const handleEmailChange = (e) => {
@@ -72,13 +71,12 @@ const Login = () => {
     e.preventDefault();
     login(email, password);
   };
-  
+
   return (
     <div className="loginPage">
       <div className="login_ncontainer">
         <div className="logo">
-         
-          <img src={require('../assets/brainiacsLogo.PNG')} />
+          <img src={require("../assets/brainiacsLogo.PNG")} />
         </div>
         <form className="login_form" onSubmit={handleSubmit}>
           <label className="login_label" htmlFor="email">
@@ -100,7 +98,7 @@ const Login = () => {
             className="login_input"
             name="password"
             id="password"
-            type="text"
+            type="password"
             value={password}
             onChange={handlePassChange}
           />
