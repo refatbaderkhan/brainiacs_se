@@ -21,13 +21,24 @@ const AnnouncementsSection = ({ state }) => {
   //     }
   //   }
   // }
-    const handlePostAnnoucement =()=>{
+    const handlePostAnnoucement =async () => {
       console.log(announcementContent , selectedCourseId)
       const newAnnouncement = {
         course_id: +selectedCourseId,
         title:announcementTitle,
         announcement: announcementContent
     }
+    const response =await fetch("http://127.0.0.1:8000/api/teacher/create_annoucement",{
+      method:"POST",
+      headers:{
+        "Authorization":`Bearer ${localStorage.getItem('token')}`,
+       'Accept':"application/json",
+       'Content-Type':"application/json"
+      },
+      body:JSON.stringify(newAnnouncement)
+    })
+    const data = await response.json()
+    console.log(data)
       dispatch({
         type: "ADD_SINGLE_ANNOUNCEMENT",
         payload: newAnnouncement,
@@ -78,13 +89,12 @@ const AnnouncementsSection = ({ state }) => {
 
         <button onClick={handlePostAnnoucement} className="post-button">Post Announcement</button>
       </div>
-      <br />
-      <br />
-      <Carousel students={allStudents} />
+     
+      {/* <Carousel students={allStudents} />
       <div className="search-bar">
         <input type="text" placeholder="Search for courses" />
         <button className="search-button">Search</button>
-      </div>
+      </div> */}
     </div>
   );
 };

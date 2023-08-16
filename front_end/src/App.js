@@ -7,6 +7,7 @@ import ChatRoom from './components/Teacher/ChatRoom'
 import AdminLandingPage from './admin/pages/AdminLandingPage'
 import Login from './components/Auth/Login'
 import Student_Homepage from './StudentWork/pages/Student_Homepage'
+import ClassRoomChatRoom from './components/Teacher/ClassRoomChatRoom'
 
 function App(){
   
@@ -24,6 +25,7 @@ function App(){
             <Route path="/" element={<Login/>}/>
             <Route path="/teacher" element={<TeacherLandingPage/>}/>
             <Route path="/ChatRoom/:userId" element={<ChatRoom/>}/>
+            <Route path="/ClassRoomChatRoom/:classId/:teacherId" element={<ClassRoomChatRoom/>}/>
             <Route path='/login' element={<Login/>}/>
             <Route path="/admin" element={<AdminLandingPage />} />
             <Route path='/admin/*' element={<h1>404 Page not Found</h1>}/>

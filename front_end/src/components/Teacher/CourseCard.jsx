@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-
+import { useNavigate } from "react-router-dom";
 import ExpandableTree from "./ExpandableTree";
 import StudentAssignments from "./StudentAssignments";
 import StudentReports from "./StudentReports";
@@ -10,6 +10,7 @@ import TeacherContext from "../../context/TeacherContext";
 
 const CourseCard = ({ course, reportCards, announcements }) => {
   console.log(reportCards)
+  const navigate = useNavigate()
   const { state, dispatch } = useContext(TeacherContext);
   const [allAssignmentsExpanded, setAllassignmentsExpanded] = useState(false);
   const [allQuizzesExpanded, setAllQuizzesExpanded] = useState(false);
@@ -145,11 +146,19 @@ const CourseCard = ({ course, reportCards, announcements }) => {
     newExpandedStates[index] = !newExpandedStates[index];
     setAnnouncementExpandedStates(newExpandedStates);
   };
+  const goToRoom = (courseId , courseTitle , teacherId)=>{
+    console.log(teacherId)
+    localStorage.setItem("course_title" , courseTitle)
+    localStorage.setItem("course_id" , courseId)
+    navigate(`/ClassRoomChatRoom/${courseId}/${teacherId}` ,)
+  }
+  
   return (
     <div className="course-card">
       <div className="course-card-title">
         <h3>{course.title}</h3>
-        <button className="btn-primary open-class">Open class</button>
+        {console.log(course)}
+        <button onClick={()=>goToRoom(course.id , course.title ,  course.teacher_id)} className="btn-primary open-class">Open class</button>
         <button
           className="btn-primary add-assignment"
           onClick={openAssignmentModal}

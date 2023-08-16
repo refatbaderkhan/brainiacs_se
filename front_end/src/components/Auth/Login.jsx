@@ -6,10 +6,19 @@ const Login = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
+  const [errorMessage, setErrorMessage] = useState("");
+  const [displayError, setDisplayError] = useState(false);
   const { state, dispatch } = useContext(TeacherContext);
+  useEffect(() => {
+    if (displayError) {
+      setTimeout(() => {
+        setDisplayError(false);
+      }, 5000);
+    }
+  }, [displayError]);
   const login = async (email, password) => {
-    const response = await fetch("http://127.0.0.1:8000/api/guest/login", {
+    try {
+      const response = await fetch("http://127.0.0.1:8000/api/guest/login", {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -40,8 +49,16 @@ const Login = () => {
       localStorage.setItem("id", data.data.id);
       localStorage.setItem("name", data.data.name);
       navigate("/student");
+    } else {
+      setErrorMessage("Invalid email or password");
+      setDisplayError(true);
     }
-    console.log(data);
+    } catch (error) {
+      console.error("Error logging in:", error);
+      setErrorMessage("Invalid email or password");
+      setDisplayError(true);
+    }
+    
   };
 
   const handleEmailChange = (e) => {
@@ -55,9 +72,14 @@ const Login = () => {
     e.preventDefault();
     login(email, password);
   };
+  
   return (
     <div className="loginPage">
       <div className="login_ncontainer">
+        <div className="logo">
+         
+          <img src={require('../assets/brainiacsLogo.PNG')} />
+        </div>
         <form className="login_form" onSubmit={handleSubmit}>
           <label className="login_label" htmlFor="email">
             Email
@@ -86,10 +108,10 @@ const Login = () => {
           <button className="login_button" type="submit">
             Login
           </button>
+          {displayError && <div className="error-message">{errorMessage}</div>}
         </form>
       </div>
     </div>
   );
 };
-
 export default Login;

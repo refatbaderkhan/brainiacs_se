@@ -1,7 +1,6 @@
 import React, { useEffect, useState ,useContext} from 'react';
 import TeacherContext from '../../context/TeacherContext';
-
-import { useParams } from 'react-router-dom';
+import { useParams , useNavigate } from 'react-router-dom';
 import '../../styles/ChatRoom.css'
 import Pusher from 'pusher-js'
 const ChatRoom = ({ userId }) => {
@@ -10,7 +9,7 @@ const ChatRoom = ({ userId }) => {
   const [messages, setMessages] = useState([]);
   const [message, setMessage] = useState([]);
   const { state, dispatch } = useContext(TeacherContext);
-
+  const navigate  =useNavigate()
 
   const {id , messages:teacherMessages} = state
   const params = useParams()
@@ -64,6 +63,12 @@ const ChatRoom = ({ userId }) => {
   const handleMessageChange = (event) => {
     setMessage(event.target.value);
   };
+  const handleBackButton = () => {
+    localStorage.removeItem('roomId');
+    localStorage.removeItem('receiver_name');
+    localStorage.removeItem('receiver_id');
+   navigate('/teacher'); 
+  };
 
   const handleSubmit = async () => {
     if (localStorage.getItem('teacher_name').trim() !== '' && message.trim() !== '') {
@@ -93,6 +98,7 @@ const ChatRoom = ({ userId }) => {
   return (
     <div className='chat-content'>
       <h2 className='receiverName'>
+      <button onClick={handleBackButton}>Back</button>
         {localStorage.getItem("receiver_name")}
       </h2>
       

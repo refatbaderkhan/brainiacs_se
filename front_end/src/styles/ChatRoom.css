@@ -97,3 +97,14 @@
   display: flex;
   gap: 3px;
 }
+
+.chatroom-header{
+  width: 500px;
+  color: black;
+  display: flex;
+  justify-content: space-between;
+  text-align: center;
+}
+.attendance_count{
+  margin-top: 26px
+}

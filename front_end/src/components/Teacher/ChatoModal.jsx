@@ -56,7 +56,7 @@ const ChatoModal = ({ isDMsModalOpen, closeDMsModal }) => {
             {console.log(user)}
               </div>
               <div>
-                <button onClick={()=>handleChatStart(user.id , user.name)} style={{width:"100px" ,height:"20px"  }}>chat</button>
+                <button className='singleChatItem' onClick={()=>handleChatStart(user.id , user.name)} style={{width:"100px" ,height:"20px"  }}>chat</button>
               </div>
            
             </div>
