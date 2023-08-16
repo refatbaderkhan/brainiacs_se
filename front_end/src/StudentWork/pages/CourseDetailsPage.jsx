@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import QuizDetails from "../components_student/QuizDetails";
 import "./CourseDetailsPage.css";
 
 function CourseDetailsPage({ selectedCourse }) {
   const [courseMaterials, setCourseMaterials] = useState([]);
   const [completedAssignments, setCompletedAssignments] = useState([]);
   const [upcomingAssignments, setUpcomingAssignments] = useState([]);
+  const [quizzes, setQuizzes] = useState([]);
+  const [selectedQuiz, setSelectedQuiz] = useState(null);
   const accessToken = localStorage.getItem("token");
 
   useEffect(() => {
@@ -60,6 +63,19 @@ function CourseDetailsPage({ selectedCourse }) {
         .catch((error) => {
           console.error("Error fetching upcoming assignments:", error);
         });
+      // Fetch quizzes for the specific course
+      axios
+        .get(`http://127.0.0.1:8000/api/courses/${selectedCourse.id}/quizzes`, {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        })
+        .then((response) => {
+          setQuizzes(response.data.quizzes);
+        })
+        .catch((error) => {
+          console.error("Error fetching quizzes:", error);
+        });
     }
   }, [accessToken, selectedCourse]);
 
@@ -99,6 +115,18 @@ function CourseDetailsPage({ selectedCourse }) {
             Description: {assignmentInfo.assignment.description}
             <br />
             Due Date: {assignmentInfo.assignment.due_date}
+          </li>
+        ))}
+      </ul>
+
+      <h3>Quizzes:</h3>
+      <ul>
+        {quizzes.map((quiz) => (
+          <li key={quiz.id}>
+            {quiz.title}
+            <button onClick={() => setSelectedQuiz(quiz.id)}>View Quiz</button>
+            {/* Render QuizDetails component if this quiz is selected */}
+            {selectedQuiz === quiz.id && <QuizDetails quizId={selectedQuiz} />}
           </li>
         ))}
       </ul>
