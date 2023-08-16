@@ -107,9 +107,10 @@ Route::group(["middleware" => "auth:api"], function () {
 
 
     //student progress
-    Route::get("completed-assignments", [StudentController::class, "getCompletedAssignments"]);
-    Route::get("upcoming-assignments", [StudentController::class, "getUpcomingAssignments"]);
-    Route::get("grades", [StudentController::class, "getGrades"]);
+    Route::get("completed-assignments/{courseId}", [StudentController::class, "getCompletedAssignments"]);
+    Route::get("upcoming-assignments/{courseId}", [StudentController::class, "getUpcomingAssignments"]);
+    Route::get("grades/{courseId}", [StudentController::class, "getGrades"]);
+
     Route::get("overall-progress", [StudentController::class, "getOverallProgress"]);
 
 

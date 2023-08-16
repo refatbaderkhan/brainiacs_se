@@ -4,11 +4,12 @@ import "./CourseDetailsPage.css";
 
 function CourseDetailsPage({ selectedCourse }) {
   const [courseMaterials, setCourseMaterials] = useState([]);
-
+  const [completedAssignments, setCompletedAssignments] = useState([]);
   const accessToken = localStorage.getItem("token");
 
   useEffect(() => {
     if (selectedCourse) {
+      // Fetch course materials
       axios
         .get(
           `http://127.0.0.1:8000/api/course-materials/${selectedCourse.id}`,
@@ -24,6 +25,23 @@ function CourseDetailsPage({ selectedCourse }) {
         .catch((error) => {
           console.error("Error fetching course materials:", error);
         });
+
+      // Fetch completed assignments for the specific course
+      axios
+        .get(
+          `http://127.0.0.1:8000/api/completed-assignments/${selectedCourse.id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+            },
+          }
+        )
+        .then((response) => {
+          setCompletedAssignments(response.data.completed_assignments);
+        })
+        .catch((error) => {
+          console.error("Error fetching completed assignments:", error);
+        });
     }
   }, [accessToken, selectedCourse]);
 
@@ -36,6 +54,17 @@ function CourseDetailsPage({ selectedCourse }) {
       <ul>
         {courseMaterials.map((material) => (
           <li key={material.id}>{material.title}</li>
+        ))}
+      </ul>
+      <h3>Completed Assignments:</h3>
+      <ul>
+        {completedAssignments.map((completedAssignment) => (
+          <li key={completedAssignment.id}>
+            Assignment ID: {completedAssignment.assignment_id}, Title:{" "}
+            {completedAssignment.assignment.title}, Grade:{" "}
+            {completedAssignment.grade}
+            <p>Description: {completedAssignment.assignment.description}</p>
+          </li>
         ))}
       </ul>
     </div>

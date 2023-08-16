@@ -86,41 +86,50 @@ class StudentController extends Controller
     //part b student work 
 
 
-    public function getCompletedAssignments()
+    public function getCompletedAssignments($courseId)
     {
         $studentId = auth()->user()->id;
-        $completedAssignments = Grade::where('user_id', $studentId)->pluck('assignment_id')->toArray();
 
-        // Fetch the completed assignments based on the IDs
-        $assignments = Assignment::whereIn('id', $completedAssignments)->get();
+        // Fetch completed assignments for the specific course
+        $completedAssignments = Grade::where('user_id', $studentId)
+            ->whereHas('assignment', function ($query) use ($courseId) {
+                $query->where('course_id', $courseId);
+            })
+            ->whereNotNull('grade')
+            ->with('assignment')
+            ->get();
 
-        return response()->json(['completed_assignments' => $assignments]);
+        return response()->json(['completed_assignments' => $completedAssignments]);
     }
 
-    public function getUpcomingAssignments()
+
+    public function getUpcomingAssignments($courseId)
     {
         $studentId = auth()->user()->id;
 
-        // Eager load the enrolled courses and their assignments
-        $enrolledCourses = Course::whereHas('students', function ($query) use ($studentId) {
-            $query->where('user_id', $studentId);
-        })->with('assignments.grades')->get();
 
-        // Filter out assignments that are already graded
-        $upcomingAssignments = $enrolledCourses->flatMap(function ($course) use ($studentId) {
-            return $course->assignments->filter(function ($assignment) use ($studentId) {
-                return $assignment->grades->where('user_id', $studentId)->isEmpty();
-            });
-        });
+        $upcomingAssignments = Assignment::where('course_id', $courseId)
+            ->whereDoesntHave('grades', function ($query) use ($studentId) {
+
+                $query->where('user_id', $studentId);
+            })
+            ->get();
 
         return response()->json(['upcoming_assignments' => $upcomingAssignments]);
     }
 
 
-    public function getGrades()
+
+    public function getGrades($courseId)
     {
         $studentId = auth()->user()->id;
-        $grades = Grade::where('user_id', $studentId)->get();
+
+        // Fetch grades for the specific course
+        $grades = Grade::where('user_id', $studentId)
+            ->whereHas('assignment', function ($query) use ($courseId) {
+                $query->where('course_id', $courseId);
+            })
+            ->get();
 
         return response()->json(['grades' => $grades]);
     }
