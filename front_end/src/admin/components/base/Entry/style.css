@@ -7,10 +7,9 @@
   padding: 20px;
 }
 
-
-h3 {
+.entry-container h3 {
   margin: 0 20px;
-  flex: 1; 
+  flex: 1;
 }
 
 .buttons-container {
@@ -19,5 +18,3 @@ h3 {
   width: 150px; /* Set a fixed width for the button container */
   flex-shrink: 0; /* Prevent the button container from shrinking */
 }
-
-

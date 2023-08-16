@@ -14,3 +14,8 @@
 .user-management {
   margin: auto;
 }
+
+.card-select {
+  display: flex;
+  justify-content: center;
+}

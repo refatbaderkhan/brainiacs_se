@@ -1,13 +1,10 @@
 import React, { useState, useEffect } from "react";
-import './style.css'
-import ModifyUser from '../ModifyUser'
-import DeleteUser from '../DeleteUser'
+import "./style.css";
+import ModifyUser from "../ModifyUser";
+import DeleteUser from "../DeleteUser";
 
-
-const Entry = ({id, name, email, role, onUserDeleted, onModify}) => {
-
+const Entry = ({ id, name, email, role, onUserDeleted, onModify }) => {
   const [isModifyUserVisible, setIsModifyUserVisible] = useState(false);
-
 
   const handleModifyClick = () => {
     setIsModifyUserVisible(true);
@@ -27,14 +24,13 @@ const Entry = ({id, name, email, role, onUserDeleted, onModify}) => {
     setIsDeleteUserVisible(false);
   };
 
-  
   const handleUserDeleted = () => {
-    setIsDeleteUserVisible(false); 
-    onUserDeleted(id); 
+    setIsDeleteUserVisible(false);
+    onUserDeleted(id);
   };
 
   const handleUserModified = (modifiedUser) => {
-    setIsModifyUserVisible(false); 
+    setIsModifyUserVisible(false);
     onModify(modifiedUser);
   };
 
@@ -52,35 +48,45 @@ const Entry = ({id, name, email, role, onUserDeleted, onModify}) => {
 
   return (
     <div>
-    <div className='entry-container'>
-      <h3>Name:
-      <br></br>
-        {name}</h3>
-      <h3>Email:
+      <div className="entry-container">
+        <h3>
+          Name:
+          <br></br>
+          {name}
+        </h3>
+        <h3>
+          Email:
+          <br></br>
+          {email}
+        </h3>
         <br></br>
-        {email}</h3>
-        <br></br>
-        <h3>Role: 
-        <br></br>
-        {mapRoleToLabel(role)}</h3>
-      <div className="button-container">
-      <button className='card-select' onClick={handleModifyClick} >manage</button>
-      <button className='card-select' onClick={handleDeleteClick} >delete</button>
+        <h3>
+          Role:
+          <br></br>
+          {mapRoleToLabel(role)}
+        </h3>
+        <div className="button-container">
+          <button className="card-select" onClick={handleModifyClick}>
+            manage
+          </button>
+          <button className="card-select" onClick={handleDeleteClick}>
+            delete
+          </button>
+        </div>
       </div>
-    </div>
-    <div>
-    {isModifyUserVisible && (
-        <ModifyUser
-          id={id}
-          name={name}
-          email={email}
-          role={role}
-          onCancel={handleCancelModifyClick}
-          onModify={handleUserModified}
-        />
-      )}
-    </div>
-    {isDeleteUserVisible && (
+      <div>
+        {isModifyUserVisible && (
+          <ModifyUser
+            id={id}
+            name={name}
+            email={email}
+            role={role}
+            onCancel={handleCancelModifyClick}
+            onModify={handleUserModified}
+          />
+        )}
+      </div>
+      {isDeleteUserVisible && (
         <DeleteUser
           id={id}
           onCancel={handleCancelDeleteClick}
@@ -88,7 +94,7 @@ const Entry = ({id, name, email, role, onUserDeleted, onModify}) => {
         />
       )}
     </div>
-  )
-}
+  );
+};
 
-export default Entry
+export default Entry;

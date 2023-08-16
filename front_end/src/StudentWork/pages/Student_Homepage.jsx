@@ -2,12 +2,12 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./Student_Homepage.css";
 import CourseDetailsPage from "./CourseDetailsPage";
-
+import { useNavigate } from "react-router-dom";
 function StudentHomePage() {
   const [courses, setCourses] = useState([]);
   const [enrolledCourses, setEnrolledCourses] = useState([]);
   const [selectedCourse, setSelectedCourse] = useState(null);
-
+  const navigate = useNavigate();
   const accessToken = localStorage.getItem("token");
 
   useEffect(() => {
@@ -77,11 +77,17 @@ function StudentHomePage() {
   const selectCourse = (course) => {
     setSelectedCourse(course);
   };
+  const handleLogout = () => {
+    localStorage.clear();
+    navigate("/");
+  };
 
   return (
     <div className="student-homepage">
       <h1>Welcome, {localStorage.getItem("name")}!</h1>
-
+      <button className="logout-button" onClick={handleLogout}>
+        Logout
+      </button>
       <h2>Enrolled Courses:</h2>
       <div className="course-cards">
         {enrolledCourses.map((enrolledCourse) => (
@@ -101,7 +107,6 @@ function StudentHomePage() {
           </div>
         ))}
       </div>
-
       {selectedCourse && (
         <div className="selected-course">
           <CourseDetailsPage selectedCourse={selectedCourse.course} />
