@@ -4,9 +4,9 @@ import ModifyUser from '../ModifyUser'
 import DeleteUser from '../DeleteUser'
 
 
-const Entry = ({id, name, email, role, onUserDeleted }) => {
+const Entry = ({id, name, email, role, onUserDeleted, onModify}) => {
 
-  const [isModifyUserVisible, setIsModifyUserVisible] = useState(false); // Initialize state
+  const [isModifyUserVisible, setIsModifyUserVisible] = useState(false);
 
 
   const handleModifyClick = () => {
@@ -23,24 +23,50 @@ const Entry = ({id, name, email, role, onUserDeleted }) => {
     setIsDeleteUserVisible(true);
   };
 
-  const handleCancelClick = () => {
+  const handleCancelDeleteClick = () => {
     setIsDeleteUserVisible(false);
   };
 
   
   const handleUserDeleted = () => {
-    setIsDeleteUserVisible(false); // Close the DeleteUser component
-    onUserDeleted(id); // Pass the user ID to the callback
+    setIsDeleteUserVisible(false); 
+    onUserDeleted(id); 
+  };
+
+  const handleUserModified = (modifiedUser) => {
+    setIsModifyUserVisible(false); 
+    onModify(modifiedUser);
+  };
+
+  const mapRoleToLabel = (roleValue) => {
+    if (roleValue === "teacher" || roleValue === "2") {
+      return "teacher";
+    } else if (roleValue === "student" || roleValue === "3") {
+      return "student";
+    } else if (roleValue === "parent" || roleValue === "4") {
+      return "parent";
+    } else {
+      return "Role";
+    }
   };
 
   return (
     <div>
     <div className='entry-container'>
-      <h2>{name}</h2>
-      <h2>{email}</h2>
-      <h2>{role}</h2>
+      <h3>Name:
+      <br></br>
+        {name}</h3>
+      <h3>Email:
+        <br></br>
+        {email}</h3>
+        <br></br>
+        <h3>Role: 
+        <br></br>
+        {mapRoleToLabel(role)}</h3>
+      <div className="button-container">
       <button className='card-select' onClick={handleModifyClick} >manage</button>
       <button className='card-select' onClick={handleDeleteClick} >delete</button>
+      </div>
     </div>
     <div>
     {isModifyUserVisible && (
@@ -49,14 +75,15 @@ const Entry = ({id, name, email, role, onUserDeleted }) => {
           name={name}
           email={email}
           role={role}
-          onCancel={handleCancelModifyClick} // Pass the cancel handler to ModifyUser
+          onCancel={handleCancelModifyClick}
+          onModify={handleUserModified}
         />
       )}
     </div>
     {isDeleteUserVisible && (
         <DeleteUser
           id={id}
-          onCancel={handleCancelClick} // Pass the cancel handler to ModifyUser
+          onCancel={handleCancelDeleteClick}
           onUserDeleted={handleUserDeleted}
         />
       )}

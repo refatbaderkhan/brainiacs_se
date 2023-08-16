@@ -1,4 +1,4 @@
-.entry-container {
+.create-container {
   display: flex;
   align-items: space-around;
   background-color: #6495ed;
@@ -15,7 +15,15 @@ input {
   border-radius: 6px;
 }
 
-button {
+.button {
+  margin:3px;
+  padding:6px;
+  border: 0.5px solid;
+  border-radius: 6px;
+  background-color: #db7734;
+}
+
+select {
   margin:3px;
   padding:6px;
   border: 0.5px solid;

@@ -2,15 +2,17 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import './style.css'
 
-const ModifyUser = ({id, name, email, role, onCancel}) => {
+const ModifyUser = ({id, name, email, role, onCancel, onModify}) => {
   const [data, setData] = useState({
     name: "",
     email: "",
     role: ""
   })
-  console.log(id)
+
+  const [response, setResponse] = useState("");
+
+
   const link = `http://127.0.0.1:8000/api/users/${id}`
-  console.log(link)
   const token = localStorage.getItem('token')
   const headers = { Authorization: `Bearer ${token}`,};
 
@@ -19,12 +21,18 @@ const ModifyUser = ({id, name, email, role, onCancel}) => {
   }
 
   const handleSubmit = async () => {
-
-    try {
-      const users = await axios.post(link, data, { headers });
-      console.log('men el modify', users.data);
-    } catch (error) {
-      console.error("Error fetching data:", error);
+    if (data.name && data.email && data.role) {
+      try {
+        const users = await axios.post(link, data, { headers });
+        const modifiedUser = users.data.user;
+        onModify(modifiedUser);
+        setResponse("User modified successfully.");
+      } catch (error) {
+        console.error("Error fetching data:", error);
+        setResponse("An error occurred. Please make sure that you entered a valid email, and try again.");
+      }
+    } else {
+      setResponse("Please fill in all fields before submitting.");
     }
   };
 
@@ -36,7 +44,13 @@ const ModifyUser = ({id, name, email, role, onCancel}) => {
       Current Email: {email}
       <input name="email" placeholder="Enter New Email" defaultValue={data.email} value={data.email} onChange={handleDataChange}/>
       Current Role: {role}
-      <input name="role" placeholder="Enter New Role"  defaultValue={data.password} value={data.password}  onChange={handleDataChange}/>
+      <select name="role" value={data.role} onChange={handleDataChange}>
+        <option value="">Select User Type</option>
+        <option value="2">Teacher</option>
+        <option value="3">Student</option>
+        <option value="4">Parent</option>
+      </select>
+      <p>{response}</p>
       <button onClick={handleSubmit}>Submit</button>
       <button onClick={onCancel}>Cancel</button>
     </div>
