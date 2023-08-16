@@ -35,7 +35,7 @@ class AdminCourseController extends Controller
 
         return response()->json([
             "message"=>"course created successfully",
-            "updatedCourseInfo"=>$course
+            "course"=>$course
         ]);
 
     }
@@ -62,5 +62,46 @@ class AdminCourseController extends Controller
             'message' => "Course Deleted"
         ]);
     }
+
+    public function getCourses()
+    {
+        $courses = Course::all();
+
+        return response()->json([
+            "message" => "All courses retrieved successfully",
+            "courses" => $courses
+        ]);
+    }
     
+    public function updateCourse(Request $request, $id)
+{
+    $course = Course::find($id);
+
+
+    $request->validate([
+        'title' => 'required|string|max:255',
+        'description' => 'required|string',
+        'enrollment_limit' => 'required|integer|min:0',
+        'teacher_id' => [
+            'required',
+            'integer',
+            Rule::exists('users', 'id')->where(function ($query) {
+                $query->where('role', 2);
+            }),
+        ],
+    ]);
+
+    $course->title = $request->title;
+    $course->description = $request->description;
+    $course->enrollment_limit = $request->enrollment_limit;
+    $course->teacher_id = $request->teacher_id;
+    $course->save();
+
+    return response()->json([
+        "message" => "Course updated successfully",
+        "course" => $course
+    ]);
+}
+
+
 }

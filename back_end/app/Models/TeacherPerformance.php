@@ -10,6 +10,9 @@ class TeacherPerformance extends Model
 
     protected $fillable = ['user_id', 'course_id', 'student_count', 'average_grade', 'completion_rate'];
 
+    protected $table = 'teacher_performances';
+
+
     public function user()
     {
         return $this->belongsTo(User::class);
