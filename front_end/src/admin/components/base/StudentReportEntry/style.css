@@ -1,0 +1,9 @@
+.entry-container {
+  display: flex;
+  align-items: space-around;
+  background-color: #6495ed;
+  border: 2px #6495ed solid;
+  border: 2px #db7734 solid;
+  border-radius: 6px;
+  padding: 20px;
+  }

@@ -4,30 +4,74 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import UserManagement from "../components/UI/UserManagement";
 import CourseManagement from "../components/UI/CourseManagement";
+import Reports from "../components/UI/Reports";
 
 const AdminLandingPage = () => {
-  const [test, setTest] = useState(null);
   const [sectionToShow, setSectionToShow] = useState("");
+  const [userslist, setUsers] = useState([]);
+  const [courseslist, setCourses] = useState([]);
+  const [studentsReportsList, setStudentsReports] = useState([]);
+  const [teachersReportsList, setTeachersReports] = useState([]);
+
+  const teachers = userslist.filter(item => item.role === 'teacher');
+
 
   const token = localStorage.getItem('token')
   const headers = { Authorization: `Bearer ${token}`,};
 
-  const fetchResponse = async () => {
+  const fetchUsers = async () => {
     try {
-      const response = await axios.get("http://127.0.0.1:8000/api/trust_issues", {
+      const response = await axios.get("http://127.0.0.1:8000/api/users/get", {
         headers });
-      console.log(response.data.message);
+      const usersdata = response.data.users
+      setUsers(usersdata)
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  }
+
+  const fetchCourses = async () => {
+    try {
+      const response = await axios.get("http://127.0.0.1:8000/api/courses/get", {
+        headers });
+      const coursesdata = response.data.courses
+      setCourses(coursesdata)
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  }
+
+  const fetchStudentsReports = async () => {
+    try {
+      const response = await axios.get("http://127.0.0.1:8000/api/reports/student-progress/", {
+        headers });
+      const reportData = response.data.performance
+      setStudentsReports(reportData)
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  }
+
+  const fetchTeachersReports = async () => {
+    try {
+      const response = await axios.get("http://127.0.0.1:8000/api/reports/teacher-performance/", {
+        headers });
+      const reportData = response.data.performance
+      setTeachersReports(reportData)
     } catch (error) {
       console.error("Error fetching data:", error);
     }
   }
   
   useEffect(()=>{
-    fetchResponse();
+    fetchUsers();
+    fetchCourses();
+    fetchStudentsReports();
+    fetchTeachersReports();
   },[])
 
   const handleSectionClick = (section) => {
-    setSectionToShow(section); // Set the selected section
+    setSectionToShow(section);
   };
 
 
@@ -35,45 +79,39 @@ const AdminLandingPage = () => {
   return (
     <div className="admin-container">
       <div className="greeting_parent">
-        <div className="parent-image"></div>
-        <h1>{`Hello Parent !`}</h1>
+        <h1>Adminstration Panel</h1>
     </div>
-      <h1>ya allah {test}</h1>
       <div className="card-selection">
           <div className="card-select" onClick={() => handleSectionClick("users")}>
             <p>
-              Users Management
+              Users      
+              Management
             </p>
           </div>
           <div className="card-select" onClick={() => handleSectionClick("courses")}>
             <p>
-              Courses Management
+              Courses
             </p>
           </div>
-          <div className="card-select" onClick={handleSectionClick}>
+          <div className="card-select" onClick={() => handleSectionClick("reports")}>
             <p>
-              Reporting and Analytics
-            </p>
-          </div>
-          <div className="card-select" onClick={handleSectionClick}>
-            <p>
-              System Configuration
-            </p>
-          </div>
-          <div className="card-select" onClick={handleSectionClick}>
-            <p>
-              Support and Maintenance
+              Reports & Statistics
             </p>
           </div>
       </div>
       {sectionToShow === "users" && (
-        <div className="card-selection auto-margin">
-          <UserManagement />
+        <div className="user-management auto-margin">
+          <UserManagement userslist={userslist} />
         </div>
       )}
       {sectionToShow === "courses" && (
-        <div className="card-selection auto-margin">
-          <CourseManagement />
+        <div className="user-management auto-margin">
+          <CourseManagement courseslist={courseslist} />
+        </div>
+      )}      
+      {sectionToShow === "reports" && (
+        <div className="user-management auto-margin">
+          <Reports studentsReportsList={studentsReportsList} teachersReportsList={teachersReportsList} userslist={userslist} courseslist={courseslist}/>
         </div>
       )}
     </div>

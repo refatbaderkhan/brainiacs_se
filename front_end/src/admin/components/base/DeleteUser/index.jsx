@@ -5,11 +5,7 @@ import './style.css'
 
 const DeleteUser = ({id, onCancel, onUserDeleted }) => {
 
-  console.log({id});
-
-  console.log(id)
   const link = `http://127.0.0.1:8000/api/users/${id}`
-  console.log(link)
   const token = localStorage.getItem('token')
   const headers = { Authorization: `Bearer ${token}`,};
 
@@ -18,8 +14,7 @@ const DeleteUser = ({id, onCancel, onUserDeleted }) => {
 
     try {
       const users = await axios.delete(link, { headers });
-      console.log('men el delete', users.data);
-      onUserDeleted(id); // Pass the user ID to the callback in UserManagement
+      onUserDeleted(id);
     } catch (error) {
       console.error("Error fetching data:", error);
     }

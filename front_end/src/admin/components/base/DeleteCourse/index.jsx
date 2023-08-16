@@ -1,12 +1,24 @@
 import React, { useState, useEffect } from "react";
+import axios from "axios";
+
 import './style.css'
 
-const DeleteCourse = ({id, onCancel}) => {
+const DeleteCourse = ({id, onCancel, onCourseDeleted }) => {
 
-  const handleSubmit = () =>
-  console.log({id});
+  const link = `http://127.0.0.1:8000/api/courses/${id}`
+  const token = localStorage.getItem('token')
+  const headers = { Authorization: `Bearer ${token}`,};
 
 
+  const handleSubmit = async () => {
+
+    try {
+      const courses = await axios.delete(link, { headers });
+      onCourseDeleted(id);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
 
   return (
     <div className='modify-container column'>

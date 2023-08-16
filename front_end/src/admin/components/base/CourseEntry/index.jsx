@@ -1,54 +1,82 @@
 import React, { useState, useEffect } from "react";
 import './style.css'
-import ModifyUser from '../ModifyUser'
-import DeleteUser from '../DeleteUser'
 import ModifyCourse from '../ModifyCourse'
 import DeleteCourse from '../DeleteCourse'
 
 
-const CourseEntry = ({id, title, enrollment_limit }) => {
+const CourseEntry = ({id, title, description, enrollment_limit, teacher_id, onCourseDeleted, onModify}) => {
 
-  const [isModifyCourseVisible, setIsModifyCourseVisible] = useState(false);
+  const [isModifyCourseVisible, setisModifyCourseVisible] = useState(false);
+
 
   const handleModifyClick = () => {
-    setIsModifyCourseVisible(true);
+    setisModifyCourseVisible(true);
   };
 
   const handleCancelModifyClick = () => {
-    setIsModifyCourseVisible(false);
+    setisModifyCourseVisible(false);
   };
 
-  const [isDeleteCourseVisible, setIsDeleteCourseVisible] = useState(false);
+  const [isDeleteCourseVisible, setisDeleteCourseVisible] = useState(false);
 
   const handleDeleteClick = () => {
-    setIsDeleteCourseVisible(true);
+    setisDeleteCourseVisible(true);
   };
 
-  const handleCancelClick = () => {
-    setIsDeleteCourseVisible(false);
+  const handleCancelDeleteClick = () => {
+    setisDeleteCourseVisible(false);
+  };
+
+  
+  const handleCourseDeleted = () => {
+    setisDeleteCourseVisible(false); 
+    onCourseDeleted(id); 
+  };
+
+  const handleCourseModified = (ModifyCourse) => {
+    setisModifyCourseVisible(false); 
+    onModify(ModifyCourse);
   };
 
   return (
     <div>
     <div className='entry-container'>
-      <h2>{title}</h2>
-      <h2>{enrollment_limit}</h2>
+      <h3>Title:
+      <br></br>
+        {title}</h3>
+      <h3>Description:
+        <br></br>
+        {description}</h3>
+        <br></br>
+        <h3>Enrollment Limit: 
+        <br></br>
+        {enrollment_limit}</h3>
+        <h3>Teacher ID:
+        <br></br>
+        {teacher_id}</h3>
+      <div className="button-container">
       <button className='card-select' onClick={handleModifyClick} >manage</button>
       <button className='card-select' onClick={handleDeleteClick} >delete</button>
+      </div>
     </div>
     <div>
     {isModifyCourseVisible && (
         <ModifyCourse
+          id={id}
           title={title}
+          description={description}
           enrollment_limit={enrollment_limit}
-          onCancel={handleCancelModifyClick} // Pass the cancel handler to ModifyUser
+          teacher_id={teacher_id}
+          onCancel={handleCancelModifyClick}
+          onModify={handleCourseModified}
         />
       )}
     </div>
     {isDeleteCourseVisible && (
         <DeleteCourse
           id={id}
-          onCancel={handleCancelClick} // Pass the cancel handler to ModifyUser
+          onCancel={handleCancelDeleteClick}
+          onCourseDeleted={handleCourseDeleted}
         />
       )}
     </div>

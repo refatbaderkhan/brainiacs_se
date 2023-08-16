@@ -12,35 +12,23 @@ use App\Models\TeacherPerformance;
 class AdminAssessmentController extends Controller
 {
 
-    public function getTeacherPerformance($userId)
+    public function getTeacherPerformance()
     {
-        $user = User::find($userId);
 
-        if (!$user) {
-            return response()->json(['error' => 'User not found, not a teacher']);
-        }
-
-        $teacherPerformance = TeacherPerformance::where('user_id', $userId)->first();
+        $teacherPerformance = TeacherPerformance::all();
 
         return response()->json([
-            "user"=>$user,
             "performance"=>$teacherPerformance
         ]);
     }
 
 
-    public function getStudentPerformance($userId)
+    public function getStudentPerformance()
     {
-        $user = User::find($userId);
 
-        if (!$user) {
-            return response()->json(['error' => 'User not found, not a student']);
-        }
-
-        $studentPerformance = StudentPerformance::where('user_id', $userId)->first();
+        $studentPerformance = StudentPerformance::all();
 
         return response()->json([
-            "user"=>$user,
             "performance"=>$studentPerformance
         ]);
 

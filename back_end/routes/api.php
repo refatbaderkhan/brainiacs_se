@@ -9,6 +9,9 @@ use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\ParentController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\AdminCourseController;
+use App\Http\Controllers\AdminAssessmentController;
+
 
 Route::group(["middleware" => "auth:api"], function () {
     $user = Auth::user();
@@ -22,12 +25,15 @@ Route::group(["middleware" => "auth:api"], function () {
         Route::post('/users/manage', [AdminController::class, 'manageUser']);
         Route::delete('/users/{id}', [AdminController::class, 'destroyUser']);
 
+        Route::get('/courses/get', [AdminCourseController::class, 'getCourses']);
         Route::post('/courses/create', [AdminCourseController::class, 'createCourse']);
         Route::post('/courses/{id}/manage', [AdminCourseController::class, 'editCourse']);
         Route::delete('/courses/{id}', [AdminCourseController::class, 'destroyCourse']);
+        Route::post('/courses/{id}', [AdminCourseController::class, 'updateCourse']);
 
-        Route::get('/reports/student-progress/{id}', [AdminAssessmentController::class, 'getStudentPerformance']);
-        Route::get('/reports/teacher-performance/{id}', [AdminAssessmentController::class, 'getTeacherPerformance']);
+
+        Route::get('/reports/student-progress/', [AdminAssessmentController::class, 'getStudentPerformance']);
+        Route::get('/reports/teacher-performance/', [AdminAssessmentController::class, 'getTeacherPerformance']);
     });
 
 

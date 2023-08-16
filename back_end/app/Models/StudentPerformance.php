@@ -13,7 +13,7 @@ class StudentPerformance extends Model
 
     protected $fillable = ['user_id', 'average_grade', 'completed_courses', 'enrolled_courses'];
 
-    protected $table = 'student_performance';
+    protected $table = 'student_performances';
 
     public function user()
     {
