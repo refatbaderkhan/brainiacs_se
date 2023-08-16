@@ -69,11 +69,15 @@ function CourseDetailsPage({ selectedCourse }) {
       <p>{selectedCourse.description}</p>
 
       <h3>Course Materials:</h3>
-      <ul>
-        {courseMaterials.map((material) => (
-          <li key={material.id}>{material.title}</li>
-        ))}
-      </ul>
+      {courseMaterials && courseMaterials.length > 0 ? (
+        <ul>
+          {courseMaterials.map((material) => (
+            <li key={material.id}>{material.title}</li>
+          ))}
+        </ul>
+      ) : (
+        <p>No course materials available.</p>
+      )}
       <h3>Completed Assignments:</h3>
       <ul>
         {completedAssignments.map((completedAssignment) => (
